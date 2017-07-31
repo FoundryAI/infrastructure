@@ -1,0 +1,15 @@
+{
+  "Id": "log-bucket-policy",
+  "Statement": [
+    {
+      "Action": "*",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Resource": "arn:aws:s3:::${bucket}/*",
+      "Sid": "log-bucket-policy"
+    }
+  ],
+  "Version": "2012-10-17"
+}
