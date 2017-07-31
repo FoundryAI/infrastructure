@@ -146,7 +146,7 @@ resource "aws_ecs_service" "main" {
 }
 
 module "task" {
-  source = "..\/ecs-cluster\/task"
+  source = "../ecs-cluster/task"
 
   name          = "${coalesce(var.name, replace(var.image, "/", "-"))}"
   image         = "${var.image}"

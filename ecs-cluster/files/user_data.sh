@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "HELOOOOOOOOOOOOOOOOOOOOOOOOO"
-
 # Timezone
 ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
 

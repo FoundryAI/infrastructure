@@ -38,7 +38,7 @@ resource "aws_ecs_service" "main" {
 }
 
 module "api_gateway" {
-  source = "../../stack/api-gateway"
+  source = "../api-gateway"
   environment = "${var.environment}"
   api_id = "${var.api_id}"
   api_root_id = "${var.api_root_id}"
