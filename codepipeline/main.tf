@@ -14,6 +14,10 @@ variable "role_arn" {
 //  description = "Artifact name"
 //}
 
+variable "oauth_token" {
+  description = "GitHub oauth token"
+}
+
 variable "source_owner" {
   description = "GitHub repo organization"
   default = "FoundryAI"
@@ -67,6 +71,7 @@ resource "aws_codepipeline" "main" {
         Owner = "${var.source_owner}"
         Repo = "${var.source_repo}"
         Branch = "${var.source_branch}"
+        OAuthToken = "${var.oauth_token}"
       }
     }
   }
