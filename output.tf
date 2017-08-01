@@ -37,3 +37,7 @@ output "internal_subnet_ids" {
 output "external_subnet_ids" {
   value = "${module.vpc.external_subnets}"
 }
+
+output "vpc_id" {
+  value = "${module.vpc.id}"
+}
