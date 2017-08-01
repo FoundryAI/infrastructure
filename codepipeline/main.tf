@@ -37,9 +37,9 @@ variable "codebuild_project_name" {
   description = "CodeBuild project name"
 }
 
-variable "codebuild_output_artifact" {
-  description = "CodeBuild project output artifact to deploy"
-}
+//variable "codebuild_output_artifact" {
+//  description = "CodeBuild project output artifact to deploy"
+//}
 
 resource "aws_codepipeline" "main" {
   name = "${var.name}"
