@@ -15,7 +15,7 @@ resource "aws_iam_role" "default_codebuild_role" {
   "Statement": [
     {
       "Action": [
-        "sts:AssumeRole,
+        "sts:AssumeRole",
         "ecr:GetDownloadUrlForLayer",
         "ecr:BatchGetImage",
         "ecr:BatchCheckLayerAvailability",
