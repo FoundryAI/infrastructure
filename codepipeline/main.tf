@@ -65,7 +65,7 @@ resource "aws_codepipeline" "main" {
       owner = "ThirdParty"
       provider = "GitHub"
       version = "1"
-//      output_artifacts = ["${var.artifact_name}"]
+      output_artifacts = ["${var.name}"]
 
       configuration {
         Owner = "${var.source_owner}"
@@ -82,7 +82,7 @@ resource "aws_codepipeline" "main" {
       name = "Build"
       owner = "AWS"
       provider = "CodeBuild"
-//      input_artifacts = ["${var.codebuild_output_artifact}"]
+      input_artifacts = ["${var.name}"]
       version = "1"
 
       configuration {
