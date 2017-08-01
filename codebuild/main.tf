@@ -76,6 +76,7 @@ resource "aws_codebuild_project" "main" {
     compute_type = "${var.environment_compute_type}"
     image = "${var.environment_image}"
     type = "${var.environment_type}"
+    privileged_mode = true
 
     environment_variable {
       "name" = "AWS_REGION"
