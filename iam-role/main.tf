@@ -91,7 +91,8 @@ resource "aws_iam_policy" "default_codebuild_policy" {
         "ecr:GetAuthorizationToken",
         "ecr:BatchCheckLayerAvailability",
         "ecr:GetDownloadUrlForLayer",
-        "ecr:BatchGetImage"
+        "ecr:BatchGetImage",
+        "ecr:InitiateLayerUpload"
       ]
     }
   ]
