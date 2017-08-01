@@ -46,28 +46,28 @@ variable "integration_type" {
   default = "HTTP_PROXY"
 }
 
-resource "aws_api_gateway_deployment" "main" {
-  rest_api_id = "${var.api_id}"
-  stage_name = "${var.environment}"
-
-  stage_description = "${timestamp()}" // forces to 'create' a new deployment each run - https://github.com/hashicorp/terraform/issues/6613
-  description = "Deployed at ${timestamp()}" // just some comment field which can be seen in deployment history
-
-//  depends_on = ["aws_api_gateway_method.main"]
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_api_gateway_stage" "main" {
-  deployment_id = "${aws_api_gateway_deployment.main.id}"
-  rest_api_id = "${var.api_id}"
-  stage_name = "${var.environment}"
-}
+//resource "aws_api_gateway_deployment" "main" {
+//  rest_api_id = "${var.api_id}"
+//  stage_name = "${var.environment}"
+//
+//  stage_description = "${timestamp()}" // forces to 'create' a new deployment each run - https://github.com/hashicorp/terraform/issues/6613
+//  description = "Deployed at ${timestamp()}" // just some comment field which can be seen in deployment history
+//
+////  depends_on = ["aws_api_gateway_method.main"]
+//
+//  lifecycle {
+//    create_before_destroy = true
+//  }
+//}
+//
+//resource "aws_api_gateway_stage" "main" {
+//  deployment_id = "${aws_api_gateway_deployment.main.id}"
+//  rest_api_id = "${var.api_id}"
+//  stage_name = "${var.environment}"
+//}
 
 resource "aws_api_gateway_method_settings" "main" {
-  depends_on = ["aws_api_gateway_deployment.main"]
+//  depends_on = ["aws_api_gateway_deployment.main"]
   method_path = "*/*"
   rest_api_id = "${var.api_id}"
   stage_name = "${var.api_stage}"

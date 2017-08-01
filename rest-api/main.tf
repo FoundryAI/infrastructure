@@ -45,6 +45,10 @@ resource "aws_api_gateway_base_path_mapping" "main" {
   base_path = "v1"
 }
 
+output "endpoint" {
+  value = "${aws_api_gateway_domain_name.main.domain_name}"
+}
+
 // The ID of the associated REST API.
 output "id" {
   value = "${aws_api_gateway_rest_api.main.id}"

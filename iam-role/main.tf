@@ -14,7 +14,24 @@ resource "aws_iam_role" "default_codebuild_role" {
   "Version": "2008-10-17",
   "Statement": [
     {
-      "Action": "sts:AssumeRole",
+      "Action": [
+        "sts:AssumeRole,
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:PutImage",
+        "ecr:InitiateLayerUpload",
+        "ecr:UploadLayerPart",
+        "ecr:CompleteLayerUpload",
+        "ecr:DescribeRepositories",
+        "ecr:GetRepositoryPolicy",
+        "ecr:ListImages",
+        "ecr:DescribeImages",
+        "ecr:DeleteRepository",
+        "ecr:BatchDeleteImage",
+        "ecr:SetRepositoryPolicy",
+        "ecr:DeleteRepositoryPolicy"
+      ],
       "Principal": {
         "Service": [
           "codebuild.amazonaws.com"
@@ -41,7 +58,9 @@ resource "aws_iam_role" "default_codedeploy_role" {
           "codedeploy.amazonaws.com"
         ]
       },
-      "Action": "sts:AssumeRole"
+      "Action": [
+        "sts:AssumeRole"
+      ]
     }
   ]
 }
