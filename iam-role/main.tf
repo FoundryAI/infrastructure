@@ -17,7 +17,6 @@ resource "aws_iam_role" "default_codebuild_role" {
       "Action": "sts:AssumeRole",
       "Principal": {
         "Service": [
-          "
           "codebuild.amazonaws.com"
         ]
       },
