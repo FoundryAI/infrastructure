@@ -27,6 +27,24 @@ resource "aws_iam_role" "default_codebuild_role" {
 EOF
 }
 
+resource "aws_iam_role" "default_codepipeline_role" {
+  name = "codepipeline-role-${var.name}-${var.environment}"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "codepipeline.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_iam_role" "default_ecs_role" {
   name = "ecs-role-${var.name}-${var.environment}"
 
@@ -76,6 +94,26 @@ resource "aws_iam_policy" "default_codebuild_policy" {
         "ecr:UploadLayerPart",
         "ecr:CompleteLayerUpload"
       ]
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "default_codepipeline_policy" {
+  name = "codepipeline_policy-${var.name}-${var.environment}"
+  role = "${aws_iam_role.default_codepipeline_role.id}"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:BatchGetBuilds",
+        "codebuild:StartBuild"
+      ],
+      "Resource": "*"
     }
   ]
 }
@@ -160,6 +198,14 @@ output "default_codebuild_policy" {
 
 output "default_codebuild_role_id" {
   value = "${aws_iam_role.default_codebuild_role.id}"
+}
+
+output "default_codepipeline_policy" {
+  value = "${aws_iam_policy.default_codebuild_policy.id}"
+}
+
+output "default_codepipeline_role_id" {
+  value = "${aws_iam_role.default_codepipeline_role.id}"
 }
 
 output "default_ecs_role_id" {

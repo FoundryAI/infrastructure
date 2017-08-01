@@ -70,7 +70,7 @@ resource "aws_codebuild_project" "main" {
   service_role = "${var.iam_role_id}"
 
   "artifacts" {
-    type = "NO_ARTIFACTS"
+    type = "CODEPIPELINE"
   }
   "environment" {
     compute_type = "${var.environment_compute_type}"
