@@ -6,18 +6,18 @@ variable "role_arn" {
   description = "A service role Amazon Resource Name (ARN) that grants AWS CodePipeline permission to make calls to AWS services on your behalf."
 }
 
-variable "artifact_location" {
-  description = "The location where AWS CodePipeline stores artifacts for a pipeline, such as an S3 bucket."
-}
-
-variable "artifact_type" {
-  description = "The type of the artifact store, such as Amazon S3"
-  default = "S3"
-}
-
-variable "artifact_name" {
-  description = "Artifact name"
-}
+//variable "artifact_location" {
+//  description = "The location where AWS CodePipeline stores artifacts for a pipeline, such as an S3 bucket."
+//}
+//
+//variable "artifact_type" {
+//  description = "The type of the artifact store, such as Amazon S3"
+//  default = "S3"
+//}
+//
+//variable "artifact_name" {
+//  description = "Artifact name"
+//}
 
 variable "source_owner" {
   description = "GitHub repo organization"
@@ -56,7 +56,7 @@ resource "aws_codepipeline" "main" {
       owner = "ThirdParty"
       provider = "GitHub"
       version = "1"
-      output_artifacts = ["${var.artifact_name}"]
+//      output_artifacts = ["${var.artifact_name}"]
 
       configuration {
         Owner = "${var.source_owner}"
@@ -72,7 +72,7 @@ resource "aws_codepipeline" "main" {
       name = "Build"
       owner = "AWS"
       provider = "CodeBuild"
-      input_artifacts = ["${var.codebuild_output_artifact}"]
+//      input_artifacts = ["${var.codebuild_output_artifact}"]
       version = "1"
 
       configuration {
