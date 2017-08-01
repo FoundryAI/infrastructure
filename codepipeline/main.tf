@@ -2,19 +2,14 @@ variable "name" {
   description = "The name of the pipeline."
 }
 
+variable "environment" {
+  description = "The environment of the pipeline"
+}
+
 variable "role_arn" {
   description = "A service role Amazon Resource Name (ARN) that grants AWS CodePipeline permission to make calls to AWS services on your behalf."
 }
 
-//variable "artifact_location" {
-//  description = "The location where AWS CodePipeline stores artifacts for a pipeline, such as an S3 bucket."
-//}
-//
-//variable "artifact_type" {
-//  description = "The type of the artifact store, such as Amazon S3"
-//  default = "S3"
-//}
-//
 //variable "artifact_name" {
 //  description = "Artifact name"
 //}
@@ -41,12 +36,22 @@ variable "codebuild_project_name" {
 //  description = "CodeBuild project output artifact to deploy"
 //}
 
+resource "aws_s3_bucket" "main" {
+  bucket = "${var.name}-codepipline"
+  acl = "private"
+
+  tags {
+    Name = "${var.name}"
+    Environment = "${var.environment}"
+  }
+}
+
 resource "aws_codepipeline" "main" {
   name = "${var.name}"
   role_arn = "${var.role_arn}"
   "artifact_store" {
-    location = "${var.artifact_location}"
-    type = "${var.artifact_type}"
+    location = "${aws_s3_bucket.main.bucket}"
+    type = "S3"
   }
   "stage" {
     name = "Source"
