@@ -63,8 +63,7 @@ resource "aws_instance" "bastion" {
   instance_type = "${var.instance_type}"
   key_name = "${var.key_name}"
   subnet_id = "${var.subnet_id}"
-  security_groups = [
-    "${split(",",var.security_groups)}"]
+  security_groups = ["${split(",",var.security_groups)}"]
   monitoring = true
   user_data = "${file(format("%s/user_data.sh", path.module))}"
 
