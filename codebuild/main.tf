@@ -76,7 +76,9 @@ resource "aws_codebuild_project" "main" {
     compute_type = "${var.environment_compute_type}"
     image = "${var.environment_image}"
     type = "${var.environment_type}"
-    privileged_mode = true
+    # not available until 0.10.0 is released, need to manually set via codebuild dashbaord until then :(
+    # https://github.com/terraform-providers/terraform-provider-aws/blob/master/aws/resource_aws_codebuild_project.go#L109
+//    privileged_mode = true
 
     environment_variable {
       "name" = "AWS_REGION"
