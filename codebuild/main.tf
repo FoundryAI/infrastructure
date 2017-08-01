@@ -25,10 +25,6 @@ variable "aws_profile" {
   default = "default"
 }
 
-variable "repo_url" {
-  description = "Repository url to load the source code from"
-}
-
 variable "environment_compute_type" {
   description = "Information about the compute resources the build project will use. Available values for this parameter are: BUILD_GENERAL1_SMALL, BUILD_GENERAL1_MEDIUM or BUILD_GENERAL1_LARGE"
   default = "BUILD_GENERAL1_SMALL"
@@ -111,8 +107,7 @@ resource "aws_codebuild_project" "main" {
     }
   }
   source {
-    type = "GITHUB"
-    location = "${var.repo_url}"
+    type = "CODEPIPELINE"
   }
 
   tags {
