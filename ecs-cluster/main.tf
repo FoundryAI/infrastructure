@@ -85,8 +85,8 @@ resource "aws_ecs_cluster" "main" {
 
 data "template_file" "ecs_cloud_config" {
 //  template = "${file("${path.module}/files/user_data.sh")}"
-  template = "${file("${path.module}/files/cloud-config.yml.tpl")}"
-//  template = "${file("${path.module}/files/cloud-config.log.tpl")}"
+//  template = "${file("${path.module}/files/cloud-config.yml.tpl")}"
+  template = "${file("${path.module}/files/cloud-config.log.tpl")}"
 
   vars {
     environment = "${var.environment}"
