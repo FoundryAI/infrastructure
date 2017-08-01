@@ -27,27 +27,6 @@ resource "aws_iam_role" "default_codebuild_role" {
 EOF
 }
 
-resource "aws_iam_role" "default_codedeploy_role" {
-  name = "codedeploy-role-${var.name}-${var.environment}"
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": [
-          "codedeploy.amazonaws.com"
-        ]
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
-}
-
 resource "aws_iam_role" "default_ecs_role" {
   name = "ecs-role-${var.name}-${var.environment}"
 
@@ -99,33 +78,6 @@ resource "aws_iam_policy" "default_codebuild_policy" {
       ]
     }
   ]
-}
-EOF
-}
-
-resource "aws_iam_policy" "default_codedeploy_policy" {
-  name = "codedeploy-policy-${var.name}-${var.environment}"
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "autoscaling:CompleteLifecycleAction",
-                "autoscaling:DeleteLifecycleHook",
-                "autoscaling:DescribeAutoScalingGroups",
-                "autoscaling:DescribeLifecycleHooks",
-                "autoscaling:PutLifecycleHook",
-                "autoscaling:RecordLifecycleActionHeartbeat",
-                "ec2:DescribeInstances",
-                "ec2:DescribeInstanceStatus",
-                "tag:GetTags",
-                "tag:GetResources"
-            ],
-            "Resource": "*"
-        }
-    ]
 }
 EOF
 }
@@ -210,20 +162,12 @@ output "default_codebuild_role_id" {
   value = "${aws_iam_role.default_codebuild_role.id}"
 }
 
-output "default_codedeploy_policy" {
-  value = "${aws_iam_policy.default_codedeploy_policy.id}"
-}
-
 output "default_ecs_role_id" {
   value = "${aws_iam_role.default_ecs_role.id}"
 }
 
 output "default_codebuild_arn" {
   value = "${aws_iam_role.default_codebuild_role.arn}"
-}
-
-output "default_codedeploy_role_arn" {
-  value = "${aws_iam_role.default_codedeploy_role.arn}"
 }
 
 output "arn" {
