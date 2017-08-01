@@ -92,7 +92,10 @@ resource "aws_iam_policy" "default_codebuild_policy" {
         "ecr:BatchCheckLayerAvailability",
         "ecr:GetDownloadUrlForLayer",
         "ecr:BatchGetImage",
-        "ecr:InitiateLayerUpload"
+        "ecr:PutImage",
+        "ecr:InitiateLayerUpload",
+        "ecr:UploadLayerPart",
+        "ecr:CompleteLayerUpload"
       ]
     }
   ]
