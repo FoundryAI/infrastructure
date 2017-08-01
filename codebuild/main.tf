@@ -38,7 +38,7 @@ variable "environment_image" {
   // https://docs.aws.amazon.com/codebuild/latest/userguide/create-project.html
   // https://hub.docker.com/r/jch254/dind-terraform-aws/
   description = "The ID of the Docker image to use for this build project"
-  default = "jch254/dind-terraform-aws"
+  default = "aws/codebuild/docker:1.12.1"
 }
 
 variable "environment_type" {
