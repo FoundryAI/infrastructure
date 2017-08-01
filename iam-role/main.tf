@@ -58,9 +58,7 @@ resource "aws_iam_role" "default_codedeploy_role" {
           "codedeploy.amazonaws.com"
         ]
       },
-      "Action": [
-        "sts:AssumeRole"
-      ]
+      "Action": "sts:AssumeRole"
     }
   ]
 }
@@ -90,8 +88,8 @@ EOF
 }
 
 resource "aws_iam_policy" "default_codebuild_policy" {
-  name        = "codebuild-policy-${var.name}-${var.environment}"
-  path        = "/service-role/"
+  name = "codebuild-policy-${var.name}-${var.environment}"
+  path = "/service-role/"
   description = "Policy used in trust relationship with CodeBuild"
 
   policy = <<EOF
@@ -208,9 +206,9 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "default_ecs" {
-  name  = "ecs-instance-profile-${var.name}-${var.environment}"
-  path  = "/"
-  role  = "${aws_iam_role.default_ecs_role.name}"
+  name = "ecs-instance-profile-${var.name}-${var.environment}"
+  path = "/"
+  role = "${aws_iam_role.default_ecs_role.name}"
 }
 
 output "default_codebuild_policy" {
