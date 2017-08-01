@@ -208,6 +208,10 @@ output "default_codepipeline_role_id" {
   value = "${aws_iam_role.default_codepipeline_role.id}"
 }
 
+output "default_codepipeline_role_arn" {
+  value = "${aws_iam_role.default_codepipeline_role.arn}"
+}
+
 output "default_ecs_role_id" {
   value = "${aws_iam_role.default_ecs_role.id}"
 }
