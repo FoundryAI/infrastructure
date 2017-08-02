@@ -111,6 +111,7 @@ data "template_file" "main" {
     desired_count = "${var.desired_count}"
     container_name = "${var.name}"
     container_port = "${var.container_port}"
+    port = "${var.port}"
     elb_id = "${var.elb_id}"
     repository_url = "${var.repository_url}"
     image_version = "${var.image_version}"
