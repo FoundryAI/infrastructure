@@ -19,8 +19,8 @@ variable "environment" {
 }
 
 resource "aws_route53_record" "main" {
-  name = "${var.api_endpoint}"
-  type = "A"
+  name = "${var.environment}"
+  type = "CNAME"
   ttl = "300"
   zone_id = "${var.domain_zone_id}"
   records = ["${aws_api_gateway_domain_name.main.domain_name}"]
