@@ -100,7 +100,7 @@ data "aws_region" "current" {
 data "aws_caller_identity" "current" {}
 
 data "template_file" "main" {
-  template = "${file("${path.module}/template.json")}"
+  template = "${file("${path.module}/template.json.tftemplate")}"
 
   vars {
     name = "${var.name}"

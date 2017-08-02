@@ -1,3 +1,4 @@
+[SNIP]
 {
   "Resources": {
     "Service": {
@@ -24,7 +25,7 @@
           {
             "Name": "${name}",
             "Image": "${repository_url}:${image_version}",
-            "Essential": true,
+            "Essential": "true",
             "Memory": "${memory}",
             "CPU": "${cpu}",
             "PortMappings": [
@@ -35,10 +36,11 @@
                 "HostPort": "${port}"
               }
             ],
-            "Environment": "${container_env_vars}"
+            "Environment": ${container_env_vars}
           }
         ]
       }
     }
   }
 }
+[SNIP]
