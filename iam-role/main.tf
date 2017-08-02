@@ -7,7 +7,7 @@ variable "environment" {
 }
 
 resource "aws_iam_role" "default_codebuild_role" {
-  name = "codebuild-role-${var.name}-${var.environment}"
+  name = "codebuild-role-${var.name}"
 
   assume_role_policy = <<EOF
 {
@@ -28,7 +28,7 @@ EOF
 }
 
 resource "aws_iam_role" "default_codepipeline_role" {
-  name = "codepipeline-role-${var.name}-${var.environment}"
+  name = "codepipeline-role-${var.name}"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -46,7 +46,7 @@ EOF
 }
 
 resource "aws_iam_role" "default_ecs_role" {
-  name = "ecs-role-${var.name}-${var.environment}"
+  name = "ecs-role-${var.name}"
 
   assume_role_policy = <<EOF
 {
@@ -56,6 +56,7 @@ resource "aws_iam_role" "default_ecs_role" {
       "Action": "sts:AssumeRole",
       "Principal": {
         "Service": [
+          "codepipeline.amazonaws.com",
           "ecs.amazonaws.com",
           "ec2.amazonaws.com"
         ]
@@ -68,7 +69,7 @@ EOF
 }
 
 resource "aws_iam_policy" "default_codebuild_policy" {
-  name = "codebuild-policy-${var.name}-${var.environment}"
+  name = "codebuild-policy-${var.name}"
   path = "/service-role/"
   description = "Policy used in trust relationship with CodeBuild"
 
@@ -102,7 +103,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "default_codepipeline_policy" {
-  name = "codepipeline_policy-${var.name}-${var.environment}"
+  name = "codepipeline-policy-${var.name}"
   role = "${aws_iam_role.default_codepipeline_role.id}"
   policy = <<EOF
 {
@@ -129,7 +130,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "default_ecs_service_role_policy" {
-  name = "ecs-service-role-policy-${var.name}-${var.environment}"
+  name = "ecs-service-role-policy-${var.name}"
   role = "${aws_iam_role.default_ecs_role.id}"
 
   policy = <<EOF
@@ -153,7 +154,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "default_ecs_instance_role_policy" {
-  name = "ecs-instance-role-policy-${var.name}-${var.environment}"
+  name = "ecs-instance-role-policy-${var.name}"
   role = "${aws_iam_role.default_ecs_role.id}"
 
   policy = <<EOF
