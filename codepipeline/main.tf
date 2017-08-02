@@ -32,6 +32,10 @@ variable "source_branch" {
   default = "master"
 }
 
+variable "ecs_task_definition_id" {
+  description = "The ECS task definition to deploy upon successful build"
+}
+
 variable "codebuild_project_name" {
   description = "CodeBuild project name"
 }
@@ -39,6 +43,12 @@ variable "codebuild_project_name" {
 //variable "codebuild_output_artifact" {
 //  description = "CodeBuild project output artifact to deploy"
 //}
+
+resource "aws_cloudformation_stack" "main" {
+  name = "${var.name}-deploy-stack"
+
+
+}
 
 resource "aws_s3_bucket" "main" {
   bucket = "${var.name}-codepipline"
@@ -90,21 +100,42 @@ resource "aws_codepipeline" "main" {
       }
     }
   }
-  // TODO - figure this out
+// TODO - figure this out
 //  "stage" {
-//    name = "Deploy"
+//    name = "Test"
 //    action {
 //      category = "Deploy"
-//      name = "Deploy"
+//      name = "Test"
 //      owner = "AWS"
 //      provider = "CloudFormation"
 //      version = "1"
 //
 //      configuration {
-//        StackName = ""
+//
 //      }
 //    }
 //  }
+  "stage" {
+    name = "Deploy"
+    action {
+      category = "Deploy"
+      name = "Deploy"
+      owner = "AWS"
+      provider = "CloudFormation"
+      input_artifacts = ["${var.name}"]
+      version = "1"
+
+      configuration {
+        ChangeSetName = "Deploy"
+        ActionMode = "CREATE_UPDATE"
+        StackName = "${var.name}-${var.environment}"
+        Capabilities = "CAPABILITY_NAMED_IAM"
+        TemplatePath = "${aws_cloudformation_stack.main.template_url}"
+        RoleArn = "${var.role_arn}"
+
+      }
+    }
+  }
 }
 
 output "codepipeline_id" {

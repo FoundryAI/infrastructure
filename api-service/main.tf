@@ -1,7 +1,4 @@
 /**
- * The web-service is similar to the `service` module, but the
- * it provides a __public__ ELB instead.
- *
  * Usage:
  *
  *      module "auth_service" {
