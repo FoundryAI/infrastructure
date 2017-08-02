@@ -203,7 +203,7 @@ resource "aws_codepipeline" "main" {
       configuration {
         ChangeSetName = "Deploy"
         ActionMode = "CREATE_UPDATE"
-        StackName = "${aws_cloudformation_stack.main.name}"
+        StackName = "${aws_cloudformation_stack.main.id}"
         Capabilities = "CAPABILITY_NAMED_IAM"
         RoleArn = "${var.role_arn}"
       }
