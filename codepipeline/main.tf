@@ -44,10 +44,22 @@ variable "codebuild_project_name" {
 //  description = "CodeBuild project output artifact to deploy"
 //}
 
+data "template_file" "main" {
+  template = "${file("../api-service/cloudformation/template.json")}"
+
+  vars {
+    Tag = ""
+    COOKIE_SECRET = ""
+    RDS_DB_NAME = ""
+    RDS_HOSTNAME = ""
+    RDS_PASSWORD = ""
+  }
+}
+
 resource "aws_cloudformation_stack" "main" {
   name = "${var.name}-deploy-stack"
 
-
+  template_url = "../api-service/cloudformation/template.yaml"
 }
 
 resource "aws_s3_bucket" "main" {

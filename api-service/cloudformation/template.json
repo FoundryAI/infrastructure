@@ -1,0 +1,87 @@
+{
+  "Parameters": {
+    "Tag": {
+      "Type": "String",
+      "Default": "latest"
+    },
+    "EnvironmentVariables": {
+      "Type": "String"
+    },
+    "DesiredCount": {
+      "Type": "Number",
+      "Default": 0
+    },
+    "IAMRole": {
+      "Type": "String"
+    },
+    "TargetGroup": {
+      "Type": "String"
+    },
+    "ContainerName": {
+      "Type": "String"
+    },
+    "ContainerPort": {
+      "Type": "String"
+    },
+    "ContainerMemory": {
+      "Type": "Number"
+    },
+    "ContainerCPU": {
+      "Type": "Number"
+    },
+    "Cluster": {
+      "Type": "String"
+    },
+    "Repository": {
+      "Type": "String"
+    },
+    "TaskName": {
+      "Type": "String"
+    },
+    "TaskCommand": {
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "Service": {
+      "Type": "AWS::ECS::Service",
+      "Properties": {
+        "Cluster": "Cluster",
+        "Role": "IAMRole",
+        "DesiredCount": "DesiredCount",
+        "TaskDefinition": "TaskDefinition",
+        "LoadBalancers": [
+          {
+            "ContainerName": "ContainerName",
+            "ContainerPort": "ContainerPort",
+            "TargetGroupArn": "TargetGroup"
+          }
+        ]
+      }
+    },
+    "TaskDefinition": {
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "Family": "TaskName",
+        "ContainerDefinitions": [
+          {
+            "Name": "Taskname",
+            "Image": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}:${Tag}",
+            "Essential": true,
+            "Memory": "ContainerMemory",
+            "CPU": "ContainerCPU",
+            "PortMappings": [
+              {
+                "ContainerPort": "ContainerPort"
+              },
+              {
+                "HostPort": "HostPort"
+              }
+            ],
+            "Environment": "${EnvironmentVariables}"
+          }
+        ]
+      }
+    }
+  }
+}
