@@ -58,7 +58,6 @@ module "codepipeline" {
   source = "../codepipeline"
   name = "${coalesce(var.name, replace(var.image, "/", "-"))}"
   environment = "${var.environment}"
-  image = "${var.image}"
   image_version = "${var.version}"
   memory = "${var.memory}"
   cpu = "${var.cpu}"
