@@ -1,60 +1,17 @@
 {
-  "Parameters": {
-    "Tag": {
-      "Type": "String",
-      "Default": "latest"
-    },
-    "EnvironmentVariables": {
-      "Type": "String"
-    },
-    "DesiredCount": {
-      "Type": "Number",
-      "Default": 0
-    },
-    "IAMRole": {
-      "Type": "String"
-    },
-    "TargetGroup": {
-      "Type": "String"
-    },
-    "ContainerName": {
-      "Type": "String"
-    },
-    "ContainerPort": {
-      "Type": "String"
-    },
-    "ContainerMemory": {
-      "Type": "Number"
-    },
-    "ContainerCPU": {
-      "Type": "Number"
-    },
-    "Cluster": {
-      "Type": "String"
-    },
-    "Repository": {
-      "Type": "String"
-    },
-    "TaskName": {
-      "Type": "String"
-    },
-    "TaskCommand": {
-      "Type": "String"
-    }
-  },
   "Resources": {
     "Service": {
       "Type": "AWS::ECS::Service",
       "Properties": {
-        "Cluster": "Cluster",
-        "Role": "IAMRole",
-        "DesiredCount": "DesiredCount",
+        "Cluster": "${cluster_name}",
+        "Role": "${role_id}",
+        "DesiredCount": "${desired_count}",
         "TaskDefinition": "TaskDefinition",
         "LoadBalancers": [
           {
-            "ContainerName": "ContainerName",
-            "ContainerPort": "ContainerPort",
-            "TargetGroupArn": "TargetGroup"
+            "ContainerName": "${container_name}",
+            "ContainerPort": "${container_port}",
+            "TargetGroupArn": "${elb_id}"
           }
         ]
       }
@@ -62,23 +19,23 @@
     "TaskDefinition": {
       "Type": "AWS::ECS::TaskDefinition",
       "Properties": {
-        "Family": "TaskName",
+        "Family": "${name}",
         "ContainerDefinitions": [
           {
-            "Name": "Taskname",
-            "Image": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}:${Tag}",
+            "Name": "${name}",
+            "Image": "${repository_url}:${image_version}",
             "Essential": true,
-            "Memory": "ContainerMemory",
-            "CPU": "ContainerCPU",
+            "Memory": "${memory}",
+            "CPU": "${cpu}",
             "PortMappings": [
               {
-                "ContainerPort": "ContainerPort"
+                "ContainerPort": "${container_port}"
               },
               {
-                "HostPort": "HostPort"
+                "HostPort": "${port}"
               }
             ],
-            "Environment": "${EnvironmentVariables}"
+            "Environment": "${container_env_vars}"
           }
         ]
       }

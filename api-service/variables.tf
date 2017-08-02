@@ -133,3 +133,37 @@ variable "deployment_maximum_percent" {
   description = "upper limit (% of desired_count) of # of running tasks during a deployment"
   default = 200
 }
+
+variable "codebuild_iam_role_arn" {
+  description = "Default codebuild iam role arn"
+}
+
+variable "codebuild_iam_role_role_id" {
+  description = "Default codebuild iam role id"
+}
+
+variable "codebuild_policy" {
+  description = "Default codebuild policy"
+}
+
+variable "codepipeline_role_arn" {
+  description = "A service role Amazon Resource Name (ARN) that grants AWS CodePipeline permission to make calls to AWS services on your behalf."
+}
+
+variable "source_owner" {
+  description = "GitHub repo organization"
+  default = "FoundryAI"
+}
+
+variable "source_repo" {
+  description = "GitHub source repository"
+}
+
+variable "source_branch" {
+  description = "GitHub source branch"
+  default = "master"
+}
+
+variable "oauth_token" {
+  description = "GitHub oauth token"
+}

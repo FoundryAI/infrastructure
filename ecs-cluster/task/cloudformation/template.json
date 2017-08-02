@@ -1,0 +1,26 @@
+{
+  "TaskDefinition": {
+    "Type": "AWS::ECS::TaskDefinition",
+    "Properties": {
+      "Family": "${name}",
+      "ContainerDefinitions": [
+        {
+          "Name": "${name}",
+          "Image": "${account_id}.dkr.ecr.${region}.amazonaws.com/${image}:${version}",
+          "Essential": true,
+          "Memory": "${memory}",
+          "CPU": "${cpu}",
+          "PortMappings": [
+            {
+              "ContainerPort": "${container_port}"
+            },
+            {
+              "HostPort": "${port}"
+            }
+          ],
+          "Environment": "${container_env_vars}"
+        }
+      ]
+    }
+  }
+}

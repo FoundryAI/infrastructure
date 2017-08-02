@@ -27,6 +27,7 @@ variable "aws_profile" {
 
 variable "repo_url" {
   description = "Repository url to load the source code from"
+  default = ""
 }
 
 variable "environment_compute_type" {

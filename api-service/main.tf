@@ -45,6 +45,39 @@ module "api_gateway" {
   elb_dns = "${module.elb.dns}"
 }
 
+module "codebuild" {
+  source = "../codebuild"
+  iam_role_id = "${var.codebuild_iam_role_role_id}"
+  name = "${var.name}"
+  environment = "${var.environment}"
+  image = "${module.repository.repository_url}"
+  policy_arn = "${var.codebuild_policy}"
+}
+
+module "codepipeline" {
+  source = "../codepipeline"
+  name = "${coalesce(var.name, replace(var.image, "/", "-"))}"
+  environment = "${var.environment}"
+  image = "${var.image}"
+  image_version = "${var.version}"
+  memory = "${var.memory}"
+  cpu = "${var.cpu}"
+  ecs_container_env_vars = "${var.env_vars}"
+  elb_id = "${module.elb.id}"
+  cluster = "${var.cluster}"
+  role_arn = "${var.codepipeline_role_arn}"
+  ecs_iam_role = "${var.iam_role}"
+  port = "${var.port}"
+  container_port = "${var.container_port}"
+  codebuild_project_name = "${module.codebuild.name}"
+  source_owner = "${var.source_owner}"
+  source_repo = "${var.source_repo}"
+  source_branch = "${var.source_branch}"
+  repository_url = "${module.repository.repository_url}"
+  oauth_token = "${var.oauth_token}"
+  codebuild_iam_role_role_id = "${var.codebuild_iam_role_role_id}"
+}
+
 module "repository" {
   source = "../repository"
   image = "${var.image}"
