@@ -6,12 +6,24 @@ variable "api_endpoint" {
   description = "API endpoint"
 }
 
+variable "domain_zone_id" {
+  description = "Default domain zone id to create API A record"
+}
+
 variable "ssl_certificate_id" {
   description = "SSL Certificate ID to use"
 }
 
 variable "environment" {
   description = "The name of the environment for this stack"
+}
+
+resource "aws_route53_record" "main" {
+  name = "${var.api_endpoint}"
+  type = "A"
+  ttl = "300"
+  zone_id = "${var.domain_zone_id}"
+  records = ["${aws_api_gateway_domain_name.main.domain_name}"]
 }
 
 resource "aws_api_gateway_deployment" "main" {
