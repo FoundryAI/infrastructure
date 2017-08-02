@@ -190,25 +190,26 @@ resource "aws_codepipeline" "main" {
 //      }
 //    }
 //  }
-  "stage" {
-    name = "Deploy"
-    action {
-      category = "Deploy"
-      name = "Deploy"
-      owner = "AWS"
-      provider = "CloudFormation"
-      input_artifacts = ["${var.name}"]
-      version = "1"
-
-      configuration {
-        ChangeSetName = "Deploy"
-        ActionMode = "CREATE_UPDATE"
-        StackName = "${aws_cloudformation_stack.main.id}"
-        Capabilities = "CAPABILITY_NAMED_IAM"
-        RoleArn = "${var.role_arn}"
-      }
-    }
-  }
+// TODO - comeback to this
+  //  "stage" {
+//    name = "Deploy"
+//    action {
+//      category = "Deploy"
+//      name = "Deploy"
+//      owner = "AWS"
+//      provider = "CloudFormation"
+//      input_artifacts = ["${var.name}"]
+//      version = "1"
+//
+//      configuration {
+//        ChangeSetName = "Deploy"
+//        ActionMode = "CREATE_UPDATE"
+//        StackName = "${aws_cloudformation_stack.main.outputs.id}"
+//        Capabilities = "CAPABILITY_NAMED_IAM"
+//        RoleArn = "${var.role_arn}"
+//      }
+//    }
+//  }
 }
 
 output "codepipeline_id" {
