@@ -19,11 +19,11 @@ variable "environment" {
 }
 
 resource "aws_route53_record" "main" {
-  name = "${var.environment}"
+  name = "${aws_api_gateway_domain_name.main.domain_name}"
   type = "CNAME"
   ttl = "300"
   zone_id = "${var.domain_zone_id}"
-  records = ["${aws_api_gateway_domain_name.main.domain_name}"]
+  records = ["${aws_api_gateway_domain_name.main.cloudfront_domain_name}"]
 }
 
 resource "aws_api_gateway_deployment" "main" {
