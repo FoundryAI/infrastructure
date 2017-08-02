@@ -26,7 +26,7 @@
             "Image": "${repository_url}:${image_version}",
             "Essential": "true",
             "Memory": "${memory}",
-            "CPU": "${cpu}",
+            "Cpu": "${cpu}",
             "PortMappings": [
               {
                 "ContainerPort": "${container_port}"
