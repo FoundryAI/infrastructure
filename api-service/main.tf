@@ -48,7 +48,7 @@ module "api_gateway" {
 module "codebuild" {
   source = "../codebuild"
   iam_role_id = "${var.codebuild_iam_role_role_id}"
-  name = "${var.name}"
+  name = "${coalesce(var.name, replace(var.image, "/", "-"))}"
   environment = "${var.environment}"
   image = "${module.repository.repository_url}"
   policy_arn = "${var.codebuild_policy}"
