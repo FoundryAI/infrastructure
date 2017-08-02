@@ -115,6 +115,13 @@ resource "aws_iam_role_policy" "default_codepipeline_policy" {
     {
       "Effect":"Allow",
       "Action": [
+        "ecs:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect":"Allow",
+      "Action": [
         "cloudformation:*"
       ],
       "Resource": "*"
