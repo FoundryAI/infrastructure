@@ -100,7 +100,7 @@ data "aws_region" "current" {
 data "aws_caller_identity" "current" {}
 
 data "template_file" "main" {
-  template = "${file("../api-service/cloudformation/template.json")}"
+  template = "${file("${path.module}/template.json")}"
 
   vars {
     name = "${var.name}"
