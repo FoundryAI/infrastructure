@@ -36,7 +36,10 @@ resource "aws_iam_role" "default_codepipeline_role" {
     {
       "Effect": "Allow",
       "Principal": {
-        "Service": "codepipeline.amazonaws.com"
+        "Service": [
+          "cloudformation.amazonaws.com",
+          "codepipeline.amazonaws.com"
+        ]
       },
       "Action": "sts:AssumeRole"
     }
@@ -109,6 +112,13 @@ resource "aws_iam_role_policy" "default_codepipeline_policy" {
 {
   "Version": "2012-10-17",
   "Statement": [
+    {
+      "Effect":"Allow",
+      "Action": [
+        "cloudformation:*"
+      ],
+      "Resource": "*"
+    },
     {
       "Effect":"Allow",
       "Action": [
