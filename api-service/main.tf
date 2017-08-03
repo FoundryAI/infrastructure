@@ -50,7 +50,7 @@ module "codebuild" {
   iam_role_id = "${var.codebuild_iam_role_role_id}"
   name = "${coalesce(var.name, replace(var.image, "/", "-"))}"
   environment = "${var.environment}"
-  image = "${module.repository.repository_url}"
+  image = "${var.image}"
   policy_arn = "${var.codebuild_policy}"
 }
 
