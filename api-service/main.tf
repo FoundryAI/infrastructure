@@ -75,6 +75,7 @@ module "codepipeline" {
   port = "${var.port}"
   container_port = "${var.container_port}"
   codebuild_project_name = "${module.codebuild.name}"
+  codebuild_migration_project_name = "${module.codebuild.migration_name}"
   source_owner = "${var.source_owner}"
   source_repo = "${var.source_repo}"
   source_branch = "${var.source_branch}"

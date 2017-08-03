@@ -40,6 +40,10 @@ variable "codebuild_project_name" {
   description = "CodeBuild project name"
 }
 
+variable "codebuild_migration_project_name" {
+  description = "CodeBuild migration project name"
+}
+
 variable "port" {
   description = "The container host port"
 }
@@ -201,18 +205,20 @@ resource "aws_codepipeline" "main" {
     }
   }
 
-//  "stage" {
-//    name = "Invoke"
-//    action {
-//      category = ""
-//      name = ""
-//      owner = ""
-//      provider = ""
-//      version = ""
-//
-//
-//    }
-//  }
+  "stage" {
+    name = "Migrate"
+    action {
+      category = "Deploy"
+      name = "Migrate"
+      owner = "AWS"
+      provider = "CodeBuild"
+      version = "1"
+
+      configuration {
+        ProjectName = "${var.codebuild_migration_project_name}"
+      }
+    }
+  }
 }
 
 output "codepipeline_id" {

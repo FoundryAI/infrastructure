@@ -272,6 +272,10 @@ output "name" {
   value = "${aws_codebuild_project.main.name}"
 }
 
+output "migration_name" {
+  value = "${aws_codebuild_project.migration.name}"
+}
+
 // The ARN of the IAM service role.
 output "service_role" {
   value = "${aws_codebuild_project.main.service_role}"
