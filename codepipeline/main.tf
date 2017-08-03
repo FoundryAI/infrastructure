@@ -205,6 +205,7 @@ resource "aws_codepipeline" "main" {
         ChangeSetName = "Deploy"
         ActionMode = "CREATE_UPDATE"
         StackName = "${aws_cloudformation_stack.main.id}"
+        TemplatePath = "InputArtifactName::TemplateFileName"
         Capabilities = "CAPABILITY_NAMED_IAM"
         RoleArn = "${var.role_arn}"
       }
