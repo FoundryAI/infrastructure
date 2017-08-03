@@ -6,6 +6,7 @@
       "Properties": {
         "Cluster": "${cluster_name}",
         "Role": "${role_id}",
+
         "DesiredCount": "${desired_count}",
         "TaskDefinition": {
             "Ref": "TaskDefinition"
@@ -23,6 +24,7 @@
       "Type": "AWS::ECS::TaskDefinition",
       "Properties": {
         "Family": "${name}",
+        "TaskRoleArn": "${role_id}",
         "ContainerDefinitions": [
           {
             "Name": "${container_name}",
