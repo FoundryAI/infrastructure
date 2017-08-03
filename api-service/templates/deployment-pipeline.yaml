@@ -268,7 +268,7 @@ Resources:
               Configuration:
                 ChangeSetName: Deploy
                 ActionMode: CREATE_UPDATE
-                StackName: !Ref Name
+                StackName: !Ref AWS::StackName
                 Capabilities: CAPABILITY_NAMED_IAM
                 TemplatePath: Template::templates/service.yaml
                 RoleArn: !GetAtt CloudFormationExecutionRole.Arn
