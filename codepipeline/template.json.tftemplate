@@ -30,8 +30,6 @@
             "PortMappings": [
               {
                 "ContainerPort": ${container_port}
-              },
-              {
                 "HostPort": ${port}
               }
             ],
