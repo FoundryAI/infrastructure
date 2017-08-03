@@ -55,6 +55,11 @@ variable "environment_compute_type" {
   default = "BUILD_GENERAL1_SMALL"
 }
 
+variable "migration_environment_compute_type" {
+  description = "Information about the compute resources the build project will use. Available values for this parameter are: BUILD_GENERAL1_SMALL, BUILD_GENERAL1_MEDIUM or BUILD_GENERAL1_LARGE"
+  default = "BUILD_GENERAL1_SMALL"
+}
+
 variable "environment_image" {
   // https://docs.aws.amazon.com/codebuild/latest/userguide/create-project.html
   // https://hub.docker.com/r/jch254/dind-terraform-aws/
@@ -62,9 +67,24 @@ variable "environment_image" {
   default = "aws/codebuild/docker:1.12.1"
 }
 
+variable "migration_environment_image" {
+  description = "The ID of the Docker image to use for this build project"
+  default = "node:8.2"
+}
+
 variable "environment_type" {
   description = "The type of build environment to use for related builds. The only valid value is LINUX_CONTAINER."
   default = "LINUX_CONTAINER"
+}
+
+variable "migration_environment_type" {
+  description = "The type of build environment to use for related builds. The only valid value is LINUX_CONTAINER."
+  default = "LINUX_CONTAINER"
+}
+
+variable "migration_buildspec" {
+  description = "The migration buildspec to use"
+  default = "buildspec.migration.yml"
 }
 
 variable "policy_arn" {
@@ -73,6 +93,10 @@ variable "policy_arn" {
 
 variable "iam_role_id" {
   description = "The codebuild default iam role id"
+}
+
+variable "github_oauth_token" {
+  description = "GitHub OAUTH token to use to retrieve code"
 }
 
 data "aws_caller_identity" "current" {}
@@ -219,7 +243,12 @@ resource "aws_codebuild_project" "migration" {
 
   "source" {
     type = "GITHUB"
-    repo_url = ""
+    location = "${var.repo_url}"
+    buildspec = "${var.migration_buildspec}"
+    auth {
+      type = "OAUTH"
+      resource = "${var.github_oauth_token}"
+    }
   }
 }
 

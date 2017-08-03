@@ -46,11 +46,13 @@ module "api_gateway" {
 }
 
 module "codebuild" {
-  source = "../codebuild"
+  source = "./codebuild"
   iam_role_id = "${var.codebuild_iam_role_role_id}"
   name = "${coalesce(var.name, replace(var.image, "/", "-"))}"
   environment = "${var.environment}"
   image = "${var.image}"
+  repo_url = "${var.source_repo}"
+  github_oauth_token = "${var.oauth_token}"
   policy_arn = "${var.codebuild_policy}"
   rds_db_name = "${var.rds_db_name}"
   rds_hostname = "${var.rds_hostname}"
@@ -59,7 +61,7 @@ module "codebuild" {
 }
 
 module "codepipeline" {
-  source = "../codepipeline"
+  source = "./codepipeline"
   name = "${coalesce(var.name, replace(var.image, "/", "-"))}"
   environment = "${var.environment}"
   image_version = "${var.version}"
