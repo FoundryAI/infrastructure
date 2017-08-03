@@ -213,7 +213,7 @@ resource "aws_codebuild_project" "migration" {
   service_role = "${var.iam_role_id}"
 
   "artifacts" {
-    type = "CODEPIPELINE"
+    type = "NO_ARTIFACTS"
   }
   "environment" {
     compute_type = "${var.migration_environment_compute_type}"
