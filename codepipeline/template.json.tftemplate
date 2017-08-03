@@ -66,6 +66,8 @@
                     "Statement": [{
                         "Effect": "Allow",
                         "Action": [
+                            "iam:*",
+                            "ecs:*",
                             "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
                             "elasticloadbalancing:DeregisterTargets",
                             "elasticloadbalancing:Describe*",
