@@ -25,7 +25,7 @@
         "Family": "${name}",
         "ContainerDefinitions": [
           {
-            "Name": "${name}",
+            "Name": "${container_name}",
             "Image": "${repository_url}:${image_version}",
             "Essential": "true",
             "Memory": "${memory}",
