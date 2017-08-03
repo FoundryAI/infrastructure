@@ -115,6 +115,9 @@ data "template_file" "main" {
     elb_id = "${var.elb_id}"
     repository_url = "${var.repository_url}"
     image_version = "${var.image_version}"
+    awslogs_group = "${var.cluster}",
+    awslogs_region = "${data.aws_region.current.name}",
+    awslogs_stream_prefix = "${var.environment}",
     container_env_vars = "${var.ecs_container_env_vars}"
   }
 }
@@ -204,8 +207,8 @@ resource "aws_codepipeline" "main" {
       configuration {
         ChangeSetName = "Deploy"
         ActionMode = "CREATE_UPDATE"
-        StackName = "${aws_cloudformation_stack.main.id}"
-        TemplatePath = "InputArtifactName::TemplateFileName"
+        StackName = "${var.name}"
+        TemplatePath = "${aws_cloudformation_stack.main.id}"
         Capabilities = "CAPABILITY_NAMED_IAM"
         RoleArn = "${var.role_arn}"
       }
