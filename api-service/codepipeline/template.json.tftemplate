@@ -2,7 +2,6 @@
   "Resources": {
     "Service": {
       "Type": "AWS::ECS::Service",
-      "DependsOn": "ECSServiceRole",
       "Properties": {
         "Cluster": "${cluster_name}",
         "Role": "${role_id}",
