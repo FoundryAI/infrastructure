@@ -113,7 +113,7 @@ data "template_file" "main" {
     cpu = "${var.cpu}"
     role_id = "${var.ecs_iam_role}"
     desired_count = "${var.desired_count}"
-    container_name = "${var.name}"
+    container_name = "${var.name}-${var.environment}"
     container_port = "${var.container_port}"
     port = "${var.port}"
     elb_id = "${var.elb_id}"
