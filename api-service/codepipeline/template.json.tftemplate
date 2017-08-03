@@ -76,6 +76,11 @@
                         "Action": [
                             "iam:*",
                             "ecs:*",
+                            "autoscaling:*",
+                            "logs:*",
+                            "cloudformation:*",
+                            "codepipeline:*",
+                            "ecr:*",
                             "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
                             "elasticloadbalancing:DeregisterTargets",
                             "elasticloadbalancing:Describe*",
