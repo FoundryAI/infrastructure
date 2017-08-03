@@ -168,6 +168,7 @@ resource "aws_iam_role_policy" "default_ecs_service_role_policy" {
         "cloudformation:*",
         "ec2:AuthorizeSecurityGroupIngress",
         "ec2:Describe*",
+        "ecs:*",
         "iam:*",
         "elasticloadbalancing:*"
       ],
@@ -221,7 +222,7 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "default_ecs" {
-  name = "ecs-instance-profile-${var.name}-${var.environment}"
+  name = "ecs-instance-profile-${var.name}"
   path = "/"
   role = "${aws_iam_role.default_ecs_role.name}"
 }
