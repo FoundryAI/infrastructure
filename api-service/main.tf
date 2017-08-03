@@ -30,7 +30,7 @@ resource "aws_s3_bucket" "main" {
 
 resource "aws_cloudformation_stack" "main" {
   name = "${var.name}-${var.environment}"
-  template_url = "${file("./templates/deployment-pipeline.yaml")}"
+  template_url = "${file("${path.module}/templates/deployment-pipeline.yaml")}"
 
   parameters {
     GitHubRepo = "${var.source_repo}"
