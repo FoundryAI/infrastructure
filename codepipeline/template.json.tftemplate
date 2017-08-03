@@ -29,7 +29,7 @@
             "Cpu": "${cpu}",
             "PortMappings": [
               {
-                "ContainerPort": ${container_port}
+                "ContainerPort": ${container_port},
                 "HostPort": ${port}
               }
             ],
