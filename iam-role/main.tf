@@ -59,6 +59,7 @@ resource "aws_iam_role" "default_ecs_role" {
       "Action": "sts:AssumeRole",
       "Principal": {
         "Service": [
+          "cloudformation.amazonaws.com",
           "codepipeline.amazonaws.com",
           "ecs.amazonaws.com",
           "ec2.amazonaws.com"
@@ -164,6 +165,7 @@ resource "aws_iam_role_policy" "default_ecs_service_role_policy" {
     {
       "Effect": "Allow",
       "Action": [
+        "cloudformation:*",
         "ec2:AuthorizeSecurityGroupIngress",
         "ec2:Describe*",
         "elasticloadbalancing:*"
