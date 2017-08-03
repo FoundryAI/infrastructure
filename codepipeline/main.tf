@@ -119,12 +119,12 @@ data "template_file" "main" {
   }
 }
 
-//resource "aws_cloudformation_stack" "main" {
-//  name = "${var.name}-task-stack"
-//  iam_role_arn = "${var.role_arn}"
-//  template_body = "${data.template_file.main.rendered}"
-//  capabilities = ["CAPABILITY_IAM"]
-//}
+resource "aws_cloudformation_stack" "main" {
+  name = "${var.name}-task-stack"
+  iam_role_arn = "${var.role_arn}"
+  template_body = "${data.template_file.main.rendered}"
+  capabilities = ["CAPABILITY_IAM"]
+}
 
 resource "aws_s3_bucket" "main" {
   bucket = "${var.name}-codepipline"
@@ -204,9 +204,8 @@ resource "aws_codepipeline" "main" {
       configuration {
         ChangeSetName = "Deploy"
         ActionMode = "CREATE_UPDATE"
-        StackName = "${var.name}-task-stack"
+        StackName = "${aws_cloudformation_stack.main.id}"
         Capabilities = "CAPABILITY_NAMED_IAM"
-        TemplatePath = "${data.template_file.main.filename}"
         RoleArn = "${var.role_arn}"
       }
     }
