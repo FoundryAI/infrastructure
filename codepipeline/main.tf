@@ -188,7 +188,6 @@ resource "aws_codepipeline" "main" {
       name = "Deploy"
       owner = "AWS"
       provider = "CloudFormation"
-      input_artifacts = ["${var.name}"]
       version = "1"
 
       configuration {

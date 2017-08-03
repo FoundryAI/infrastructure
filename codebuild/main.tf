@@ -182,6 +182,47 @@ resource "aws_codebuild_project" "main" {
 
 }
 
+resource "aws_codebuild_project" "migration" {
+  name = "${var.name}-${var.environment}-migration"
+  description = "codebuild migration project for ${var.name}"
+  build_timeout = "25"
+  service_role = "${var.iam_role_id}"
+
+  "artifacts" {
+    type = "CODEPIPELINE"
+  }
+  "environment" {
+    compute_type = "${var.migration_environment_compute_type}"
+    image = "${var.migration_environment_image}"
+    type = "${var.migration_environment_type}"
+
+    environment_variable {
+      name = "RDS_DB_NAME"
+      value = "${var.rds_db_name}"
+    }
+
+    environment_variable {
+      name = "RDS_HOSTNAME"
+      value = "${var.rds_hostname}"
+    }
+
+    environment_variable {
+      name = "RDS_USERNAME"
+      value = "${var.rds_username}"
+    }
+
+    environment_variable {
+      name = "RDS_PASSWORD"
+      value = "${var.rds_password}"
+    }
+  }
+
+  "source" {
+    type = "GITHUB"
+    repo_url = ""
+  }
+}
+
 // The ARN of the CodeBuild project.
 output "id" {
   value = "${aws_codebuild_project.main.id}"
