@@ -180,20 +180,20 @@ resource "aws_codepipeline" "main" {
     }
   }
 // TODO - figure this out
-//  "stage" {
-//    name = "Test"
-//    action {
-//      category = "Deploy"
-//      name = "Test"
-//      owner = "AWS"
-//      provider = "CloudFormation"
-//      version = "1"
-//
-//      configuration {
-//
-//      }
-//    }
-//  }
+  "stage" {
+    name = "Test"
+    action {
+      category = "Deploy"
+      name = "Test"
+      owner = "AWS"
+      provider = "CloudFormation"
+      version = "1"
+
+      configuration {
+
+      }
+    }
+  }
     "stage" {
     name = "Deploy"
     action {

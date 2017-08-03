@@ -30,6 +30,26 @@ variable "repo_url" {
   default = ""
 }
 
+variable "rds_db_name" {
+  description = "RDS DB name for running migrations (optional)"
+  default = ""
+}
+
+variable "rds_hostname" {
+  description = "RDS DB hostname for running migrations (optional)"
+  default = ""
+}
+
+variable "rds_username" {
+  description = "RDS DB username for running migrations (optional)"
+  default = ""
+}
+
+variable "rds_password" {
+  description = "RDS DB password for running migrations (optional)"
+  default = ""
+}
+
 variable "environment_compute_type" {
   description = "Information about the compute resources the build project will use. Available values for this parameter are: BUILD_GENERAL1_SMALL, BUILD_GENERAL1_MEDIUM or BUILD_GENERAL1_LARGE"
   default = "BUILD_GENERAL1_SMALL"
@@ -109,6 +129,26 @@ resource "aws_codebuild_project" "main" {
     environment_variable {
       "name" = "AWS_ACCOUNT_ID"
       "value" = "${data.aws_caller_identity.current.account_id}"
+    }
+
+    environment_variable {
+      name = "RDS_DB_NAME"
+      value = "${var.rds_db_name}"
+    }
+
+    environment_variable {
+      name = "RDS_HOSTNAME"
+      value = "${var.rds_hostname}"
+    }
+
+    environment_variable {
+      name = "RDS_USERNAME"
+      value = "${var.rds_username}"
+    }
+
+    environment_variable {
+      name = "RDS_PASSWORD"
+      value = "${var.rds_password}"
     }
   }
   source {

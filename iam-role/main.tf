@@ -114,36 +114,30 @@ resource "aws_iam_role_policy" "default_codepipeline_policy" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Effect":"Allow",
-      "Action": [
-        "iam:*"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect":"Allow",
-      "Action": [
-        "ecs:*"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect":"Allow",
-      "Action": [
-        "cloudformation:*"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect":"Allow",
-      "Action": [
-        "s3:*"
-      ],
-      "Resource": "*"
-    },
-    {
       "Effect": "Allow",
       "Action": [
+        "codepipeline:*",
+        "cloudformation:*",
+        "ecs:*",
+        "iam:ListRoles
+        "iam:PassRole",
+        "s3:CreateBucket",
+        "s3:GetBucketPolicy",
+        "s3:GetObject",
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket",
+        "s3:PutBucketPolicy",
+        "codedeploy:GetApplication",
+        "codedeploy:GetDeploymentGroup",
+        "codedeploy:ListApplications",
+        "codedeploy:ListDeploymentGroups",
+        "elasticbeanstalk:DescribeApplications",
+        "elasticbeanstalk:DescribeEnvironments",
+        "lambda:GetFunctionConfiguration",
+        "lambda:ListFunctions",
+        "opsworks:DescribeStacks",
+        "opsworks:DescribeApps",
+        "opsworks:DescribeLayers",
         "codebuild:BatchGetBuilds",
         "codebuild:StartBuild"
       ],
