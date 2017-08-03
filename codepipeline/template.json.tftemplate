@@ -6,7 +6,9 @@
         "Cluster": "${cluster_name}",
         "Role": "${role_id}",
         "DesiredCount": "${desired_count}",
-        "TaskDefinition": "TaskDefinition",
+        "TaskDefinition": {
+            "Ref": "TaskDefinition"
+        },
         "LoadBalancers": [
           {
             "ContainerName": "${container_name}",
