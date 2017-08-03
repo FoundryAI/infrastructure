@@ -107,7 +107,7 @@ data "template_file" "main" {
   template = "${file("${path.module}/template.json.tftemplate")}"
 
   vars {
-    name = "${var.name}"
+    name = "${var.name}-${var.environment}"
     cluster_name = "${var.cluster}"
     memory = "${var.memory}"
     cpu = "${var.cpu}"
@@ -127,7 +127,7 @@ data "template_file" "main" {
 }
 
 resource "aws_cloudformation_stack" "main" {
-  name = "${var.name}-ecs-stack"
+  name = "${var.name}-${var.environment}-ecs-stack"
   iam_role_arn = "${var.role_arn}"
   template_body = "${data.template_file.main.rendered}"
   capabilities = ["CAPABILITY_IAM"]
