@@ -123,6 +123,7 @@ resource "aws_cloudformation_stack" "main" {
   name = "${var.name}-task-stack"
   iam_role_arn = "${var.role_arn}"
   template_body = "${data.template_file.main.rendered}"
+  capabilities = ["CAPABILITY_IAM"]
 }
 
 resource "aws_s3_bucket" "main" {
