@@ -168,6 +168,7 @@ resource "aws_iam_role_policy" "default_ecs_service_role_policy" {
         "cloudformation:*",
         "ec2:AuthorizeSecurityGroupIngress",
         "ec2:Describe*",
+        "iam:*",
         "elasticloadbalancing:*"
       ],
       "Resource": "*"
