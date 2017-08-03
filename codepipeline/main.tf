@@ -191,7 +191,6 @@ resource "aws_codepipeline" "main" {
 //      }
 //    }
 //  }
-// TODO - comeback to this
     "stage" {
     name = "Deploy"
     action {
@@ -207,6 +206,7 @@ resource "aws_codepipeline" "main" {
         ActionMode = "CREATE_UPDATE"
         StackName = "${aws_cloudformation_stack.main.name}"
         Capabilities = "CAPABILITY_NAMED_IAM"
+        TemplatePath = "${aws_cloudformation_stack.main.template_url}"
         RoleArn = "${var.role_arn}"
       }
     }
