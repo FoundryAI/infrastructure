@@ -29,7 +29,7 @@ resource "aws_s3_bucket" "main" {
 }
 
 resource "aws_cloudformation_stack" "main" {
-  name = "${var.name}-${var.environment}-deployment-pipeline"
+  name = "${var.name}-${var.environment}"
   template_url = "${file("./templates/deployment-pipeline.yaml")}"
 
   parameters {
