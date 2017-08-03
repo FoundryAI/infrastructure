@@ -202,18 +202,18 @@ resource "aws_codepipeline" "main" {
     }
   }
 
-  "stage" {
-    name = "Migration"
-    action {
-      category = ""
-      name = ""
-      owner = ""
-      provider = ""
-      version = ""
-
-
-    }
-  }
+//  "stage" {
+//    name = "Invoke"
+//    action {
+//      category = ""
+//      name = ""
+//      owner = ""
+//      provider = ""
+//      version = ""
+//
+//
+//    }
+//  }
 }
 
 output "codepipeline_id" {
