@@ -29,10 +29,10 @@
             "Cpu": "${cpu}",
             "PortMappings": [
               {
-                "containerPort": ${container_port}
+                "ContainerPort": ${container_port}
               },
               {
-                "hostPort": ${port}
+                "HostPort": ${port}
               }
             ],
             "Environment": ${container_env_vars}
