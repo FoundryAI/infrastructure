@@ -16,7 +16,7 @@
           {
             "ContainerName": "${container_name}",
             "ContainerPort": "${container_port}",
-            "TargetGroupArn": "${elb_id}"
+            "ELBName": "${elb_id}"
           }
         ]
       }
