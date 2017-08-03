@@ -167,3 +167,19 @@ variable "source_branch" {
 variable "oauth_token" {
   description = "GitHub oauth token"
 }
+
+variable "rds_db_name" {
+  description = "RDS DB name for running migrations (optional)"
+}
+
+variable "rds_hostname" {
+  description = "RDS DB hostname for running migrations (optional)"
+}
+
+variable "rds_username" {
+  description = "RDS DB username for running migrations (optional)"
+}
+
+variable "rds_password" {
+  description = "RDS DB password for running migrations (optional)"
+}

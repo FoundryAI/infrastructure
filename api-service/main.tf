@@ -52,6 +52,10 @@ module "codebuild" {
   environment = "${var.environment}"
   image = "${var.image}"
   policy_arn = "${var.codebuild_policy}"
+  rds_db_name = "${var.rds_db_name}"
+  rds_hostname = "${var.rds_hostname}"
+  rds_password = "${var.rds_password}"
+  rds_username = "${var.rds_username}"
 }
 
 module "codepipeline" {

@@ -32,22 +32,22 @@ variable "repo_url" {
 
 variable "rds_db_name" {
   description = "RDS DB name for running migrations (optional)"
-  default = ""
+  default = "N/A"
 }
 
 variable "rds_hostname" {
   description = "RDS DB hostname for running migrations (optional)"
-  default = ""
+  default = "N/A"
 }
 
 variable "rds_username" {
   description = "RDS DB username for running migrations (optional)"
-  default = ""
+  default = "N/A"
 }
 
 variable "rds_password" {
   description = "RDS DB password for running migrations (optional)"
-  default = ""
+  default = "N/A"
 }
 
 variable "environment_compute_type" {
