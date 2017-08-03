@@ -41,9 +41,9 @@
             "LogConfiguration": {
                 "LogDriver": "awslogs",
                 "Options": {
-                    "Awslogs-Group": "${awslogs_group}",
-                    "Awslogs-Region": "${awslogs_region}",
-                    "Awslogs-Stream-Prefix": "${awslogs_stream_prefix}"
+                    "awslogs-group": "${awslogs_group}",
+                    "awslogs-region": "${awslogs_region}",
+                    "awslogs-stream-prefix": "${awslogs_stream_prefix}"
                 }
             },
             "Environment": ${container_env_vars}
