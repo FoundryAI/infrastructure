@@ -119,7 +119,7 @@ resource "aws_iam_role_policy" "default_codepipeline_policy" {
         "codepipeline:*",
         "cloudformation:*",
         "ecs:*",
-        "iam:ListRoles
+        "iam:ListRoles",
         "iam:PassRole",
         "s3:CreateBucket",
         "s3:GetBucketPolicy",
