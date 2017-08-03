@@ -150,6 +150,26 @@ resource "aws_codebuild_project" "main" {
       name = "RDS_PASSWORD"
       value = "${var.rds_password}"
     }
+
+    environment_variable {
+      name = "MYSQL_ROOT_PASSWORD"
+      value = "${var.rds_password}"
+    }
+
+    environment_variable {
+      name = "MYSQL_DATABASE"
+      value = "${var.rds_db_name}"
+    }
+
+    environment_variable {
+      name = "MYSQL_USER"
+      value = "${var.rds_username}"
+    }
+
+    environment_variable {
+      name = "MYSQL_PASSWORD"
+      value = "${var.rds_password}"
+    }
   }
   source {
     type = "CODEPIPELINE"

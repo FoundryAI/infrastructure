@@ -154,7 +154,7 @@ resource "aws_codepipeline" "main" {
       owner = "ThirdParty"
       provider = "GitHub"
       version = "1"
-      output_artifacts = ["${var.name}"]
+      output_artifacts = ["${var.name}-source"]
 
       configuration {
         Owner = "${var.source_owner}"
@@ -164,6 +164,7 @@ resource "aws_codepipeline" "main" {
       }
     }
   }
+
   "stage" {
     name = "Build"
     action {
@@ -171,7 +172,7 @@ resource "aws_codepipeline" "main" {
       name = "Build"
       owner = "AWS"
       provider = "CodeBuild"
-      input_artifacts = ["${var.name}"]
+      input_artifacts = ["${var.name}-source"]
       version = "1"
 
       configuration {
@@ -179,22 +180,8 @@ resource "aws_codepipeline" "main" {
       }
     }
   }
-// TODO - figure this out
+
   "stage" {
-    name = "Test"
-    action {
-      category = "Deploy"
-      name = "Test"
-      owner = "AWS"
-      provider = "CloudFormation"
-      version = "1"
-
-      configuration {
-
-      }
-    }
-  }
-    "stage" {
     name = "Deploy"
     action {
       category = "Deploy"
@@ -212,6 +199,19 @@ resource "aws_codepipeline" "main" {
         Capabilities = "CAPABILITY_NAMED_IAM"
         RoleArn = "${var.role_arn}"
       }
+    }
+  }
+
+  "stage" {
+    name = "Migration"
+    action {
+      category = ""
+      name = ""
+      owner = ""
+      provider = ""
+      version = ""
+
+
     }
   }
 }
