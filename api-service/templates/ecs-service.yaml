@@ -1,0 +1,106 @@
+Parameters:
+  Tag:
+    Type: String
+    Default: latest
+
+  Name:
+    Type: String
+
+  ContainerName:
+    Type: String
+
+  ContainerPort:
+    Type: String
+
+  DesiredCount:
+    Type: Number
+    Default: 0
+
+  LoadBalancerName:
+    Type: String
+
+  Cluster:
+    Type: String
+
+  Repository:
+    Type: String
+
+  RDS_DB_NAME:
+    Type: String
+
+  RDS_HOSTNAME:
+    Type: String
+
+  RDS_USERNAME:
+    Type: String
+
+  RDS_PASSWORD:
+    Type: String
+
+  AwslogsGroup:
+    Type: String
+
+  AwslogsRegion:
+    Type: String
+
+  AwslogsStreamPrefix:
+    Type: String
+
+
+Resources:
+  ECSServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument: |
+        {
+            "Statement": [{
+                "Effect": "Allow",
+                "Principal": { "Service": [ "ecs.amazonaws.com" ]},
+                "Action": [ "sts:AssumeRole" ]
+            }]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole
+
+  Service:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref Cluster
+      Role: !Ref ECSServiceRole
+      DesiredCount: !Ref DesiredCount
+      TaskDefinition: !Ref TaskDefinition
+      LoadBalancers:
+        - ContainerName: !Ref ContainerName
+          ContainerPort: !Ref ContainerPort
+          LoadBalancerName: !Ref LoadBalancerName
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Ref Name
+      ContainerDefinitions:
+        - Name: !Ref ContainerName
+          Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}:${Tag}
+          Essential: true
+          Memory: 128
+          PortMappings:
+            - ContainerPort: !Ref ContainerPort
+            - HostPort: !Ref Port
+          LogConfiguration:
+            - LogDriver: awslogs
+            - Options:
+              - awslogs-group: !Ref AwslogsGroup
+                awslogs-region: !Ref AwslogsRegion
+                awslogs-stream-prefix: !Ref AwslogsStreamPrefix
+          Environment:
+            - Name: Tag
+              Value: !Ref Tag
+            - Name: RDS_DB_NAME
+              Value: !Ref RDS_DB_NAME
+            - Name: RDS_HOSTNAME
+              Value: !Ref RDS_HOSTNAME
+            - Name: RDS_USERNAME
+              Value: !Ref RDS_USERNAME
+            - Name: RDS_PASSWORD
+              Value: !Ref RDS_PASSWORD
