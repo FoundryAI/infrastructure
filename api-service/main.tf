@@ -18,8 +18,20 @@ data "aws_region" "current" {
   current = true
 }
 
+resource "aws_s3_bucket_object" "main" {
+  bucket = "${aws_s3_bucket.main.bucket}"
+  key = "templates.zip"
+
+  // NOTE - YOU NEED TO REZIP TEMPLATES.ZIP ANYTIME YOU MAKE CHANGES TO ANY TEMPLATE SORRY IN ADVANCE!!! :( - NJG
+  source = "${file("${path.module}/templates.zip")}"
+}
+
 resource "aws_s3_bucket" "main" {
   bucket = "${var.name}-deployments"
+
+  versioning {
+    enabled = true
+  }
 
   tags {
     Name = "${var.name}"
