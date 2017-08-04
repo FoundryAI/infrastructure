@@ -11,9 +11,11 @@ Parameters:
 
   ContainerPort:
     Type: Number
+    Default: 3000
 
   Port:
     Type: Number
+    Default: 3000
 
   DesiredCount:
     Type: Number

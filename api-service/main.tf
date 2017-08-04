@@ -55,8 +55,6 @@ resource "aws_cloudformation_stack" "main" {
     TemplateBucket = "${aws_s3_bucket.main.bucket}"
     Name = "${var.name}-${var.environment}"
     ContainerName = "${var.name}-${var.environment}"
-    ContainerPort = "${var.container_port}"
-    Port = "${var.port}"
     DesiredCount = "${var.desired_count}"
     LoadBalancerName = "${module.elb.id}"
     RdsDbName = "${var.rds_db_name}"
