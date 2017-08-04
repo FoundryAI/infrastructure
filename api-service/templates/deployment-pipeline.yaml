@@ -25,10 +25,10 @@ Parameters:
     Type: String
 
   ContainerPort:
-    Type: String
+    Type: Number
 
   Port:
-    Type: String
+    Type: Number
 
   DesiredCount:
     Type: Number
@@ -278,8 +278,8 @@ Resources:
                     "Tag" : { "Fn::GetParam" : [ "BuildOutput", "build.json", "tag" ] },
                     "Name": "${Name}",
                     "ContainerName": "${ContainerName}",
-                    "ContainerPort": ${ContainerPort},
-                    "Port": ${Port},
+                    "ContainerPort": "${ContainerPort}",
+                    "Port": "${Port}",
                     "DesiredCount": "${DesiredCount}",
                     "RdsDbName": "${RdsDbName}",
                     "RdsHostname": "${RdsHostname}",

@@ -10,10 +10,10 @@ Parameters:
     Type: String
 
   ContainerPort:
-    Type: String
+    Type: Number
 
   Port:
-    Type: String
+    Type: Number
 
   DesiredCount:
     Type: Number
