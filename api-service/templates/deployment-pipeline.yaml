@@ -68,6 +68,8 @@ Resources:
   Repository:
     Type: AWS::ECR::Repository
     DeletionPolicy: Retain
+    Properties:
+      RepositoryName: !Ref Name
 
   CloudFormationExecutionRole:
     Type: AWS::IAM::Role
