@@ -271,7 +271,7 @@ Resources:
                 ActionMode: CREATE_UPDATE
                 StackName: !Ref AWS::StackName
                 Capabilities: CAPABILITY_NAMED_IAM
-                TemplatePath: Template::templates/ecs-service.yaml
+                TemplatePath: Template::ecs-service.yaml
                 RoleArn: !GetAtt CloudFormationExecutionRole.Arn
                 ParameterOverrides: !Sub |
                   {
