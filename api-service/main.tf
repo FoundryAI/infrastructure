@@ -20,7 +20,6 @@ data "aws_region" "current" {
 
 resource "aws_s3_bucket" "main" {
   bucket = "${var.name}-deployments"
-  acl = "private"
 
   tags {
     Name = "${var.name}"
