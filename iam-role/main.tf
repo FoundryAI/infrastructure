@@ -122,6 +122,7 @@ resource "aws_iam_role_policy" "default_codepipeline_policy" {
         "ecs:*",
         "iam:*",
         "codedeploy:*",
+        "codebuild:*",
         "s3:CreateBucket",
         "s3:GetBucketPolicy",
         "s3:GetObject",
@@ -134,9 +135,7 @@ resource "aws_iam_role_policy" "default_codepipeline_policy" {
         "lambda:ListFunctions",
         "opsworks:DescribeStacks",
         "opsworks:DescribeApps",
-        "opsworks:DescribeLayers",
-        "codebuild:BatchGetBuilds",
-        "codebuild:StartBuild"
+        "opsworks:DescribeLayers"
       ],
       "Resource": "*"
     }
