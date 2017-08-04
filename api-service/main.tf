@@ -31,6 +31,7 @@ resource "aws_s3_bucket" "main" {
 resource "aws_cloudformation_stack" "main" {
   name = "${var.name}-${var.environment}"
   template_body = "${file("${path.module}/templates/deployment-pipeline.yaml")}"
+  capabilities = ["CAPABILITY_IAM"]
 
   parameters {
     GitHubRepo = "${var.source_repo}"
