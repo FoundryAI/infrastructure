@@ -23,7 +23,7 @@ resource "aws_s3_bucket_object" "main" {
   key = "templates.zip"
 
   // NOTE - YOU NEED TO REZIP TEMPLATES.ZIP ANYTIME YOU MAKE CHANGES TO ANY TEMPLATE SORRY IN ADVANCE!!! :( - NJG
-  source = "${file("${path.module}/templates.zip")}"
+  source = "${"${path.module}/templates.zip"}"
 }
 
 resource "aws_s3_bucket" "main" {
