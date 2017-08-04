@@ -92,7 +92,7 @@ Resources:
             - HostPort: !Ref Port
           LogConfiguration:
             - LogDriver: awslogs
-            - Options:
+              Options:
               - awslogs-group: !Ref AwslogsGroup
                 awslogs-region: !Ref AwslogsRegion
                 awslogs-stream-prefix: !Ref AwslogsStreamPrefix
