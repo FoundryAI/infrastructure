@@ -90,12 +90,6 @@ Resources:
           PortMappings:
             - ContainerPort: !Ref ContainerPort
             - HostPort: !Ref Port
-          LogConfiguration:
-            - LogDriver: awslogs
-              Options:
-              - awslogs-group: !Ref AwslogsGroup
-                awslogs-region: !Ref AwslogsRegion
-                awslogs-stream-prefix: !Ref AwslogsStreamPrefix
           Environment:
             - Name: Tag
               Value: !Ref Tag
