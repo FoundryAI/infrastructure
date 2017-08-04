@@ -43,6 +43,7 @@ resource "aws_cloudformation_stack" "main" {
   name = "${var.name}-${var.environment}"
   template_body = "${file("${path.module}/templates/deployment-pipeline.yaml")}"
   capabilities = ["CAPABILITY_IAM"]
+  iam_role_arn = "${var.codepipeline_role_arn}"
 
   parameters {
     GitHubRepo = "${var.source_repo}"
