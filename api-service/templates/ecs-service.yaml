@@ -12,6 +12,9 @@ Parameters:
   ContainerPort:
     Type: String
 
+  Port:
+    Type: String
+
   DesiredCount:
     Type: Number
     Default: 0
