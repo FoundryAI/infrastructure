@@ -37,16 +37,16 @@ Parameters:
   Cluster:
     Type: String
 
-  RDS_DB_NAME:
+  RdsDbName:
     Type: String
 
-  RDS_HOSTNAME:
+  RdsHostname:
     Type: String
 
-  RDS_USERNAME:
+  RdsUsername:
     Type: String
 
-  RDS_PASSWORD:
+  RdsPassword:
     Type: String
 
   AwslogsGroup:

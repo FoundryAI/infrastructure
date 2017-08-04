@@ -25,16 +25,16 @@ Parameters:
   Repository:
     Type: String
 
-  RDS_DB_NAME:
+  RdsDbName:
     Type: String
 
-  RDS_HOSTNAME:
+  RdsHostname:
     Type: String
 
-  RDS_USERNAME:
+  RdsUsername:
     Type: String
 
-  RDS_PASSWORD:
+  RdsPassword:
     Type: String
 
   AwslogsGroup:
@@ -97,10 +97,10 @@ Resources:
             - Name: Tag
               Value: !Ref Tag
             - Name: RDS_DB_NAME
-              Value: !Ref RDS_DB_NAME
+              Value: !Ref RdsDbName
             - Name: RDS_HOSTNAME
-              Value: !Ref RDS_HOSTNAME
+              Value: !Ref RdsHostname
             - Name: RDS_USERNAME
-              Value: !Ref RDS_USERNAME
+              Value: !Ref RdsUsername
             - Name: RDS_PASSWORD
-              Value: !Ref RDS_PASSWORD
+              Value: !Ref RdsPassword
