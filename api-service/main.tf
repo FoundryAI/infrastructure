@@ -39,6 +39,14 @@ resource "aws_s3_bucket" "main" {
   }
 }
 
+resource "aws_cloudwatch_log_group" "main" {
+  name = "${var.name}"
+
+  tags {
+    Environment = "${var.environment}"
+  }
+}
+
 resource "aws_cloudformation_stack" "main" {
   name = "${var.name}-${var.environment}"
   template_body = "${file("${path.module}/templates/deployment-pipeline.yaml")}"
@@ -61,9 +69,9 @@ resource "aws_cloudformation_stack" "main" {
     RdsHostname = "${var.rds_hostname}"
     RdsUsername = "${var.rds_username}"
     RdsPassword = "${var.rds_password}"
-    AwslogsGroup = "${var.environment}"
+    AwslogsGroup = "${aws_cloudwatch_log_group.main.name}"
     AwslogsRegion = "${data.aws_region.current.name}"
-    AwslogsStreamPrefix = "${var.name}"
+    AwslogsStreamPrefix = "${var.environment}"
   }
 }
 
