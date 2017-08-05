@@ -88,6 +88,7 @@ Resources:
         - Name: !Ref ContainerName
           Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}:${Tag}
           Essential: true
+          Memory: 512
           PortMappings:
             - ContainerPort: !Ref ContainerPort
               HostPort: !Ref Port
