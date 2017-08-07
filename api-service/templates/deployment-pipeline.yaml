@@ -92,6 +92,7 @@ Resources:
               - Resource: "*"
                 Effect: Allow
                 Action:
+                  - codepipeline:*
                   - ecs:*
                   - ecr:*
                   - iam:*
