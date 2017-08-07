@@ -182,6 +182,7 @@ Resources:
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
     Properties:
+      Name: !Sub ${Name}-codebuild-build
       Artifacts:
         Location: !Ref ArtifactBucket
         Type: "S3"
@@ -219,6 +220,7 @@ Resources:
   CodeBuildProjectTest:
     Type: AWS::CodeBuild::Project
     Properties:
+      Name: !Sub ${Name}-codebuild-test
       Artifacts:
         Location: !Ref ArtifactBucket
         Type: "S3"
@@ -257,6 +259,7 @@ Resources:
   CodeBuildProjectMigrate:
     Type: AWS::CodeBuild::Project
     Properties:
+      Name: !Sub ${Name}-codebuild-migrate
       Artifacts:
         Location: !Ref ArtifactBucket
         Type: "S3"
