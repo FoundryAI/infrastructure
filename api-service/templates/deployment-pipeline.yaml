@@ -388,7 +388,7 @@ Resources:
                   }
               InputArtifacts:
                 - Name: Template
-                - Name: TestOutput
+                - Name: BuildOutput
               RunOrder: 1
 #        - Name: Migrate
 #          Actions:
