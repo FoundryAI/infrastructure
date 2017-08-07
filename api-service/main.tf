@@ -48,7 +48,7 @@ resource "aws_cloudwatch_log_group" "main" {
 }
 
 resource "aws_cloudformation_stack" "main" {
-  name = "${var.name}-${var.environment}"
+  name = "${var.name}-${var.environment}-stack"
   template_body = "${file("${path.module}/templates/deployment-pipeline.yaml")}"
   capabilities = ["CAPABILITY_IAM"]
   iam_role_arn = "${var.codepipeline_role_arn}"
