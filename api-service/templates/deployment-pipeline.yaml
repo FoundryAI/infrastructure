@@ -169,6 +169,9 @@ Resources:
                   - codebuild:StartBuild
                   - codebuild:BatchGetBuilds
                   - cloudformation:*
+                  - codepipeline:*
+                  - ecr:*
+                  - ecs:*
                   - iam:PassRole
 
   ArtifactBucket:
