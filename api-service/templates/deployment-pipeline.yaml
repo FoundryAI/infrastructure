@@ -42,6 +42,9 @@ Parameters:
   Cluster:
     Type: String
 
+  Repository:
+    Type: String
+
   RdsDbName:
     Type: String
 
@@ -65,11 +68,6 @@ Parameters:
 
 
 Resources:
-  Repository:
-    Type: AWS::ECR::Repository
-    DeletionPolicy: Retain
-    Properties:
-      RepositoryName: !Ref Name
 
   CloudFormationExecutionRole:
     Type: AWS::IAM::Role

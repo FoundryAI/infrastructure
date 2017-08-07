@@ -65,6 +65,7 @@ resource "aws_cloudformation_stack" "main" {
     ContainerName = "${var.name}-${var.environment}"
     DesiredCount = "${var.desired_count}"
     LoadBalancerName = "${module.elb.id}"
+    Repository = "${module.repository.name}"
     RdsDbName = "${var.rds_db_name}"
     RdsHostname = "${var.rds_hostname}"
     RdsUsername = "${var.rds_username}"
@@ -145,10 +146,10 @@ module "api_gateway" {
 //  codebuild_iam_role_role_id = "${var.codebuild_iam_role_role_id}"
 //}
 
-//module "repository" {
-//  source = "../repository"
-//  image = "${var.image}"
-//}
+module "repository" {
+  source = "../repository"
+  image = "${var.image}"
+}
 
 //module "task" {
 //  source = "../ecs-cluster/task"
