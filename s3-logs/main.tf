@@ -26,6 +26,7 @@ data "template_file" "policy" {
 
 resource "aws_s3_bucket" "logs" {
   bucket = "${var.name}-${var.environment}-logs"
+  force_destroy = true
 
   lifecycle_rule {
     id = "logs-expiration"

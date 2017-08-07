@@ -24,10 +24,12 @@ resource "aws_s3_bucket_object" "main" {
 
   // NOTE - YOU NEED TO REZIP TEMPLATES.ZIP ANYTIME YOU MAKE CHANGES TO ANY TEMPLATE SORRY IN ADVANCE!!! :( - NJG
   source = "${"${path.module}/templates/templates.zip"}"
+  force_destroy = true
 }
 
 resource "aws_s3_bucket" "main" {
   bucket = "${var.name}-deployments"
+  force_destroy = true
 
   versioning {
     enabled = true
