@@ -43,6 +43,27 @@ resource "aws_api_gateway_method" "test" {
   rest_api_id = "${aws_api_gateway_rest_api.main.id}"
 }
 
+resource "aws_api_gateway_integration" "test" {
+  http_method = "${aws_api_gateway_method.test.http_method}"
+  resource_id = "${aws_api_gateway_resource.test.id}"
+  rest_api_id = "${aws_api_gateway_rest_api.main.id}"
+  type = "MOCK"
+}
+
+resource "aws_api_gateway_method_response" "200" {
+  http_method = "${aws_api_gateway_method.test.http_method}"
+  resource_id = "${aws_api_gateway_resource.test.id}"
+  rest_api_id = "${aws_api_gateway_rest_api.main.id}"
+  status_code = "200"
+}
+
+resource "aws_api_gateway_integration_response" "200" {
+  http_method = "${aws_api_gateway_method.test.http_method}"
+  resource_id = "${aws_api_gateway_resource.test.id}"
+  rest_api_id = "${aws_api_gateway_rest_api.main.id}"
+  status_code = "200"
+}
+
 resource "aws_api_gateway_deployment" "main" {
   rest_api_id = "${aws_api_gateway_rest_api.main.id}"
   stage_name = "${var.environment}"
