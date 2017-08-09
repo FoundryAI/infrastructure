@@ -45,6 +45,7 @@ resource "aws_api_gateway_method" "health" {
 }
 
 resource "aws_api_gateway_integration" "health" {
+  depends_on = ["aws_api_gateway_method.health"]
   http_method = "${aws_api_gateway_method.health.http_method}"
   resource_id = "${aws_api_gateway_resource.health.id}"
   rest_api_id = "${aws_api_gateway_rest_api.main.id}"
@@ -68,7 +69,7 @@ resource "aws_api_gateway_integration_response" "200" {
 
 resource "aws_api_gateway_deployment" "main" {
   rest_api_id = "${aws_api_gateway_rest_api.main.id}"
-  stage_name = "${var.environment}"
+  stage_name = "${aws_api_gateway_stage.main.stage_name}"
 
 //  stage_description = "${timestamp()}" // forces to 'create' a new deployment each run - https://github.com/hashicorp/terraform/issues/6613
 //  description = "Deployed at ${timestamp()}" // just some comment field which can be seen in deployment history
@@ -83,6 +84,12 @@ resource "aws_api_gateway_deployment" "main" {
 resource "aws_api_gateway_rest_api" "main" {
   name = "${var.api_name}"
   description = "API resource for ${var.api_name} in the ${var.environment} environment"
+}
+
+resource "aws_api_gateway_stage" "main" {
+  deployment_id = "${aws_api_gateway_deployment.main.id}"
+  rest_api_id = "${aws_api_gateway_rest_api.main.id}"
+  stage_name = "${var.environment}"
 }
 
 resource "aws_api_gateway_domain_name" "main" {
