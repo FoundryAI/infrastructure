@@ -32,22 +32,17 @@ output "internal_fqdn" {
   value = "${module.elb.internal_fqdn}"
 }
 
-//// Full ARN of the repository
-//output "repository_arn" {
-//  value = "${module.repository.arn}"
-//}
-//
-//// The name of the repository
-//output "repository_name" {
-//  value = "${module.repository.name}"
-//}
-//
-//// The registry ID where the repository was created
-//output "repository_registry_id" {
-//  value = "${module.repository.registry_id}"
-//}
-//
-//// The URL of the repository (in the form aws_account_id.dkr.ecr.region.amazonaws.com/repositoryName)
-//output "repository_url" {
-//  value = "${module.repository.repository_url}"
-//}
+// Full ARN of the repository
+output "repository_arn" {
+  value = "${var.ecr_arn}"
+}
+
+// The name of the repository
+output "repository_name" {
+  value = "${var.ecr_name}"
+}
+
+// The URL of the repository (in the form aws_account_id.dkr.ecr.region.amazonaws.com/repositoryName)
+output "repository_url" {
+  value = "${var.ecr_repository_url}"
+}

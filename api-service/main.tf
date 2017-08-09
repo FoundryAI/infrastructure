@@ -4,7 +4,6 @@
  *      module "auth_service" {
  *        source    = "stack/api-service"
  *        name      = "auth-api-service"
- *        image     = "auth-api-service"
  *        cluster   = "default"
  *      }
  *
@@ -66,7 +65,7 @@ resource "aws_cloudformation_stack" "main" {
     ContainerName = "${var.name}-${var.environment}"
     DesiredCount = "${var.desired_count}"
     LoadBalancerName = "${module.elb.id}"
-    Repository = "${module.repository.name}"
+    Repository = "${var.ecr_name}"
     RdsDbName = "${var.rds_db_name}"
     RdsHostname = "${var.rds_hostname}"
     RdsUsername = "${var.rds_username}"
@@ -76,26 +75,6 @@ resource "aws_cloudformation_stack" "main" {
     AwslogsStreamPrefix = "${var.environment}"
   }
 }
-
-//resource "aws_ecs_service" "main" {
-//  name = "${module.task.family}"
-//  cluster = "${var.cluster}"
-//  task_definition = "${module.task.arn}"
-//  desired_count = "${var.desired_count}"
-//  iam_role = "${var.iam_role}"
-//  deployment_minimum_healthy_percent = "${var.deployment_minimum_healthy_percent}"
-//  deployment_maximum_percent = "${var.deployment_maximum_percent}"
-//
-//  load_balancer {
-//    elb_name = "${module.elb.id}"
-//    container_name = "${module.task.family}"
-//    container_port = "${var.container_port}"
-//  }
-//
-//  lifecycle {
-//    create_before_destroy = true
-//  }
-//}
 
 module "api_gateway" {
   source = "../api-gateway"
@@ -107,74 +86,6 @@ module "api_gateway" {
   resource_name = "${var.api_resource_name}"
   elb_dns = "${module.elb.dns}"
 }
-
-//module "codebuild" {
-//  source = "./codebuild"
-//  iam_role_id = "${var.codebuild_iam_role_role_id}"
-//  name = "${coalesce(var.name, replace(var.image, "/", "-"))}"
-//  environment = "${var.environment}"
-//  image = "${var.image}"
-//  repo_url = "${var.source_repo}"
-//  github_oauth_token = "${var.oauth_token}"
-//  policy_arn = "${var.codebuild_policy}"
-//  rds_db_name = "${var.rds_db_name}"
-//  rds_hostname = "${var.rds_hostname}"
-//  rds_password = "${var.rds_password}"
-//  rds_username = "${var.rds_username}"
-//}
-//
-//module "codepipeline" {
-//  source = "./codepipeline"
-//  name = "${coalesce(var.name, replace(var.image, "/", "-"))}"
-//  environment = "${var.environment}"
-//  image_version = "${var.version}"
-//  memory = "${var.memory}"
-//  cpu = "${var.cpu}"
-//  ecs_container_env_vars = "${var.env_vars}"
-//  elb_id = "${module.elb.id}"
-//  cluster = "${var.cluster}"
-//  role_arn = "${var.codepipeline_role_arn}"
-//  ecs_iam_role = "${var.iam_role}"
-//  port = "${var.port}"
-//  container_port = "${var.container_port}"
-//  codebuild_project_name = "${module.codebuild.name}"
-//  codebuild_migration_project_name = "${module.codebuild.migration_name}"
-//  source_owner = "${var.source_owner}"
-//  source_repo = "${var.source_repo}"
-//  source_branch = "${var.source_branch}"
-//  repository_url = "${module.repository.repository_url}"
-//  oauth_token = "${var.oauth_token}"
-//  codebuild_iam_role_role_id = "${var.codebuild_iam_role_role_id}"
-//}
-
-module "repository" {
-  source = "../repository"
-  image = "${var.image}"
-}
-
-//module "task" {
-//  source = "../ecs-cluster/task"
-//
-//  name = "${coalesce(var.name, replace(var.image, "/", "-"))}"
-//  image = "${var.image}"
-//  image_version = "${var.version}"
-//  command = "${var.command}"
-//  env_vars = "${var.env_vars}"
-//  memory = "${var.memory}"
-//  cpu = "${var.cpu}"
-//  log_group = "${var.name}"
-//  log_prefix = "${var.environment}"
-////  role = "${var.iam_role}"
-//
-//  ports = <<EOF
-//  [
-//    {
-//      "containerPort": ${var.container_port},
-//      "hostPort": ${var.port}
-//    }
-//  ]
-//EOF
-//}
 
 module "elb" {
   source = "./elb"

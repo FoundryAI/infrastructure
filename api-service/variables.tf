@@ -25,18 +25,9 @@ variable "environment" {
   description = "Environment tag, e.g prod"
 }
 
-variable "image" {
-  description = "The docker image name, e.g nginx"
-}
-
 variable "name" {
   description = "The service name, if empty the service name is defaulted to the image name"
   default = ""
-}
-
-variable "version" {
-  description = "The docker image version"
-  default = "latest"
 }
 
 variable "subnet_ids" {
@@ -182,4 +173,16 @@ variable "rds_username" {
 
 variable "rds_password" {
   description = "RDS DB password for running migrations (optional)"
+}
+
+variable "ecr_arn" {
+  description = "ECR arn"
+}
+
+variable "ecr_name" {
+  description = "ECR name"
+}
+
+variable "ecr_repository_url" {
+  description = "ECR repository url"
 }
