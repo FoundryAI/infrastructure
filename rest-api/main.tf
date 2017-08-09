@@ -30,36 +30,36 @@ resource "aws_route53_record" "main" {
   }
 }
 
-resource "aws_api_gateway_resource" "test" {
+resource "aws_api_gateway_resource" "health" {
   parent_id = "${aws_api_gateway_rest_api.main.root_resource_id}"
-  path_part = "test"
+  path_part = "health"
   rest_api_id = "${aws_api_gateway_rest_api.main.id}"
 }
 
-resource "aws_api_gateway_method" "test" {
+resource "aws_api_gateway_method" "health" {
   authorization = "NONE"
   http_method = "GET"
-  resource_id = "${aws_api_gateway_resource.test.id}"
+  resource_id = "${aws_api_gateway_resource.health.id}"
   rest_api_id = "${aws_api_gateway_rest_api.main.id}"
 }
 
-resource "aws_api_gateway_integration" "test" {
-  http_method = "${aws_api_gateway_method.test.http_method}"
-  resource_id = "${aws_api_gateway_resource.test.id}"
+resource "aws_api_gateway_integration" "health" {
+  http_method = "${aws_api_gateway_method.health.http_method}"
+  resource_id = "${aws_api_gateway_resource.health.id}"
   rest_api_id = "${aws_api_gateway_rest_api.main.id}"
   type = "MOCK"
 }
 
 resource "aws_api_gateway_method_response" "200" {
-  http_method = "${aws_api_gateway_method.test.http_method}"
-  resource_id = "${aws_api_gateway_resource.test.id}"
+  http_method = "${aws_api_gateway_method.health.http_method}"
+  resource_id = "${aws_api_gateway_resource.health.id}"
   rest_api_id = "${aws_api_gateway_rest_api.main.id}"
   status_code = "200"
 }
 
 resource "aws_api_gateway_integration_response" "200" {
-  http_method = "${aws_api_gateway_method.test.http_method}"
-  resource_id = "${aws_api_gateway_resource.test.id}"
+  http_method = "${aws_api_gateway_method.health.http_method}"
+  resource_id = "${aws_api_gateway_resource.health.id}"
   rest_api_id = "${aws_api_gateway_rest_api.main.id}"
   status_code = "200"
 }
@@ -71,7 +71,7 @@ resource "aws_api_gateway_deployment" "main" {
 //  stage_description = "${timestamp()}" // forces to 'create' a new deployment each run - https://github.com/hashicorp/terraform/issues/6613
 //  description = "Deployed at ${timestamp()}" // just some comment field which can be seen in deployment history
 
-    depends_on = ["aws_api_gateway_method.test"]
+    depends_on = ["aws_api_gateway_method.health"]
 
   lifecycle {
     create_before_destroy = true
