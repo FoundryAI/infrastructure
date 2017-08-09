@@ -69,7 +69,7 @@ resource "aws_api_gateway_integration_response" "200" {
 
 resource "aws_api_gateway_deployment" "main" {
   rest_api_id = "${aws_api_gateway_rest_api.main.id}"
-  stage_name = "${aws_api_gateway_stage.main.stage_name}"
+  stage_name = "${var.environment}"
 
 //  stage_description = "${timestamp()}" // forces to 'create' a new deployment each run - https://github.com/hashicorp/terraform/issues/6613
 //  description = "Deployed at ${timestamp()}" // just some comment field which can be seen in deployment history
