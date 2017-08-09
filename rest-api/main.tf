@@ -30,6 +30,19 @@ resource "aws_route53_record" "main" {
   }
 }
 
+resource "aws_api_gateway_resource" "test" {
+  parent_id = "${aws_api_gateway_rest_api.main.root_resource_id}"
+  path_part = "test"
+  rest_api_id = "${aws_api_gateway_rest_api.main.id}"
+}
+
+resource "aws_api_gateway_method" "test" {
+  authorization = "NONE"
+  http_method = "GET"
+  resource_id = "${aws_api_gateway_resource.test.id}"
+  rest_api_id = "${aws_api_gateway_rest_api.main.id}"
+}
+
 resource "aws_api_gateway_deployment" "main" {
   rest_api_id = "${aws_api_gateway_rest_api.main.id}"
   stage_name = "${var.environment}"
@@ -37,7 +50,7 @@ resource "aws_api_gateway_deployment" "main" {
 //  stage_description = "${timestamp()}" // forces to 'create' a new deployment each run - https://github.com/hashicorp/terraform/issues/6613
 //  description = "Deployed at ${timestamp()}" // just some comment field which can be seen in deployment history
 
-  //  depends_on = ["aws_api_gateway_method.main"]
+    depends_on = ["aws_api_gateway_method.test"]
 
   lifecycle {
     create_before_destroy = true
