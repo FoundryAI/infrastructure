@@ -48,7 +48,7 @@ resource "aws_cloudwatch_log_group" "main" {
 }
 
 resource "aws_cloudformation_stack" "main" {
-  name = "${var.name}-${var.environment}-stack"
+  name = "${var.name}-stack"
   template_body = "${file("${path.module}/templates/deployment-pipeline.yaml")}"
   capabilities = ["CAPABILITY_IAM"]
   iam_role_arn = "${var.codepipeline_role_arn}"
@@ -61,8 +61,8 @@ resource "aws_cloudformation_stack" "main" {
     LoadBalancerName = "${module.elb.name}"
     Cluster = "${var.cluster}"
     TemplateBucket = "${aws_s3_bucket.main.bucket}"
-    Name = "${var.name}-${var.environment}"
-    ContainerName = "${var.name}-${var.environment}"
+    Name = "${var.name}"
+    ContainerName = "${var.name}"
     DesiredCount = "${var.desired_count}"
     LoadBalancerName = "${module.elb.id}"
     Repository = "${var.ecr_name}"
