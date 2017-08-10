@@ -38,7 +38,8 @@ resource "aws_iam_role" "default_codepipeline_role" {
       "Principal": {
         "Service": [
           "cloudformation.amazonaws.com",
-          "codepipeline.amazonaws.com"
+          "codepipeline.amazonaws.com",
+          "codebuild.amazonaws.com"
         ]
       },
       "Action": "sts:AssumeRole"
