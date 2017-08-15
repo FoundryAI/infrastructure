@@ -90,6 +90,7 @@ Resources:
               - Resource: "*"
                 Effect: Allow
                 Action:
+                  - codebuild:*
                   - codepipeline:*
                   - ecs:*
                   - ecr:*
