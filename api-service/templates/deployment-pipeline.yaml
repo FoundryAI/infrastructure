@@ -269,7 +269,7 @@ Resources:
           phases:
             pre_build:
               commands:
-                - npm i -g sequelize sequelize-cli dotenv
+                - npm i -g sequelize sequelize-cli dotenv gulp
             build:
               commands:
                 - npm run db:migrate
