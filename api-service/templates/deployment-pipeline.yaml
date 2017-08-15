@@ -369,8 +369,8 @@ Resources:
                 Version: 1
                 Provider: CloudFormation
               Configuration:
-                ChangeSetName: Deploy
-                ActionMode: CREATE_UPDATE
+                ChangeSetName: !Sub ${Name}-change-set
+                ActionMode: CHANGE_SET_REPLACE
                 StackName: !Ref AWS::StackName
                 Capabilities: CAPABILITY_NAMED_IAM
                 TemplatePath: Template::ecs-service.yaml
@@ -398,8 +398,18 @@ Resources:
                 - Name: Template
                 - Name: BuildOutput
               RunOrder: 1
-        - Name: Migrate
-          Actions:
+            - Name: ExecuteChangeSet
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: 1
+              Configuration:
+                ActionMode: CHANGE_SET_EXECUTE
+                ChangeSetName: !Sub ${Name}-change-set
+                RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                StackName: !Ref AWS::StackName
+              RunOrder: 2
             - Name: Migrate
               ActionTypeId:
                 Category: Build
@@ -410,7 +420,9 @@ Resources:
                 ProjectName: !Ref CodeBuildProjectMigrate
               InputArtifacts:
                 - Name: App
-              RunOrder: 1
+              RunOrder: 3
+        - Name: Migrate
+          Actions:
 
 
 Outputs:
