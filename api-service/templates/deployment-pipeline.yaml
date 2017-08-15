@@ -421,9 +421,6 @@ Resources:
               InputArtifacts:
                 - Name: App
               RunOrder: 3
-        - Name: Migrate
-          Actions:
-
 
 Outputs:
   PipelineUrl:
