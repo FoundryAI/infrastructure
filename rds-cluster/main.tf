@@ -16,7 +16,7 @@ variable "zone_id" {
 
 variable "security_groups" {
   description = "A list of security group IDs"
-//  type = "list"
+  type = "list"
 }
 
 variable "subnet_ids" {
@@ -90,8 +90,7 @@ resource "aws_security_group" "main" {
     from_port = "${var.port}"
     to_port = "${var.port}"
     protocol = "TCP"
-    security_groups = [
-      "${var.security_groups}"]
+    security_groups = "${var.security_groups}"
   }
 
   egress {
