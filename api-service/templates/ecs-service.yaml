@@ -71,6 +71,7 @@ Resources:
   Service:
     Type: AWS::ECS::Service
     Properties:
+      ServiceName: !Ref Name
       Cluster: !Ref Cluster
       Role: !Ref ECSServiceRole
       DesiredCount: !Ref DesiredCount
