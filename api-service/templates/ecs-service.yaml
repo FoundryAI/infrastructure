@@ -87,9 +87,6 @@ Resources:
       Family: !Ref Name
       ContainerDefinitions:
         - Name: !Ref ContainerName
-          Command:
-            - npm
-              start:ecs
           Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}:${Tag}
           Essential: true
           Memory: 512
