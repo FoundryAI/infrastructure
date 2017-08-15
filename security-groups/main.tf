@@ -119,6 +119,37 @@ resource "aws_security_group" "external_ssh" {
   }
 }
 
+resource "aws_security_group" "internal_rds" {
+  name = "${format("%s-%s-internal-all", var.name, var.environment)}"
+  description = "Allows rds connections inside the VPC"
+  vpc_id = "${var.vpc_id}"
+
+  ingress {
+    from_port = 3306
+    to_port = 3306
+    protocol = "tcp"
+    cidr_blocks = [
+      "0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "tcp"
+    cidr_blocks = [
+      "${var.cidr}"]
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags {
+    Name = "${format("%s internal rds", var.name)}"
+    Environment = "${var.environment}"
+  }
+}
+
 resource "aws_security_group" "internal_ssh" {
   name = "${format("%s-%s-internal-ssh", var.name, var.environment)}"
   description = "Allows ssh from bastion"
@@ -158,6 +189,11 @@ output "external_ssh" {
 // Internal SSH allows ssh connections from the external ssh security group.
 output "internal_ssh" {
   value = "${aws_security_group.internal_ssh.id}"
+}
+
+// Internal rds allows rds connections to internal resources
+output "internal_rds" {
+  value = "${aws_security_group.internal_rds.id}"
 }
 
 // Internal ELB allows internal traffic.
