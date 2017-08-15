@@ -165,8 +165,7 @@ Resources:
               - Resource: "*"
                 Effect: Allow
                 Action:
-                  - codebuild:StartBuild
-                  - codebuild:BatchGetBuilds
+                  - codebuild:*
                   - cloudformation:*
                   - codepipeline:*
                   - ecr:*
@@ -175,6 +174,8 @@ Resources:
 
   ArtifactBucket:
     Type: AWS::S3::Bucket
+    Properties:
+      Name: !Sub ${Name}-codepipeline-artifacts
     DeletionPolicy: Retain
 
   CodeBuildProject:
