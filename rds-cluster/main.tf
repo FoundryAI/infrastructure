@@ -15,7 +15,7 @@ variable "zone_id" {
 }
 
 variable "security_groups" {
-  description = "A list of security group IDs"
+  description = "A list of security group IDs, comma sep"
 //  type = "list"
 }
 
@@ -90,7 +90,8 @@ resource "aws_security_group" "main" {
     from_port = "${var.port}"
     to_port = "${var.port}"
     protocol = "TCP"
-    security_groups = ["${var.security_groups}"]
+    security_groups = [
+      "${split(",", var.security_groups)}"]
   }
 
   egress {
