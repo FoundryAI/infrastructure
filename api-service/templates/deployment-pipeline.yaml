@@ -362,7 +362,7 @@ Resources:
 #              RunOrder: 1
         - Name: Deploy
           Actions:
-            - Name: Deploy
+            - Name: CreateChangeSet
               ActionTypeId:
                 Category: Deploy
                 Owner: AWS
@@ -371,7 +371,7 @@ Resources:
               Configuration:
                 ChangeSetName: !Sub ${Name}-change-set
                 ActionMode: CHANGE_SET_REPLACE
-                StackName: !Ref AWS::StackName
+                StackName: !Sub ${Name}-deployment-stack
                 Capabilities: CAPABILITY_NAMED_IAM
                 TemplatePath: Template::ecs-service.yaml
                 RoleArn: !GetAtt CloudFormationExecutionRole.Arn
@@ -408,7 +408,7 @@ Resources:
                 ActionMode: CHANGE_SET_EXECUTE
                 ChangeSetName: !Sub ${Name}-change-set
                 RoleArn: !GetAtt CloudFormationExecutionRole.Arn
-                StackName: !Ref AWS::StackName
+                StackName: !Sub ${Name}-deployment-stack
               RunOrder: 2
             - Name: Migrate
               ActionTypeId:
