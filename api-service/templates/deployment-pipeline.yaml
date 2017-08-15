@@ -175,7 +175,7 @@ Resources:
   ArtifactBucket:
     Type: AWS::S3::Bucket
     Properties:
-      Name: !Sub ${Name}-codepipeline-artifacts
+      BucketName: !Sub ${Name}-codepipeline-artifacts
     DeletionPolicy: Retain
 
   CodeBuildProject:
