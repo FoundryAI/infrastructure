@@ -119,6 +119,36 @@ resource "aws_security_group" "external_ssh" {
   }
 }
 
+resource "aws_security_group" "external_rds" {
+  name = "${format("%s-%s-external-rds", var.name, var.environment)}"
+  vpc_id = "${var.vpc_id}"
+  description = "Allows external RDS traffic"
+
+  ingress {
+    from_port = 3306
+    to_port = 3306
+    protocol = "tcp"
+    cidr_blocks = [
+      "0.0.0.0/0"]
+  }
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = -1
+    cidr_blocks = [
+      "0.0.0.0/0"]
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags {
+    Name = "${format("%s external rds", var.name)}"
+    Environment = "${var.environment}"
+  }
+}
+
 resource "aws_security_group" "internal_rds" {
   name = "${format("%s-%s-internal-all", var.name, var.environment)}"
   description = "Allows rds connections inside the VPC"
@@ -204,4 +234,8 @@ output "internal_elb" {
 // External ELB allows traffic from the world.
 output "external_elb" {
   value = "${aws_security_group.external_elb.id}"
+}
+
+output "external_rds" {
+  value = "${aws_security_group.external_rds.id}"
 }

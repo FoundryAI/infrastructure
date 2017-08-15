@@ -63,7 +63,7 @@ variable "backup_retention_period" {
 
 variable "publicly_accessible" {
   description = "When set to true the RDS cluster can be reached from outside the VPC"
-  default = true // TODO - configure migrations to run through ssh tunnel or via lambda inside of VPC so this isn't needed
+  default = false
 }
 
 variable "dns_name" {
