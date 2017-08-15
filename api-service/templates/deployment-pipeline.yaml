@@ -269,7 +269,7 @@ Resources:
           phases:
             pre_build:
               commands:
-                - npm i -g sequelize sequelize-cli dotenv gulp
+                - npm i -g sequelize sequelize-cli mysql2 dotenv gulp
                 - npm i
             build:
               commands:
