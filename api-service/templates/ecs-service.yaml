@@ -57,6 +57,9 @@ Parameters:
   SnsEndpoint:
     Type: String
 
+  AwsAccountId:
+    Type: String
+
   AwsRegion:
     Type: String
 
@@ -132,6 +135,8 @@ Resources:
               Value: !Ref DynamoDbEndpoint
             - Name: SNS_ENDPOINT
               Value: !Ref SnsEndpoint
+            - Name: AWS_ACCOUNT_ID
+              Value: !Ref AwsAccountId
             - Name: AWS_REGION
               Value: !Ref AwsRegion
             - Name: AWS_ACCESS_KEY

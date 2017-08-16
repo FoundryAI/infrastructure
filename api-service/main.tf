@@ -13,6 +13,8 @@
  * Resources.
  */
 
+data "aws_caller_identity" "current" {}
+
 data "aws_region" "current" {
   current = true
 }
@@ -75,6 +77,7 @@ resource "aws_cloudformation_stack" "main" {
     AwslogsStreamPrefix = "${var.environment}"
     DynamoDbEndpoint = "dynamodb.${data.aws_region.current.name}.amazonaws.com"
     SnsEndpoint = "sns.${data.aws_region.current.name}.amazonaws.com"
+    AwsAccountId = "${data.aws_caller_identity.current.account_id}"
     AwsRegion = "${data.aws_region.current.name}"
     AwsAccessKey = "${var.aws_access_key}"
     AwsSecretKey = "${var.aws_secret_key}"
