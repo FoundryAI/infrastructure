@@ -95,11 +95,6 @@ variable "command" {
   default = "[]"
 }
 
-variable "env_vars" {
-  description = "The raw json of the task env vars"
-  default = "[]"
-}
-
 variable "desired_count" {
   description = "The desired count"
   default = 2
