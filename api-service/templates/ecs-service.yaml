@@ -66,6 +66,9 @@ Parameters:
   AwsSecretKey:
     Type: String
 
+  Environment:
+    Type: String
+
 Resources:
   ECSServiceRole:
     Type: AWS::IAM::Role
@@ -135,3 +138,5 @@ Resources:
               Value: !Ref AwsAccessKey
             - Name: AWS_SECRET_KEY
               Value: !Ref AwsSecretKey
+            - Name: ENVIRONMENT
+              Value: !Ref Environment

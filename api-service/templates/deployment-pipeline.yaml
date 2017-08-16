@@ -81,6 +81,9 @@ Parameters:
   AwsSecretKey:
     Type: String
 
+  Environment:
+    Type: String
+
 Resources:
 
   CloudFormationExecutionRole:
@@ -374,6 +377,7 @@ Resources:
                     "AwsRegion": "${AwsRegion}",
                     "AwsAccessKey": "${AwsAccessKey}",
                     "AwsSecretKey": "${AwsSecretKey}"
+                    "Environment": "${Environment}"
                   }
               InputArtifacts:
                 - Name: Template

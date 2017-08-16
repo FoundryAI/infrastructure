@@ -78,6 +78,7 @@ resource "aws_cloudformation_stack" "main" {
     AwsRegion = "${data.aws_region.current.name}"
     AwsAccessKey = "${var.aws_access_key}"
     AwsSecretKey = "${var.aws_secret_key}"
+    Environment = "${var.environment}"
   }
 }
 
