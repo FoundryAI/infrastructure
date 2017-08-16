@@ -72,9 +72,6 @@ Parameters:
   SnsEndpoint:
     Type: String
 
-  AwsAccountId:
-    Type: String
-
   AwsRegion:
     Type: String
 
