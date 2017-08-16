@@ -133,7 +133,7 @@ Resources:
             - Name: SNS_ENDPOINT
               Value: !Ref SnsEndpoint
             - Name: AWS_ACCOUNT_ID
-              Value: !Ref AWS::AccountId
+              Value: !Sub ${AWS::AccountId}
             - Name: AWS_REGION
               Value: !Ref AwsRegion
             - Name: AWS_ACCESS_KEY

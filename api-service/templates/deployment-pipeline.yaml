@@ -376,7 +376,7 @@ Resources:
                     "SnsEndpoint": "${SnsEndpoint}",
                     "AwsRegion": "${AwsRegion}",
                     "AwsAccessKey": "${AwsAccessKey}",
-                    "AwsSecretKey": "${AwsSecretKey}"
+                    "AwsSecretKey": "${AwsSecretKey}",
                     "Environment": "${Environment}"
                   }
               InputArtifacts:
