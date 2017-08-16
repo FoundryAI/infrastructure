@@ -66,6 +66,20 @@ Parameters:
   AwslogsStreamPrefix:
     Type: String
 
+  DynamoDbEndpoint:
+    Type: String
+
+  SnsEndpoint:
+    Type: String
+
+  AwsRegion:
+    Type: String
+
+  AwsAccessKey:
+    Type: String
+
+  AwsSecretKey:
+    Type: String
 
 Resources:
 
@@ -354,7 +368,12 @@ Resources:
                     "AwslogsStreamPrefix": "${AwslogsStreamPrefix}",
                     "Cluster": "${Cluster}",
                     "LoadBalancerName": "${LoadBalancerName}",
-                    "Repository": "${Repository}"
+                    "Repository": "${Repository}",
+                    "DynamoDbEndpoint": "${DynamoDbEndpoint}",
+                    "SnsEndpoint": "${SnsEndpoint}",
+                    "AwsRegion": "${AwsRegion}",
+                    "AwsAccessKey": "${AwsAccessKey}",
+                    "AwsSecretKey": "${AwsSecretKey}"
                   }
               InputArtifacts:
                 - Name: Template

@@ -51,6 +51,20 @@ Parameters:
   AwslogsStreamPrefix:
     Type: String
 
+  DynamoDbEndpoint:
+    Type: String
+
+  SnsEndpoint:
+    Type: String
+
+  AwsRegion:
+    Type: String
+
+  AwsAccessKey:
+    Type: String
+
+  AwsSecretKey:
+    Type: String
 
 Resources:
   ECSServiceRole:
@@ -111,3 +125,13 @@ Resources:
               Value: !Ref RdsUsername
             - Name: RDS_PASSWORD
               Value: !Ref RdsPassword
+            - Name: DYNAMODB_ENDPOINT
+              Value: !Ref DynamoDbEndpoint
+            - Name: SNS_ENDPOINT
+              Value: !Ref SnsEndpoint
+            - Name: AWS_REGION
+              Value: !Ref AwsRegion
+            - Name: AWS_ACCESS_KEY
+              Value: !Ref AwsAccessKey
+            - Name: AWS_SECRET_KEY
+              Value: !Ref AwsSecretKey

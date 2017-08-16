@@ -186,3 +186,11 @@ variable "ecr_name" {
 variable "ecr_repository_url" {
   description = "ECR repository url"
 }
+
+variable "aws_access_key" {
+  description = "AWS Access Key"
+}
+
+variable "aws_secret_key" {
+  description = "AWS Secret Key"
+}
