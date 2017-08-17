@@ -142,3 +142,5 @@ Resources:
               Value: !Ref AwsSecretKey
             - Name: ENVIRONMENT
               Value: !Ref Environment
+            - Name: Port
+              Value: !Ref Port
