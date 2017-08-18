@@ -75,7 +75,6 @@ resource "aws_cloudformation_stack" "main" {
     RdsUsername = "${var.rds_username}"
     RdsPassword = "${var.rds_password}"
     AwslogsGroup = "${aws_cloudwatch_log_group.main.name}"
-    AwslogsRegion = "${data.aws_region.current.name}"
     AwslogsStreamPrefix = "${var.environment}"
     DynamoDbEndpoint = "dynamodb.${data.aws_region.current.name}.amazonaws.com"
     SnsEndpoint = "sns.${data.aws_region.current.name}.amazonaws.com"

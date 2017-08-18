@@ -45,9 +45,6 @@ Parameters:
   AwslogsGroup:
     Type: String
 
-  AwslogsRegion:
-    Type: String
-
   AwslogsStreamPrefix:
     Type: String
 
@@ -115,7 +112,7 @@ Resources:
             Options:
             Options:
                 awslogs-group: !Ref AwslogsGroup
-                awslogs-region: !Ref AwslogsRegion
+                awslogs-region: !Ref AwsRegion
                 awslogs-stream-prefix: !Ref AwslogsStreamPrefix
           Environment:
             - Name: Tag

@@ -60,9 +60,6 @@ Parameters:
   AwslogsGroup:
     Type: String
 
-  AwslogsRegion:
-    Type: String
-
   AwslogsStreamPrefix:
     Type: String
 
@@ -356,28 +353,27 @@ Resources:
                 RoleArn: !GetAtt CloudFormationExecutionRole.Arn
                 ParameterOverrides: !Sub |
                   {
-                    "Tag" : { "Fn::GetParam" : [ "BuildOutput", "build.json", "tag" ] },
-                    "Name": "${Name}",
+                    "AwsAccessKey": "${AwsAccessKey}",
+                    "AwslogsGroup": "${AwslogsGroup}",
+                    "AwslogsStreamPrefix": "${AwslogsStreamPrefix}",
+                    "AwsRegion": "${AwsRegion}",
+                    "AwsSecretKey": "${AwsSecretKey}",
+                    "Cluster": "${Cluster}",
                     "ContainerName": "${ContainerName}",
                     "ContainerPort": "${ContainerPort}",
-                    "Port": "${Port}",
+                    "Environment": "${Environment}",
                     "DesiredCount": "${DesiredCount}",
+                    "DynamoDbEndpoint": "${DynamoDbEndpoint}",
+                    "LoadBalancerName": "${LoadBalancerName}",
+                    "Name": "${Name}",
+                    "Port": "${Port}",
                     "RdsDbName": "${RdsDbName}",
                     "RdsHostname": "${RdsHostname}",
                     "RdsUsername": "${RdsUsername}",
                     "RdsPassword": "${RdsPassword}",
-                    "AwslogsGroup": "${AwslogsGroup}",
-                    "AwslogsRegion": "${AwslogsRegion}",
-                    "AwslogsStreamPrefix": "${AwslogsStreamPrefix}",
-                    "Cluster": "${Cluster}",
-                    "LoadBalancerName": "${LoadBalancerName}",
                     "Repository": "${Repository}",
-                    "DynamoDbEndpoint": "${DynamoDbEndpoint}",
                     "SnsEndpoint": "${SnsEndpoint}",
-                    "AwsRegion": "${AwsRegion}",
-                    "AwsAccessKey": "${AwsAccessKey}",
-                    "AwsSecretKey": "${AwsSecretKey}",
-                    "Environment": "${Environment}"
+                    "Tag" : { "Fn::GetParam" : [ "BuildOutput", "build.json", "tag" ] }
                   }
               InputArtifacts:
                 - Name: Template
