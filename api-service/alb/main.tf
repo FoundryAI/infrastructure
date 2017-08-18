@@ -1,5 +1,5 @@
 resource "aws_alb" "main" {
-  name = "${var.name}-${var.environment}-alb"
+  name = "${var.name}-alb"
   internal = false
   subnets = [
     "${split(",", var.subnet_ids)}"]
@@ -10,7 +10,7 @@ resource "aws_alb" "main" {
 
   access_logs {
     bucket = "${var.log_bucket}"
-    prefix = "${var.name}-${var.environment}-alb"
+    prefix = "${var.name}-alb"
   }
 
   tags {
@@ -46,7 +46,7 @@ resource "aws_alb_listener_rule" "main" {
 }
 
 resource "aws_alb_target_group" "main" {
-  name = "${var.name}-${var.environment}-alb-target-group"
+  name = "${var.name}-alb-tg"
   port = 0
   protocol = "HTTP"
   vpc_id = "${var.vpc_id}"
