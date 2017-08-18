@@ -2,34 +2,24 @@
  * Outputs.
  */
 
-// The name of the ELB
+// The name of the api service
 output "name" {
-  value = "${module.elb.name}"
+  value = "${var.name}"
 }
 
-// The DNS name of the ELB
+// The DNS name of the ALB
 output "dns" {
-  value = "${module.elb.dns}"
+  value = "${module.alb.dns_name}"
 }
 
-// The id of the ELB
-output "elb" {
-  value = "${module.elb.id}"
+// The id of the ALB
+output "alb" {
+  value = "${module.alb.arn}"
 }
 
-// The zone id of the ELB
+// The zone id of the ALB
 output "zone_id" {
-  value = "${module.elb.zone_id}"
-}
-
-// FQDN built using the zone domain and name (external)
-output "external_fqdn" {
-  value = "${module.elb.external_fqdn}"
-}
-
-// FQDN built using the zone domain and name (internal)
-output "internal_fqdn" {
-  value = "${module.elb.internal_fqdn}"
+  value = "${module.alb.zone_id}"
 }
 
 // Full ARN of the repository
