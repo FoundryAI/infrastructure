@@ -47,7 +47,7 @@ resource "aws_alb_listener_rule" "main" {
 
 resource "aws_alb_target_group" "main" {
   name = "${var.name}-alb-tg"
-  port = 443
+  port = 80
   protocol = "HTTP"
   vpc_id = "${var.vpc_id}"
 
