@@ -68,7 +68,7 @@ resource "aws_cloudformation_stack" "main" {
     ContainerPort = "${var.port}"
     Port = "${var.port}"
     DesiredCount = "${var.desired_count}"
-    LoadBalancerArn = "${module.alb.arn}"
+    LoadBalancerName = "${module.alb.arn}"
     Repository = "${var.ecr_name}"
     RdsDbName = "${var.rds_db_name}"
     RdsHostname = "${var.rds_hostname}"
