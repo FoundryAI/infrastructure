@@ -21,8 +21,8 @@ resource "aws_alb" "main" {
 
 resource "aws_alb_listener" "main" {
   load_balancer_arn = "${aws_alb.main.arn}"
-  port = 443
-  protocol = "HTTPS"
+  port = 80
+  protocol = "HTTP"
   ssl_policy = "ELBSecurityPolicy-2015-05"
   certificate_arn = "${var.ssl_certificate_id}"
 
