@@ -42,9 +42,9 @@ resource "aws_security_group" "cluster" {
   description = "Allows traffic from and to the EC2 instances of the ${var.name} ECS cluster"
 
   ingress {
-    from_port = 3000
-    protocol = "tcp"
-    to_port = 3000
+    from_port = 0
+    protocol = -1
+    to_port = 0
     cidr_blocks = [
       "0.0.0.0/0"]
   }
