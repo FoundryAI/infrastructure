@@ -32,6 +32,19 @@ resource "aws_alb_listener" "main" {
   }
 }
 
+resource "aws_alb_listener_rule" "main" {
+  listener_arn = "${aws_alb_listener.main.arn}"
+  priority = 1
+  "action" {
+    target_group_arn = "${aws_alb_target_group.main.arn}"
+    type = "forward"
+  }
+  "condition" {
+    field = "path-pattern"
+    values = ["/"]
+  }
+}
+
 resource "aws_alb_target_group" "main" {
   name = "${var.name}-${var.environment}-alb-target-group"
   port = 0

@@ -60,7 +60,7 @@ resource "aws_cloudformation_stack" "main" {
     GitHubBranch = "${var.source_branch}"
     GitHubToken = "${var.oauth_token}"
     GitHubUser = "${var.source_owner}"
-    LoadBalancerName = "${module.elb.name}"
+    LoadBalancerName = "${module.alb.arn}"
     Cluster = "${var.cluster}"
     TemplateBucket = "${aws_s3_bucket.main.bucket}"
     Name = "${var.name}"
@@ -68,7 +68,7 @@ resource "aws_cloudformation_stack" "main" {
     ContainerPort = "${var.port}"
     Port = "${var.port}"
     DesiredCount = "${var.desired_count}"
-    LoadBalancerName = "${module.elb.id}"
+    LoadBalancerArn = "${module.alb.arn}"
     Repository = "${var.ecr_name}"
     RdsDbName = "${var.rds_db_name}"
     RdsHostname = "${var.rds_hostname}"
@@ -94,11 +94,11 @@ module "api_gateway" {
   api_endpoint = "${var.api_endpoint}"
   api_stage = "${var.api_stage}"
   resource_name = "${var.api_resource_name}"
-  elb_dns = "${module.elb.dns}"
+  elb_dns = "${module.alb.dns_name}"
 }
 
-module "elb" {
-  source = "./elb"
+module "alb" {
+  source = "./alb"
 
   name = "${var.name}"
   port = "${var.port}"
@@ -112,4 +112,5 @@ module "elb" {
   security_groups = "${var.security_groups}"
   log_bucket = "${var.log_bucket}"
   ssl_certificate_id = "${var.ssl_certificate_id}"
+  vpc_id = "${var.vpc_id}"
 }

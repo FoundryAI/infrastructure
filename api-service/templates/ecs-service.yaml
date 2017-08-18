@@ -96,7 +96,7 @@ Resources:
       LoadBalancers:
         - ContainerName: !Ref ContainerName
           ContainerPort: !Ref ContainerPort
-          LoadBalancerName: !Ref LoadBalancerName
+          TargetGroupArn: !Ref LoadBalancerName
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
