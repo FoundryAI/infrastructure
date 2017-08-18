@@ -102,7 +102,7 @@ resource "aws_api_gateway_integration" "default" {
   resource_id = "${aws_api_gateway_resource.parent.id}"
   rest_api_id = "${var.api_id}"
   type = "${var.integration_type}"
-  uri = "http://${var.elb_dns}" // TODO - figure out A record alias to support https
+  uri = "https://${var.elb_dns}" // TODO - figure out A record alias to support https
 }
 
 resource "aws_api_gateway_method" "main" {

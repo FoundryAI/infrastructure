@@ -80,6 +80,7 @@ Resources:
                     "cloudformation.amazonaws.com",
                     "codebuild.amazonaws.com",
                     "ec2.amazonaws.com",
+                    "ecs.amazonaws.com",
                     "ecs-tasks.amazonaws.com"
                   ]
                 },
