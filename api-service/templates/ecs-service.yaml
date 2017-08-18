@@ -88,7 +88,7 @@ Resources:
         }
       Path: "/"
       Policies:
-        - PolicyName: root
+        - PolicyName: ecs-service-role-deploy
           PolicyDocument:
             Version: 2012-10-17
             Statement:
