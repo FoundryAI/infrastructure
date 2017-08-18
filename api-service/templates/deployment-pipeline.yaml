@@ -118,7 +118,7 @@ Resources:
         {
             "Statement": [{
                 "Effect": "Allow",
-                "Principal": { "Service": [ "codebuild.amazonaws.com" ]},
+                "Principal": { "Service": [ "codebuild.amazonaws.com", "ec2.amazonaws.com", "ecs.amazonaws.com" ]},
                 "Action": [ "sts:AssumeRole" ]
             }]
         }

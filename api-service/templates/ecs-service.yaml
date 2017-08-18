@@ -70,12 +70,17 @@ Resources:
   ECSServiceRole:
     Type: AWS::IAM::Role
     Properties:
-      Path: /
       AssumeRolePolicyDocument: |
         {
             "Statement": [{
                 "Effect": "Allow",
-                "Principal": { "Service": [ "ecs.amazonaws.com" ]},
+                "Principal": { "Service": [
+                  "elasticloadbalancing.amazonaws.com",
+                  "cloudformation.amazonaws.com",
+                  "codebuild.amazonaws.com",
+                  "ec2.amazonaws.com",
+                  "ecs-tasks.amazonaws.com"
+                ]},
                 "Action": [ "sts:AssumeRole" ]
             }]
         }
@@ -84,10 +89,13 @@ Resources:
 
   Service:
     Type: AWS::ECS::Service
+    DependsOn:
+      - ECSServiceRole
+      - TaskDefinition
     Properties:
       ServiceName: !Ref Name
       Cluster: !Ref Cluster
-      Role: !Ref ECSServiceRole
+      Role: !GetAtt ECSServiceRole.Arn
       DesiredCount: !Ref DesiredCount
       TaskDefinition: !Ref TaskDefinition
       LoadBalancers:
