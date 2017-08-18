@@ -74,18 +74,31 @@ Resources:
         {
             "Statement": [{
                 "Effect": "Allow",
-                "Principal": { "Service": [
-                  "elasticloadbalancing.amazonaws.com",
-                  "cloudformation.amazonaws.com",
-                  "codebuild.amazonaws.com",
-                  "ec2.amazonaws.com",
-                  "ecs-tasks.amazonaws.com"
-                ]},
+                "Principal": {
+                "Service": [
+                    "elasticloadbalancing.amazonaws.com",
+                    "cloudformation.amazonaws.com",
+                    "codebuild.amazonaws.com",
+                    "ec2.amazonaws.com",
+                    "ecs-tasks.amazonaws.com"
+                  ]
+                },
                 "Action": [ "sts:AssumeRole" ]
             }]
         }
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole
+      Path: "/"
+      Policies:
+        - PolicyName: root
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Resource: "*"
+                Effect: Allow
+                Action:
+                  - elasticloadbalancing:*
+                  - ec2:*
+                  - ecr:*
+                  - ecs:*
 
   Service:
     Type: AWS::ECS::Service
@@ -107,6 +120,7 @@ Resources:
     Type: AWS::ECS::TaskDefinition
     Properties:
       Family: !Ref Name
+      TaskRoleArn: !GetAtt ECSServiceRole.Arn
       ContainerDefinitions:
         - Name: !Ref ContainerName
           Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}:${Tag}
