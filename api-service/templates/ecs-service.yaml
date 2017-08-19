@@ -129,7 +129,7 @@ Resources:
           Memory: 512
           PortMappings:
             - ContainerPort: !Ref ContainerPort
-              HostPort: !Ref Port
+              HostPort: 0
           LogConfiguration:
             LogDriver: awslogs
             Options:
