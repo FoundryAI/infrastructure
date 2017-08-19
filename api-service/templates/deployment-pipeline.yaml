@@ -307,7 +307,7 @@ Resources:
               Configuration:
                 S3Bucket: !Ref TemplateBucket
                 S3ObjectKey: templates.zip
-        - Name: Build & Test
+        - Name: Build+Test
           Actions:
             - Name: Build
               ActionTypeId:
