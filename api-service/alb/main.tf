@@ -23,8 +23,6 @@ resource "aws_alb_listener" "main" {
   load_balancer_arn = "${aws_alb.main.arn}"
   port = 80
   protocol = "HTTP"
-  ssl_policy = "ELBSecurityPolicy-2015-05"
-  certificate_arn = "${var.ssl_certificate_id}"
 
   "default_action" {
     target_group_arn = "${aws_alb_target_group.main.arn}"
