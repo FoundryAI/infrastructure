@@ -247,11 +247,9 @@ Resources:
             pre_build:
               commands:
                 - curl -L "https://github.com/docker/compose/releases/download/1.15.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
-                - $(aws ecr get-login)
                 - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
             build:
               commands:
-                - docker pull "${REPOSITORY_URI}:${TAG}"
                 - touch .env
                 - docker-compose -f docker-compose.yml -f docker-compose.test.yml run api
             post_build:
@@ -335,7 +333,7 @@ Resources:
                 - Name: App
               OutputArtifacts:
                 - Name: TestOutput
-              RunOrder: 2
+              RunOrder: 1
         - Name: Deploy
           Actions:
             - Name: CreateChangeSet
