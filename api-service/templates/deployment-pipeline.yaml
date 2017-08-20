@@ -252,6 +252,7 @@ Resources:
             build:
               commands:
                 - docker pull "${REPOSITORY_URI}:${TAG}"
+                - touch .env
                 - docker-compose -f docker-compose.yml -f docker-compose.test.yml run api
             post_build:
               commands:
