@@ -121,6 +121,7 @@ Resources:
                   - ecs:*
                   - ecr:*
                   - iam:*
+                  - lambda:*
 
   CodeBuildServiceRole:
     Type: AWS::IAM::Role
