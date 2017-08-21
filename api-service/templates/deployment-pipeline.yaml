@@ -196,6 +196,7 @@ Resources:
                   - codebuild:*
                   - cloudformation:*
                   - codepipeline:*
+                  - lambda:*
                   - ecr:*
                   - ecs:*
                   - iam:PassRole
