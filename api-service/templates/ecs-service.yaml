@@ -50,9 +50,11 @@ Parameters:
 
   DynamoDbEndpoint:
     Type: String
+    Default: dynamodb.us-east-1.amazonaws.com
 
   SnsEndpoint:
     Type: String
+    Default: sns.us-east-1.amazonaws.com
 
   AwsRegion:
     Type: String

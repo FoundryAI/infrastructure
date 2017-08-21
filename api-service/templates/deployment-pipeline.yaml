@@ -65,9 +65,11 @@ Parameters:
 
   DynamoDbEndpoint:
     Type: String
+    Default: dynamodb.us-east-1.amazonaws.com
 
   SnsEndpoint:
     Type: String
+    Default: sns.us-east-1.amazonaws.com
 
   AwsRegion:
     Type: String
@@ -361,16 +363,13 @@ Resources:
                     "ContainerPort": "${ContainerPort}",
                     "Environment": "${Environment}",
                     "DesiredCount": "${DesiredCount}",
-                    "DynamoDbEndpoint": "${DynamoDbEndpoint}",
                     "LoadBalancerName": "${LoadBalancerName}",
                     "Name": "${Name}",
-                    "Port": "${Port}",
                     "RdsDbName": "${RdsDbName}",
                     "RdsHostname": "${RdsHostname}",
                     "RdsUsername": "${RdsUsername}",
                     "RdsPassword": "${RdsPassword}",
                     "Repository": "${Repository}",
-                    "SnsEndpoint": "${SnsEndpoint}",
                     "Tag" : { "Fn::GetParam" : [ "BuildOutput", "build.json", "tag" ] }
                   }
               InputArtifacts:
