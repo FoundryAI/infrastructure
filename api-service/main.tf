@@ -27,6 +27,14 @@ resource "aws_s3_bucket_object" "main" {
   source = "${"${path.module}/templates/templates.zip"}"
 }
 
+resource "aws_s3_bucket_object" "slack" {
+  bucket = "${aws_s3_bucket.main.bucket}"
+  key = "slack-notifier.zip"
+
+  // NOTE - YOU NEED TO REZIP SLACK-NOTIFIER.ZIP ANYTIME YOU MAKE CHANGES SORRY IN ADVANCE!!! :( - NJG
+  source = "${"${path.module}/slack-notifier/slack-notifier.zip"}"
+}
+
 resource "aws_s3_bucket" "main" {
   bucket = "${var.name}-deployments"
   force_destroy = true
@@ -82,6 +90,7 @@ resource "aws_cloudformation_stack" "main" {
     AwsAccessKey = "${var.aws_access_key}"
     AwsSecretKey = "${var.aws_secret_key}"
     Environment = "${var.environment}"
+    SlackWebHook = "${var.slack_webhook}"
   }
 }
 

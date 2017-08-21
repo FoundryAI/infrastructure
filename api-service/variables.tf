@@ -193,3 +193,7 @@ variable "aws_secret_key" {
 variable "vpc_id" {
   description = "VPC ID to locate api service in"
 }
+
+variable "slack_webhook" {
+  description = "The Webhook created that deployment notifications will be sent to"
+}

@@ -83,6 +83,15 @@ Parameters:
   Environment:
     Type: String
 
+  SlackNotifierLambdaKey:
+    Description: The Lambda function that does Slack notifications
+    Type: String
+    Default: slack-notifier.zip
+
+  SlackWebHook:
+    Description: The Webhook created that notification will be sent to.
+    Type: String
+
 Resources:
 
   CloudFormationExecutionRole:
@@ -336,6 +345,21 @@ Resources:
               OutputArtifacts:
                 - Name: TestOutput
               RunOrder: 1
+            - Name: PassedSuccessfuly
+              InputArtifacts: []
+              ActionTypeId:
+                Category: Invoke
+                Owner: AWS
+                Version: '1'
+                Provider: Lambda
+              OutputArtifacts: []
+              Configuration:
+                FunctionName: !Ref SlackNotifier
+                UserParameters: !Sub |
+                  {
+                    "webhooks": "https://hooks.slack.com/services/${SlackWebHook}",
+                    "message": "${Name} build & test passed successfully"
+                  }
         - Name: Deploy
           Actions:
             - Name: CreateChangeSet
@@ -388,6 +412,58 @@ Resources:
                 RoleArn: !GetAtt CloudFormationExecutionRole.Arn
                 StackName: !Sub ${Name}-deployment-stack
               RunOrder: 2
+
+
+  SlackNotifier:
+    Type: AWS::Lambda::Function
+    DependsOn:
+      - LambdaRole
+    Properties:
+      Handler: main.send_post
+      Role: !GetAtt LambdaRole.Arn
+      Timeout: 5
+      Runtime: python2.7
+      MemorySize: 128
+      Code:
+        S3Bucket: !Ref TemplateBucket
+        S3Key: slack-notifier.zip
+
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [lambda.amazonaws.com]
+            Action: ['sts:AssumeRole']
+      Path: /
+
+  LambdaRolePolicies:
+    Type: AWS::IAM::Policy
+    DependsOn: LambdaRole
+    Properties:
+      PolicyName: LambdaPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: lambda:InvokeFunction
+            Resource: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:*
+          - Effect: Allow
+            Action: ['ec2:Describe*']
+            Resource: "*"
+          - Effect: Allow
+            Action: 'logs:*'
+            Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*
+          - Effect: Allow
+            Action: 'sns:*'
+            Resource: ["*"]
+          - Effect: Allow
+            Action: 'codepipeline:*'
+            Resource: ["*"]
+      Roles: [ !Ref LambdaRole ]
 
 Outputs:
   PipelineUrl:
