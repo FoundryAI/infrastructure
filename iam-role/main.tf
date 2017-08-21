@@ -39,7 +39,8 @@ resource "aws_iam_role" "default_codepipeline_role" {
         "Service": [
           "cloudformation.amazonaws.com",
           "codepipeline.amazonaws.com",
-          "codebuild.amazonaws.com"
+          "codebuild.amazonaws.com",
+          "lambda.amazonaws.com"
         ]
       },
       "Action": "sts:AssumeRole"
@@ -122,6 +123,7 @@ resource "aws_iam_role_policy" "default_codepipeline_policy" {
         "ecr:*",
         "ecs:*",
         "iam:*",
+        "lambda:*",
         "codedeploy:*",
         "codebuild:*",
         "s3:CreateBucket",
