@@ -355,6 +355,7 @@ Resources:
                 Version: '1'
                 Provider: Lambda
               OutputArtifacts: []
+              RunOrder: 2
               Configuration:
                 FunctionName: !Ref SlackNotifier
                 UserParameters: !Sub |
