@@ -22,8 +22,9 @@ variable "num_cache_nodes" {
   default = 1
 }
 
-variable "vpc_subnet_id" {
-  description = "Id of the subnet to be used for the cache cluster."
+variable "subnet_ids" {
+  description = "IDs of the subnet to be used for the cache cluster."
+  type = "list"
 }
 
 variable "parameter_group_name" {
