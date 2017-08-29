@@ -9,7 +9,7 @@ variable "engine" {
 
 variable "node_type" {
   description = "The compute and memory capacity of the nodes. See Available Cache Node Types for supported node types"
-  default = "cache.t2.small"
+  default = "cache.m1.small"
 }
 
 variable "port" {
@@ -28,7 +28,7 @@ variable "subnet_ids" {
 }
 
 variable "parameter_group_name" {
-  default = "default.redis3.2"
+  default = "default.redis3.2.cluster.on"
 }
 
 variable "zone_id" {
