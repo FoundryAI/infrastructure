@@ -29,3 +29,7 @@ variable "vpc_subnet_id" {
 variable "parameter_group_name" {
   default = "default.redis3.2"
 }
+
+variable "zone_id" {
+  description = "Route 53 zone to create service discovery CNAME in"
+}

@@ -12,3 +12,12 @@ resource "aws_elasticache_subnet_group" "main" {
   name = "${var.name}-cache-subnet"
   subnet_ids = ["${var.vpc_subnet_id}"]
 }
+
+resource "aws_route53_record" "main" {
+  zone_id = "${var.zone_id}"
+  name = "${var.name}-cache"
+  type = "CNAME"
+  ttl = 300
+  records = [
+    "${aws_elasticache_cluster.main.cluster_address}"]
+}
