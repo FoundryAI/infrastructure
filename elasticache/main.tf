@@ -1,3 +1,7 @@
+data "aws_elasticache_cluster" "main" {
+  cluster_id = "${var.name}-cache"
+}
+
 resource "aws_elasticache_cluster" "main" {
   cluster_id = "${var.name}-cache"
   engine = "${var.engine}"
@@ -19,5 +23,5 @@ resource "aws_route53_record" "main" {
   type = "CNAME"
   ttl = 300
   records = [
-    "${aws_elasticache_cluster.main.cluster_address}"]
+    "${data.aws_elasticache_cluster.main.cluster_address}"]
 }
