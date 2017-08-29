@@ -10,7 +10,7 @@ resource "aws_elasticache_cluster" "main" {
 
 resource "aws_elasticache_subnet_group" "main" {
   name = "${var.name}-cache-subnet"
-  subnet_ids = "${var.subnet_ids}"
+  subnet_ids = ["${var.subnet_ids}"]
 }
 
 resource "aws_route53_record" "main" {
