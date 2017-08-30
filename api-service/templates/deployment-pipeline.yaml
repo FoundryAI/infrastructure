@@ -397,7 +397,8 @@ Resources:
                     "RdsUsername": "${RdsUsername}",
                     "RdsPassword": "${RdsPassword}",
                     "Repository": "${Repository}",
-                    "Tag" : { "Fn::GetParam" : [ "BuildOutput", "build.json", "tag" ] }
+                    "Tag" : { "Fn::GetParam" : [ "BuildOutput", "build.json", "tag" ] },
+                    "GitHubToken": "${GitHubToken}"
                   }
               InputArtifacts:
                 - Name: Template

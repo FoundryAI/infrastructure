@@ -68,6 +68,9 @@ Parameters:
   Environment:
     Type: String
 
+  GitHubToken:
+    Type: String
+
 Resources:
   ECSServiceRole:
     Type: AWS::IAM::Role
@@ -166,3 +169,5 @@ Resources:
               Value: !Ref Environment
             - Name: PORT
               Value: !Ref Port
+            - Name: GITHUB_OAUTH_TOKEN
+              Value: !Ref GitHubToken
