@@ -12,7 +12,7 @@ resource "template_file" "install" {
 
 // We launch Vault into an ASG so that it can properly bring them up for us.
 resource "aws_autoscaling_group" "vault" {
-  name = "vault-${aws_launch_configuration.vault.name}"
+  name = "${aws_launch_configuration.vault.name}"
   launch_configuration = "${aws_launch_configuration.vault.name}"
   availability_zones = ["${split(",", var.availability_zones)}"]
   min_size = "${var.nodes}"
