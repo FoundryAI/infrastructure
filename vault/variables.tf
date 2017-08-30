@@ -54,3 +54,7 @@ variable "subnets" {
 variable "vpc_id" {
   description = "VPC ID"
 }
+
+variable "zone_id" {
+  description = "Route 53 Zone ID for service discovery CNAME"
+}

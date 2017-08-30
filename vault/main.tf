@@ -108,6 +108,15 @@ resource "aws_elb" "vault" {
   }
 }
 
+resource "aws_route53_record" "vault" {
+  zone_id = "${var.zone_id}"
+  name = "vault"
+  type = "CNAME"
+  ttl = 300
+  records = [
+    "${aws_elb.vault.dns_name}"]
+}
+
 resource "aws_security_group" "elb" {
   name = "vault-${var.environment}-elb"
   description = "Vault ${var.environment} ELB"
