@@ -78,7 +78,7 @@ resource "aws_security_group_rule" "vault-egress" {
 // Launch the ELB that is serving Vault. This has proper health checks
 // to only serve healthy, unsealed Vaults.
 resource "aws_elb" "vault" {
-  name = "vault"
+  name = "vault-${var.environment}-elb"
   connection_draining = true
   connection_draining_timeout = 400
   internal = true

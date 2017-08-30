@@ -49,7 +49,7 @@ variable "key_name" {
 }
 
 variable "nodes" {
-  default = "2"
+  default = "1"
   description = "number of Vault instances"
 }
 
