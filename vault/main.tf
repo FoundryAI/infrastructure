@@ -3,17 +3,17 @@ resource "template_file" "install" {
   template = "${file("${path.module}/scripts/install.sh.tpl")}"
 
   vars {
-    download_url  = "${var.download-url}"
+    download_url  = "${var.download_url}"
     config        = "${var.config}"
-    extra-install = "${var.extra-install}"
+    extra-install = "${var.extra_install}"
   }
 }
 
 // We launch Vault into an ASG so that it can properly bring them up for us.
 resource "aws_autoscaling_group" "vault" {
-  name = "vault - ${aws_launch_configuration.vault.name}"
+  name = "vault-${aws_launch_configuration.vault.name}"
   launch_configuration = "${aws_launch_configuration.vault.name}"
-  availability_zones = ["${split(",", var.availability-zones)}"]
+  availability_zones = ["${split(",", var.availability_zones)}"]
   min_size = "${var.nodes}"
   max_size = "${var.nodes}"
   desired_capacity = "${var.nodes}"
@@ -24,15 +24,16 @@ resource "aws_autoscaling_group" "vault" {
 
   tag {
     key = "Name"
-    value = "vault"
+    value = "vault-${var.environment}"
     propagate_at_launch = true
   }
 }
 
 resource "aws_launch_configuration" "vault" {
+  name = "vault-${var.environment}"
   image_id = "${var.ami}"
   instance_type = "${var.instance_type}"
-  key_name = "${var.key-name}"
+  key_name = "${var.key_name}"
   security_groups = ["${aws_security_group.vault.id}"]
   user_data = "${template_file.install.rendered}"
 }
@@ -40,9 +41,9 @@ resource "aws_launch_configuration" "vault" {
 // Security group for Vault allows SSH and HTTP access (via "tcp" in
 // case TLS is used)
 resource "aws_security_group" "vault" {
-  name = "vault"
-  description = "Vault servers"
-  vpc_id = "${var.vpc-id}"
+  name = "vault-${var.environment}"
+  description = "Vault servers for the ${var.environment} environment"
+  vpc_id = "${var.vpc_id}"
 }
 
 resource "aws_security_group_rule" "vault-ssh" {
@@ -102,15 +103,15 @@ resource "aws_elb" "vault" {
     healthy_threshold = 2
     unhealthy_threshold = 3
     timeout = 5
-    target = "${var.elb-health-check}"
+    target = "${var.elb_health_check}"
     interval = 15
   }
 }
 
 resource "aws_security_group" "elb" {
-  name = "vault-elb"
-  description = "Vault ELB"
-  vpc_id = "${var.vpc-id}"
+  name = "vault-${var.environment}-elb"
+  description = "Vault ${var.environment} ELB"
+  vpc_id = "${var.vpc_id}"
 }
 
 resource "aws_security_group_rule" "vault-elb-http" {
