@@ -110,7 +110,7 @@ resource "aws_elb" "vault" {
 
 resource "aws_route53_record" "vault" {
   zone_id = "${var.zone_id}"
-  name = "vault"
+  name = "${var.environment}.vault"
   type = "CNAME"
   ttl = 300
   records = [
