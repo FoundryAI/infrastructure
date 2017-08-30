@@ -51,3 +51,4 @@ ${extra-install}
 
 # Start Vault
 sudo start vault
+sudo vault auth-enable aws
