@@ -6,6 +6,7 @@ resource "template_file" "install" {
     download_url  = "${var.download_url}"
     config        = "${var.config}"
     extra-install = "${var.extra_install}"
+    github_oauth_token = "${var.github_oauth_token}"
   }
 }
 

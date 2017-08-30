@@ -58,3 +58,7 @@ variable "vpc_id" {
 variable "zone_id" {
   description = "Route 53 Zone ID for service discovery CNAME"
 }
+
+variable "github_oauth_token" {
+  description = "GitHub OAuth token used for auth backend"
+}

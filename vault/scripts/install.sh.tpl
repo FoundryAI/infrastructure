@@ -51,4 +51,4 @@ ${extra-install}
 
 # Start Vault
 sudo start vault
-sudo vault auth-enable aws
+vault auth -method=github token=${github_oauth_token}
