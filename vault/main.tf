@@ -81,7 +81,7 @@ resource "aws_elb" "vault" {
   name = "vault-${var.environment}-elb"
   connection_draining = true
   connection_draining_timeout = 400
-  internal = true
+  internal = false
   subnets = ["${split(",", var.subnets)}"]
   security_groups = ["${aws_security_group.elb.id}"]
 
