@@ -1,6 +1,3 @@
-//-------------------------------------------------------------------
-// Vault settings
-//-------------------------------------------------------------------
 
 variable "download_url" {
   default = "https://releases.hashicorp.com/vault/0.8.1/vault_0.8.1_linux_amd64.zip"
@@ -16,9 +13,6 @@ variable "extra_install" {
   description = "Extra commands to run in the install script"
 }
 
-//-------------------------------------------------------------------
-// AWS settings
-//-------------------------------------------------------------------
 variable "environment" {
   description = "Environment vault server is setup in"
 }
