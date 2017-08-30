@@ -19,7 +19,7 @@ sudo chown root:root /usr/local/bin/vault
 cat <<EOF >/tmp/vault-config
 ${config}
 EOF
-sudo mv /tmp/vault-config /usr/local/etc/vault-config.json
+sudo mv /tmp/vault-config /usr/local/etc/vault-config.hcl
 
 # Setup the init script
 cat <<EOF >/tmp/upstart
@@ -39,7 +39,7 @@ script
   export GOMAXPROCS=`nproc`
 
   exec /usr/local/bin/vault server \
-    -config="/usr/local/etc/vault-config.json" \
+    -config="/usr/local/etc/vault-config.hcl" \
     \$${VAULT_FLAGS} \
     >>/var/log/vault.log 2>&1
 end script
