@@ -61,6 +61,7 @@ resource "aws_alb_target_group" "main" {
 resource "aws_route53_record" "internal" {
   zone_id = "${var.internal_zone_id}"
   name = "${coalesce(var.internal_dns_name, var.name)}"
+  type = "A"
 
   alias {
     evaluate_target_health = false
