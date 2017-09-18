@@ -10,6 +10,7 @@ resource "aws_elasticache_replication_group" "main" {
     replicas_per_node_group = 1
     num_node_groups = "${var.num_cache_nodes}"
   }
+  security_group_ids = ["${var.security_group_id}"]
 }
 
 resource "aws_elasticache_subnet_group" "main" {
