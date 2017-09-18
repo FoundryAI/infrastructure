@@ -180,6 +180,37 @@ resource "aws_security_group" "internal_rds" {
   }
 }
 
+resource "aws_security_group" "internal_redis" {
+  name = "${format("%s-%s-redis-internal-all", var.name, var.environment)}"
+  description = "Allows redis connections inside the VPC"
+  vpc_id = "${var.vpc_id}"
+
+  ingress {
+    from_port = 6379
+    to_port = 6379
+    protocol = "tcp"
+    cidr_blocks = [
+      "${var.cidr}"]
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "tcp"
+    cidr_blocks = [
+      "${var.cidr}"]
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags {
+    Name = "${format("%s internal redis", var.name)}"
+    Environment = "${var.environment}"
+  }
+}
+
 resource "aws_security_group" "internal_ssh" {
   name = "${format("%s-%s-internal-ssh", var.name, var.environment)}"
   description = "Allows ssh from bastion"
@@ -238,4 +269,8 @@ output "external_elb" {
 
 output "external_rds" {
   value = "${aws_security_group.external_rds.id}"
+}
+
+output "internal_redis" {
+  value = "${aws_security_group.internal_redis.id}"
 }

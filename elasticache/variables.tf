@@ -34,3 +34,7 @@ variable "parameter_group_name" {
 variable "zone_id" {
   description = "Route 53 zone to create service discovery CNAME in"
 }
+
+variable "security_group_id" {
+  description = "VPC security group id for redis"
+}
