@@ -99,6 +99,9 @@ resource "aws_cloudformation_stack" "deployment" {
   template_body = "${file("${path.module}/templates/ecs-service.yaml")}"
   capabilities = ["CAPABILITY_IAM"]
   iam_role_arn = "${var.codepipeline_role_arn}"
+  depends_on = [
+    "module.alb"
+  ]
 
   parameters {
     AwsAccessKey = "${var.aws_access_key}"
