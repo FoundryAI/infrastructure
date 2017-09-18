@@ -94,6 +94,36 @@ resource "aws_cloudformation_stack" "main" {
   }
 }
 
+resource "aws_cloudformation_stack" "deployment" {
+  name = "${var.name}-deployment-stack"
+  template_body = "${file("${path.module}/templates/ecs-service.yaml")}"
+  capabilities = ["CAPABILITY_IAM"]
+  iam_role_arn = "${var.codepipeline_role_arn}"
+
+  parameters {
+    AwsAccessKey = "${var.aws_access_key}"
+    AwslogsGroup = "${aws_cloudwatch_log_group.main.name}"
+    AwslogsStreamPrefix = "${var.environment}"
+    AwsRegion = "${data.aws_region.current.name}"
+    AwsSecretKey = "${var.aws_secret_key}"
+    Cluster = "${var.cluster}"
+    ContainerName = "${var.name}"
+    ContainerPort = "${var.port}"
+    Environment = "${var.environment}"
+    DesiredCount = "${var.desired_count}"
+    LoadBalancerName = "${module.alb.target_group_arn}"
+    Name = "${var.name}"
+    RdsDbName = "${var.rds_db_name}"
+    RdsHostname = "${var.rds_hostname}"
+    RdsUsername = "${var.rds_username}"
+    RdsPassword = "${var.rds_password}"
+    Repository = "sample"
+    Tag = "latest"
+    GitHubToken = "${var.oauth_token}"
+  }
+}
+
+
 module "api_gateway" {
   source = "../api-gateway"
   environment = "${var.environment}"
