@@ -17,6 +17,11 @@ output "alb" {
   value = "${module.alb.arn}"
 }
 
+// The id of the ALB target group
+output "alb_target_group" {
+  value = "${module.alb.target_group_arn}"
+}
+
 // The zone id of the ALB
 output "zone_id" {
   value = "${module.alb.zone_id}"
