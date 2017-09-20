@@ -220,7 +220,7 @@ resource "aws_codepipeline" "main" {
   }
 
   stage {
-    name = "Build & Deploy to S3"
+    name = "DeployS3"
 
     "action" {
       category = "Build"
