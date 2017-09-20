@@ -191,6 +191,9 @@ resource "aws_codebuild_project" "main" {
     buildspec = <<EOF
 version: 0.1
 phases:
+  pre_build:
+    commands:
+      - npm install
   build:
     commands:
       - ${var.codebuild_build_command}
