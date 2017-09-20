@@ -21,7 +21,6 @@ resource "aws_cloudfront_distribution" "main" {
   enabled = true
   is_ipv6_enabled = true
   default_root_object = "${var.default_root_object}"
-
   aliases = ["${split(",", var.cloudfront_distribution_aliases)}"]
 
   "origin" {
@@ -59,6 +58,7 @@ resource "aws_cloudfront_distribution" "main" {
 
   "viewer_certificate" {
     acm_certificate_arn = "${var.ssl_certificate_id}"
+    ssl_support_method = "sni-only"
   }
 
   "tags" {
@@ -154,6 +154,7 @@ EOF
 
 resource "aws_codebuild_project" "main" {
   name = "${var.name}-${var.environment}-build"
+  service_role = "${aws_iam_role.main.arn}"
 
   "artifacts" {
     type = "S3"
