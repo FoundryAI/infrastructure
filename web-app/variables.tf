@@ -44,3 +44,7 @@ variable "cloudfront_distribution_aliases" {
 variable "ssl_certificate_id" {
   description = "SSL ACM arn to use for the cloudfront distribution"
 }
+
+variable "zone_id" {
+  description = "Route 53 domain zone ID to create the DNS record in"
+}
