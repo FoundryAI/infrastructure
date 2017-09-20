@@ -49,3 +49,7 @@ resource "aws_s3_bucket" "logs" {
 output "id" {
   value = "${aws_s3_bucket.logs.id}"
 }
+
+output "bucket" {
+  value = "${aws_s3_bucket.logs.bucket}"
+}

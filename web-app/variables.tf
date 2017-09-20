@@ -38,6 +38,7 @@ variable "default_root_object" {
 
 variable "cloudfront_distribution_aliases" {
   description = "Extra CNAMEs (alternate domain names), if any, for this distribution. Comma separated."
+  default = ""
 }
 
 variable "ssl_certificate_id" {
