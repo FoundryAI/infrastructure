@@ -48,3 +48,13 @@ variable "ssl_certificate_id" {
 variable "zone_id" {
   description = "Route 53 domain zone ID to create the DNS record in"
 }
+
+variable "codebuild_build_command" {
+  description = "Command to have codebuild run to build project"
+  default = "npm run build"
+}
+
+variable "build_path_to_deploy" {
+  description = "Root relative repository path to deploy to s3 bucket"
+  default = "./public"
+}

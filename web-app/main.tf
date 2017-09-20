@@ -193,14 +193,14 @@ version: 0.1
 phases:
   build:
     commands:
-      - npm run build
+      - ${var.codebuild_build_command}
   post_build:
     commands:
-      - aws s3 sync --acl public-read s3://${aws_s3_bucket.main.bucket} ./build
+      - aws s3 sync --acl public-read s3://${aws_s3_bucket.main.bucket} ${var.build_path_to_deploy}
 artifacts:
   type: zip
   files:
-    - ./build
+    - ${var.build_path_to_deploy}
 EOF
   }
 }
