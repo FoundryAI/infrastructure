@@ -21,3 +21,7 @@ output "cloudfront_distribution_domain_name" {
 output "cloudfront_distribution_hosted_zone_id" {
   value = "${aws_cloudfront_distribution.main.hosted_zone_id}"
 }
+
+output "codepipeline_id" {
+  value = "${aws_codepipeline.main.id}"
+}
