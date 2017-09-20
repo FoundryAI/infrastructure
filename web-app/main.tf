@@ -153,14 +153,12 @@ EOF
 }
 
 resource "aws_codebuild_project" "main" {
-  name = "${var.name}-${var.environment}-build"
+  name = "${var.name}-${var.environment}-build-deploy"
   service_role = "${aws_iam_role.main.arn}"
+  depends_on = ["aws_iam_role.main"]
 
   "artifacts" {
-    type = "S3"
-    location = "${aws_s3_bucket.main.bucket}"
-    namespace_type = "BUILD_ID"
-    packaging = "NONE"
+    type = "CODEPIPELINE"
   }
 
   environment {
@@ -176,6 +174,17 @@ resource "aws_codebuild_project" "main" {
 
   "source" {
     type = "CODEPIPELINE"
+    buildspec = <<EOF
+version: 0.1
+phases:
+  post_build:
+    commands:
+      - aws s3 sync --acl public-read s3://${aws_s3_bucket.main.bucket} ./build
+artifacts:
+  type: zip
+  files:
+    - ./build
+EOF
   }
 }
 
@@ -211,18 +220,20 @@ resource "aws_codepipeline" "main" {
   }
 
   stage {
-    name = "Build"
+    name = "Build & Deploy to S3"
 
-    action {
-      name            = "Build"
-      category        = "Build"
-      owner           = "AWS"
-      provider        = "CodeBuild"
+    "action" {
+      category = "Build"
+      name = "Build"
+      owner = "AWS"
+      provider = "CodeBuild"
+      version = "1"
       input_artifacts = ["source"]
-      version         = "1"
+      output_artifacts = ["build"]
+      run_order = 1
 
       configuration {
-        ProjectName = "${var.name}-${var.environment}-build"
+        ProjectName = "${var.name}-${var.environment}-build-deploy"
       }
     }
   }
