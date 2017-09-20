@@ -41,7 +41,7 @@ resource "aws_cloudfront_distribution" "main" {
   }
   "default_cache_behavior" {
     allowed_methods = ["GET", "HEAD", "OPTIONS"]
-    cached_methods = []
+    cached_methods   = ["GET", "HEAD"]
     default_ttl = 0
     max_ttl = 0
     min_ttl = 0
