@@ -153,7 +153,7 @@ module "alb" {
 }
 
 module "api_gateway" {
-  source = "../api-gateway"
+  source = "github.com/FoundryAI/infrastructure//api-gateway"
   environment = "${var.environment}"
   api_id = "${var.api_id}"
   api_root_id = "${var.api_root_id}"
