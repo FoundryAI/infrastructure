@@ -58,7 +58,8 @@ resource "aws_cloudfront_distribution" "main" {
 
   "viewer_certificate" {
     acm_certificate_arn = "${var.ssl_certificate_id}"
-    ssl_support_method = "TLSv1"
+    minimum_protocol_version = "TLSv1"
+    ssl_support_method = "sni-only"
   }
 
   "tags" {
