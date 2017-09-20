@@ -121,7 +121,7 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "codepipeline_policy" {
-  name = "${var-name}-${var.environment}-codepipeline-policy"
+  name = "${var.name}-${var.environment}-codepipeline-policy"
   role = "${aws_iam_role.main.id}"
   policy = <<EOF
 {
