@@ -134,18 +134,6 @@ resource "aws_cloudformation_stack" "deployment" {
   }
 }
 
-
-module "api_gateway" {
-  source = "${path.module}/../api-gateway"
-  environment = "${var.environment}"
-  api_id = "${var.api_id}"
-  api_root_id = "${var.api_root_id}"
-  api_endpoint = "${var.api_endpoint}"
-  api_stage = "${var.api_stage}"
-  resource_name = "${var.api_resource_name}"
-  elb_dns = "${module.alb.dns_name}"
-}
-
 module "alb" {
   source = "./alb"
 
@@ -162,4 +150,15 @@ module "alb" {
   log_bucket = "${var.log_bucket}"
   ssl_certificate_id = "${var.ssl_certificate_id}"
   vpc_id = "${var.vpc_id}"
+}
+
+module "api_gateway" {
+  source = "../api-gateway"
+  environment = "${var.environment}"
+  api_id = "${var.api_id}"
+  api_root_id = "${var.api_root_id}"
+  api_endpoint = "${var.api_endpoint}"
+  api_stage = "${var.api_stage}"
+  resource_name = "${var.api_resource_name}"
+  elb_dns = "${module.alb.dns_name}"
 }
