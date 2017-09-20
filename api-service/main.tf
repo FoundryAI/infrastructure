@@ -136,7 +136,7 @@ resource "aws_cloudformation_stack" "deployment" {
 
 
 module "api_gateway" {
-  source = "../api-gateway"
+  source = "${path.module}/../api-gateway"
   environment = "${var.environment}"
   api_id = "${var.api_id}"
   api_root_id = "${var.api_root_id}"
