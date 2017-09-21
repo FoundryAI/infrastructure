@@ -177,7 +177,7 @@ resource "aws_codebuild_project" "main" {
 
   environment {
     compute_type = "BUILD_GENERAL1_SMALL"
-    image        = "node:8.2"
+    image        = "kriasoft/node-ci:8.5"
     type         = "LINUX_CONTAINER"
 
     environment_variable {
