@@ -2,6 +2,15 @@ resource "aws_s3_bucket" "main" {
   bucket = "${var.name}-${var.environment}"
   acl = "public-read"
 
+  website {
+    index_document = "index.html"
+    error_document = "index.html"
+  }
+
+  versioning {
+    enabled = true
+  }
+
   tags {
     Name = "${var.name}"
     Environment = "${var.environment}"
