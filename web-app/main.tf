@@ -177,7 +177,7 @@ resource "aws_codebuild_project" "main" {
 
   environment {
     compute_type = "BUILD_GENERAL1_SMALL"
-    image        = "aws/codebuild/eb-nodejs-6.10.0-amazonlinux-64:4.0.0"
+    image        = "node:8.2"
     type         = "LINUX_CONTAINER"
 
     environment_variable {
