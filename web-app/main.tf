@@ -199,7 +199,7 @@ phases:
       - ${var.codebuild_build_command}
   post_build:
     commands:
-      - aws s3 sync --acl public-read s3://${aws_s3_bucket.main.bucket} ${var.build_path_to_deploy}
+      - aws s3 sync --acl public-read ${var.build_path_to_deploy} s3://${aws_s3_bucket.main.bucket}
 artifacts:
   type: zip
   files:
