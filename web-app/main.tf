@@ -209,10 +209,6 @@ phases:
   post_build:
     commands:
       - aws s3 sync --acl public-read ${var.build_path_to_deploy} s3://${aws_s3_bucket.main.bucket}
-artifacts:
-  type: zip
-  files:
-    - ${var.build_path_to_deploy}
 EOF
   }
 }
@@ -258,7 +254,6 @@ resource "aws_codepipeline" "main" {
       provider = "CodeBuild"
       version = "1"
       input_artifacts = ["source"]
-      output_artifacts = ["build"]
       run_order = 1
 
       configuration {
