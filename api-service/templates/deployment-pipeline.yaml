@@ -214,15 +214,15 @@ Resources:
         Location: !Ref ArtifactBucket
         Type: "S3"
       Source:
-        Location: !Sub ${ArtifactBucket}/source.zip
-        Type: "S3"
+        Location: !Sub https://github.com/FoundryAI/${GitHubRepo}.git
+        Type: "GITHUB"
         BuildSpec: |
           version: 0.2
           phases:
             pre_build:
               commands:
                 - $(aws ecr get-login)
-                - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
+                - TAG="$([[ "$CODEBUILD_INITIATOR" == codepipeline* ]] && echo $(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) || echo $(echo $CODEBUILD_SOURCE_VERSION | sed "s/\//\-/g"))"
             build:
               commands:
                 - docker build --tag "${REPOSITORY_URI}:${TAG}" .
@@ -251,15 +251,15 @@ Resources:
         Location: !Ref ArtifactBucket
         Type: "S3"
       Source:
-        Location: !Sub ${ArtifactBucket}/source.zip
-        Type: "S3"
+        Location: !Sub https://github.com/FoundryAI/${GitHubRepo}.git
+        Type: "GITHUB"
         BuildSpec: |
           version: 0.2
           phases:
             pre_build:
               commands:
                 - curl -L "https://github.com/docker/compose/releases/download/1.15.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
-                - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
+                - TAG="$([[ "$CODEBUILD_INITIATOR" == codepipeline* ]] && echo $(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) || echo $(echo $CODEBUILD_SOURCE_VERSION | sed "s/\//\-/g"))"
                 - docker network create hud_ai_local
             build:
               commands:
