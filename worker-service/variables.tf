@@ -17,6 +17,7 @@ variable "security_groups" {
 
 variable "port" {
   description = "The container host port"
+  port = 3000
 }
 
 variable "cluster" {
