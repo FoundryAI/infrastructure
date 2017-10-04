@@ -7,14 +7,6 @@ variable "name" {
   default = ""
 }
 
-variable "subnet_ids" {
-  description = "Comma separated list of subnet IDs that will be passed to the ELB module"
-}
-
-variable "security_groups" {
-  description = "Comma separated list of security group IDs that will be passed to the ELB module"
-}
-
 variable "port" {
   description = "The container host port"
   port = 3000
@@ -22,10 +14,6 @@ variable "port" {
 
 variable "cluster" {
   description = "The cluster name or ARN"
-}
-
-variable "log_bucket" {
-  description = "The S3 bucket ID to use for the ELB"
 }
 
 variable "command" {
@@ -97,5 +85,5 @@ variable "aws_secret_key" {
 }
 
 variable "vpc_id" {
-  description = "VPC ID to locate api service in"
+  description = "VPC ID to locate worker service in"
 }
