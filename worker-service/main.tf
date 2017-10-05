@@ -55,7 +55,8 @@ resource "aws_iam_role" "main" {
       "Principal": {
         "Service": [
           "codepipeline.amazonaws.com",
-          "codebuild.amazonaws.com"
+          "codebuild.amazonaws.com",
+          "cloudformation.amazonaws.com"
         ]
       },
       "Action": "sts:AssumeRole"
