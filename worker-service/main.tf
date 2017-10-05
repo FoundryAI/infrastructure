@@ -55,7 +55,7 @@ resource "aws_iam_role" "main" {
       "Principal": {
         "Service": [
           "codepipeline.amazonaws.com",
-          "codebuild.amazonaws.com",
+          "codebuild.amazonaws.com"
         ]
       },
       "Action": "sts:AssumeRole"
@@ -113,7 +113,7 @@ resource "aws_iam_policy" "cloudformation_policy" {
         "ecs:*",
         "ecr:*",
         "iam:*",
-        "lambda:*",
+        "lambda:*"
       ]
     }
   ]
