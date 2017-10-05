@@ -204,12 +204,22 @@ resource "aws_codebuild_project" "main" {
 
   environment {
     compute_type = "BUILD_GENERAL1_SMALL"
-    image        = "kriasoft/node-ci:8.5"
+    image        = "aws/codebuild/docker:1.12.1"
     type         = "LINUX_CONTAINER"
 
     environment_variable {
       "name"  = "ENVIRONMENT"
       "value" = "${var.environment}"
+    }
+
+    environment_variable {
+      "name"  = "AWS_DEFAULT_REGION"
+      "value" = "${data.aws_region.current.name}"
+    }
+
+    environment_variable {
+      name = "REPOSITORY_URI"
+      value = "${var.ecr_repository_url}"
     }
   }
 
