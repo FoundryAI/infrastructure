@@ -347,6 +347,7 @@ resource "aws_codepipeline" "main" {
 "Environment": "${var.environment}",
 "DesiredCount": "${var.desired_count}",
 "Name": "${var.name}",
+"Repository": "${var.source_repo}",
 "Tag" : "latest"
 }
 EOF
