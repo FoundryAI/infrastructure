@@ -327,6 +327,7 @@ resource "aws_codepipeline" "main" {
       role_arn = "${aws_iam_role.cloudformation_execution.arn}"
 
       configuration {
+        RoleArn = "${aws_iam_role.cloudformation_execution.arn}"
         ChangeSetName = "${var.name}-${var.environment}-change-set"
         ActionMode = "CHANGE_SET_REPLACE"
         StackName = "${var.name}-${var.environment}-deployment-stack"
@@ -360,6 +361,7 @@ EOF
       run_order = 2
 
       configuration {
+        RoleArn = "${aws_iam_role.cloudformation_execution.arn}"
         ActionMode = "CHANGE_SET_EXECUTE"
         ChangeSetName = "${var.name}-${var.environment}-change-set"
         StackName = "${var.name}-${var.environment}-deployment-stack"
