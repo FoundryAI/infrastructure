@@ -235,7 +235,7 @@ phases:
       - TAG="$([ $(echo $CODEBUILD_INITIATOR | cut -c 1-12) = codepipeline ] && echo $(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) || echo $(echo $CODEBUILD_SOURCE_VERSION | sed "s/\//\-/g"))"
   build:
     commands:
-      - docker build --tag "$CODEBUILD_RESOLVED_SOURCE_VERSION:$CODEBUILD_RESOLVED_SOURCE_VERSION" .
+      - docker build --tag "$REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION" .
   post_build:
     commands:
       - docker push "$REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION"
