@@ -292,7 +292,7 @@ resource "aws_codepipeline" "main" {
       owner = "AWS"
       provider = "CodeBuild"
       version = "1"
-      input_artifacts = ["source"]
+      input_artifacts = ["app"]
       output_artifacts = ["build"]
       run_order = 1
 
