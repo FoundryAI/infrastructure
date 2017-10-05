@@ -360,7 +360,6 @@ EOF
       owner = "AWS"
       provider = "CloudFormation"
       version = "1"
-      role_arn = "${aws_iam_role.cloudformation_execution.arn}"
       run_order = 2
 
       configuration {
