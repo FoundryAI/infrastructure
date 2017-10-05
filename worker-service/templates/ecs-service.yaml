@@ -80,7 +80,6 @@ Resources:
     Properties:
       ServiceName: !Ref Name
       Cluster: !Ref Cluster
-      Role: !GetAtt ECSServiceRole.Arn
       DesiredCount: !Ref DesiredCount
       TaskDefinition: !Ref TaskDefinition
 
