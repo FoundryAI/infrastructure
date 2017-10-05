@@ -59,10 +59,35 @@ resource "aws_iam_role" "main" {
           "cloudformation.amazonaws.com"
         ]
       },
-      "Action": "sts:AssumeRole",
-      "Resource": [
-        "*"
-      ]
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role" "cloudformation_execution" {
+  name = "${var.name}-${var.environment}-cloudformation-role"
+  depends_on = ["aws_iam_role.main"]
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": [
+          "cloudformation.amazonaws.com"
+        ]
+      },
+      "Action": "sts:AssumeRole"
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "${aws_iam_role.main.arn}"
+      },
+      "Action": "sts:AssumeRole"
     }
   ]
 }
@@ -72,7 +97,7 @@ EOF
 resource "aws_iam_policy_attachment" "cloudformation_policy_attachment" {
   name       = "${var.name}-${var.environment}-cloudformation-policy-attachment"
   policy_arn = "${aws_iam_policy.cloudformation_policy.arn}"
-  roles      = ["${aws_iam_role.main.id}"]
+  roles      = ["${aws_iam_role.main.id}", "${aws_iam_role.cloudformation_execution.id}"]
 }
 
 resource "aws_iam_policy" "cloudformation_policy" {
@@ -288,7 +313,7 @@ resource "aws_codepipeline" "main" {
       version = "1"
       input_artifacts = ["build", "template"]
       run_order = 1
-      role_arn = "${aws_iam_role.main.arn}"
+      role_arn = "${aws_iam_role.cloudformation_execution.arn}"
 
       configuration {
         ChangeSetName = "${var.name}-${var.environment}-change-set"
@@ -320,7 +345,7 @@ EOF
       owner = "AWS"
       provider = "CloudFormation"
       version = "1"
-      role_arn = "${aws_iam_role.main.arn}"
+      role_arn = "${aws_iam_role.cloudformation_execution.arn}"
       run_order = 2
 
       configuration {
