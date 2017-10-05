@@ -59,7 +59,10 @@ resource "aws_iam_role" "main" {
           "cloudformation.amazonaws.com"
         ]
       },
-      "Action": "sts:AssumeRole"
+      "Action": "sts:AssumeRole",
+      "Resource": [
+        "*"
+      ]
     }
   ]
 }
