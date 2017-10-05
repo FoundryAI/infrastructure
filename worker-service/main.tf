@@ -219,7 +219,7 @@ phases:
       - docker build --tag "$${REPOSITORY_URI}:$${TAG}" .
   post_build:
     commands:
-      - docker push "${REPOSITORY_URI}:${TAG}"
+      - docker push "$${REPOSITORY_URI}:$${TAG}"
       - printf '{"tag":"%s"}' $TAG > build.json
   artifacts:
     files: build.json
