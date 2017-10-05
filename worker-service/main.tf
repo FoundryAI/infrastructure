@@ -229,8 +229,8 @@ phases:
     commands:
       - docker push "$${REPOSITORY_URI}:$${TAG}"
       - printf '{"tag":"%s"}' $TAG > build.json
-  artifacts:
-    files: build.json
+artifacts:
+  files: build.json
 EOF
   }
 }
