@@ -115,6 +115,7 @@ resource "aws_iam_policy" "cloudformation_policy" {
         "*"
       ],
       "Action": [
+        "cloudformation:*",
         "elasticloadbalancing:*",
         "codebuild:*",
         "codepipeline:*",
