@@ -1,0 +1,129 @@
+Parameters:
+  Tag:
+    Type: String
+    Default: latest
+
+  Name:
+    Type: String
+
+  ContainerName:
+    Type: String
+
+  ContainerPort:
+    Type: Number
+    Default: 3000
+
+  Port:
+    Type: Number
+    Default: 3000
+
+  DesiredCount:
+    Type: Number
+    Default: 0
+
+  Cluster:
+    Type: String
+
+  Repository:
+    Type: String
+
+  AwslogsGroup:
+    Type: String
+
+  AwslogsStreamPrefix:
+    Type: String
+
+  AwsRegion:
+    Type: String
+
+  AwsAccessKey:
+    Type: String
+
+  AwsSecretKey:
+    Type: String
+
+  Environment:
+    Type: String
+
+Resources:
+  ECSServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: |
+        {
+            "Statement": [{
+                "Effect": "Allow",
+                "Principal": {
+                "Service": [
+                    "elasticloadbalancing.amazonaws.com",
+                    "cloudformation.amazonaws.com",
+                    "codebuild.amazonaws.com",
+                    "ec2.amazonaws.com",
+                    "ecs.amazonaws.com",
+                    "ecs-tasks.amazonaws.com"
+                  ]
+                },
+                "Action": [ "sts:AssumeRole" ]
+            }]
+        }
+      Path: "/"
+      Policies:
+        - PolicyName: ecs-service-role-deploy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Resource: "*"
+                Effect: Allow
+                Action:
+                  - elasticloadbalancing:*
+                  - ec2:*
+                  - ecr:*
+                  - ecs:*
+
+  Service:
+    Type: AWS::ECS::Service
+    DependsOn:
+      - ECSServiceRole
+      - TaskDefinition
+    Properties:
+      ServiceName: !Ref Name
+      Cluster: !Ref Cluster
+      Role: !GetAtt ECSServiceRole.Arn
+      DesiredCount: !Ref DesiredCount
+      TaskDefinition: !Ref TaskDefinition
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Ref Name
+      TaskRoleArn: !GetAtt ECSServiceRole.Arn
+      ContainerDefinitions:
+        - Name: !Ref ContainerName
+          Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}:${Tag}
+          Essential: true
+          Memory: 512
+          PortMappings:
+            - ContainerPort: !Ref ContainerPort
+              HostPort: 0
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+            Options:
+                awslogs-group: !Ref AwslogsGroup
+                awslogs-region: !Ref AwsRegion
+                awslogs-stream-prefix: !Ref AwslogsStreamPrefix
+          Environment:
+            - Name: Tag
+              Value: !Ref Tag
+            - Name: AWS_ACCOUNT_ID
+              Value: !Sub ${AWS::AccountId}
+            - Name: AWS_REGION
+              Value: !Ref AwsRegion
+            - Name: AWS_ACCESS_KEY
+              Value: !Ref AwsAccessKey
+            - Name: AWS_SECRET_KEY
+              Value: !Ref AwsSecretKey
+            - Name: ENVIRONMENT
+              Value: !Ref Environment
+            - Name: PORT
+              Value: !Ref Port
