@@ -90,7 +90,7 @@ EOF
 resource "aws_iam_policy_attachment" "cloudformation_policy_attachment" {
   name       = "${var.name}-${var.environment}-cloudformation-policy-attachment"
   policy_arn = "${aws_iam_policy.cloudformation_policy.arn}"
-  roles      = ["${aws_iam_role.main.id}"]
+  roles      = ["${aws_iam_role.main.id}", "${aws_iam_role.cloudformation_execution.id}"]
 }
 
 resource "aws_iam_policy" "cloudformation_policy" {
