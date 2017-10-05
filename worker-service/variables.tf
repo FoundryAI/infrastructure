@@ -7,11 +7,6 @@ variable "name" {
   default = ""
 }
 
-variable "port" {
-  description = "The container host port"
-  port = 3000
-}
-
 variable "cluster" {
   description = "The cluster name or ARN"
 }

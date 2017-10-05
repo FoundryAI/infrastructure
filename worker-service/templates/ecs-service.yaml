@@ -9,14 +9,6 @@ Parameters:
   ContainerName:
     Type: String
 
-  ContainerPort:
-    Type: Number
-    Default: 3000
-
-  Port:
-    Type: Number
-    Default: 3000
-
   DesiredCount:
     Type: Number
     Default: 0
@@ -102,9 +94,6 @@ Resources:
           Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}:${Tag}
           Essential: true
           Memory: 512
-          PortMappings:
-            - ContainerPort: !Ref ContainerPort
-              HostPort: 0
           LogConfiguration:
             LogDriver: awslogs
             Options:
@@ -125,5 +114,3 @@ Resources:
               Value: !Ref AwsSecretKey
             - Name: ENVIRONMENT
               Value: !Ref Environment
-            - Name: PORT
-              Value: !Ref Port
