@@ -322,7 +322,6 @@ resource "aws_codepipeline" "main" {
 "AwsSecretKey": "${var.aws_secret_key}",
 "Cluster": "${var.cluster}",
 "ContainerName": "${var.name}",
-"ContainerPort": "${var.port}",
 "Environment": "${var.environment}",
 "DesiredCount": "${var.desired_count}",
 "Name": "${var.name}",
