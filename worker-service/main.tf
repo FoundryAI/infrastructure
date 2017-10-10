@@ -346,7 +346,7 @@ resource "aws_codepipeline" "main" {
 "ContainerName": "${var.name}",
 "Environment": "${var.environment}",
 "DesiredCount": "${var.desired_count}",
-"Name": "${var.name}",
+"Name": "${var.name}-${var.environment}",
 "Repository": "${var.ecr_name}",
 "Tag" : { "Fn::GetParam" : [ "build", "build.json", "tag" ] }
 }
