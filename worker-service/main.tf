@@ -237,11 +237,11 @@ phases:
       - TAG="$([ $(echo $CODEBUILD_INITIATOR | cut -c 1-12) = codepipeline ] && echo $(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) || echo $(echo $CODEBUILD_SOURCE_VERSION | sed "s/\//\-/g"))"
   build:
     commands:
-      - docker build --tag "$REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION" .
+      - docker build --tag "$REPOSITORY_URI:$TAG" .
   post_build:
     commands:
-      - docker push "$REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION"
-      - printf '{"tag":"%s"}' $CODEBUILD_RESOLVED_SOURCE_VERSION > build.json
+      - docker push "$REPOSITORY_URI:$TAG"
+      - printf '{"tag":"%s"}' $TAG > build.json
 artifacts:
   files: build.json
 EOF
