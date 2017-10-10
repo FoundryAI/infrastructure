@@ -348,7 +348,7 @@ resource "aws_codepipeline" "main" {
 "DesiredCount": "${var.desired_count}",
 "Name": "${var.name}",
 "Repository": "${var.source_repo}",
-"Tag" : "latest"
+"Tag" : { "Fn::GetParam" : [ "BuildOutput", "build.json", "tag" ] }
 }
 EOF
       }
