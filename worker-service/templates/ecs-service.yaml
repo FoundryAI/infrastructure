@@ -56,6 +56,8 @@ Resources:
         - Name: !Ref ContainerName
           Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}:${Tag}
           Essential: true
+          Memory: 10240
+          MemoryReservation: 4096
           LogConfiguration:
             LogDriver: awslogs
             Options:

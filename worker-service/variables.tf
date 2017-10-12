@@ -23,7 +23,7 @@ variable "desired_count" {
 
 variable "memory" {
   description = "The number of MiB of memory to reserve for the container"
-  default = 512
+  default = 8192
 }
 
 variable "cpu" {
