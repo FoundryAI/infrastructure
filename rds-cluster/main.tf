@@ -124,6 +124,10 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
 
   # need a deterministic identifier or terraform will force a new resource every apply
   identifier = "${aws_rds_cluster.main.id}-${count.index}"
+
+  lifecycle {
+    ignore_changes = ["instance_class"]
+  }
 }
 
 resource "aws_rds_cluster" "main" {
