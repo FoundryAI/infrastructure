@@ -264,7 +264,7 @@ Resources:
             build:
               commands:
                 - touch .env
-                - docker-compose -f docker-compose.yml -f docker-compose.test.yml run api
+                - docker-compose -f docker-compose.yml -f docker-compose.test.yml run api || (docker-compose -f docker-compose.yml -f docker-compose.test.yml logs && false)
             post_build:
               commands:
                 - printf '{"tag":"%s"}' $TAG > build.json
