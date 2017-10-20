@@ -315,3 +315,20 @@ resource "aws_cloudwatch_metric_alarm" "memory_low" {
   depends_on = [
     "aws_cloudwatch_metric_alarm.cpu_low"]
 }
+
+module "ecs_xray" {
+  source = "./task"
+  name = "aws-xray"
+  image_repository_url = "registry.hub.docker.com"
+  image = "namshi/aws-xray"
+  log_group = "${module.cloudwatch.xray_group}"
+  log_prefix = "${var.environment}"
+  entry_point = "[\"/usr/bin/xray\", \"--bind\", \"0.0.0.0:2000\"]"
+}
+
+resource "aws_ecs_service" "xray" {
+  name = "aws-xray"
+  cluster = "${aws_ecs_cluster.main.name}"
+  task_definition = "${module.ecs_xray.arn}"
+  desired_count = 1
+}
