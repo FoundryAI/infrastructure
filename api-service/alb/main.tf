@@ -1,6 +1,6 @@
 resource "aws_alb" "main" {
   name = "${var.name}-alb"
-  internal = false
+  internal = "${var.internal}"
   subnets = [
     "${split(",", var.subnet_ids)}"]
   security_groups = [
@@ -56,5 +56,17 @@ resource "aws_alb_target_group" "main" {
     unhealthy_threshold = 2
     timeout = 5
     path = "${var.healthcheck}"
+  }
+}
+
+resource "aws_route53_record" "internal" {
+  zone_id = "${var.internal_zone_id}"
+  name = "${coalesce(var.internal_dns_name, "${var.name}-alb")}"
+  type = "A"
+
+  alias {
+    evaluate_target_health = false
+    name = "${aws_alb.main.dns_name}"
+    zone_id = "${aws_alb.main.zone_id}"
   }
 }
