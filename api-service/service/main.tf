@@ -21,18 +21,27 @@ data "aws_region" "current" {
   current = true
 }
 
-data "archive_file" "templates" {
-  type        = "zip"
-  source_dir  = "${path.module}/templates"
-  output_path = "${path.module}/templates.zip"
+# Gets the CURRENT task definition from AWS, reflecting anything that's been deployed outside
+# of Terraform (ie. CodePipeline builds).
+data "aws_ecs_task_definition" "task" {
+  task_definition = "${aws_ecs_task_definition.main.family}"
+  depends_on = ["aws_ecs_task_definition.main"]
 }
 
-resource "aws_s3_bucket_object" "main" {
-  bucket = "${aws_s3_bucket.main.bucket}"
-  key = "templates.zip"
-  etag = "${data.archive_file.templates.output_md5}"
+# Gets the CURRENT container definition from AWS.  This allows us to fully reconstruct
+# the task definition deployed by CodePipeline.
+# TODO: Figure out how to make this work.
+//data "aws_ecs_container_definition" "task" {
+//  task_definition = "${data.aws_ecs_task_definition.task.id}"
+//  container_name  = "${var.name}"
+//}
 
-  source = "${"${path.module}/templates.zip"}"
+data "aws_ecr_repository" "main" {
+  name = "${var.ecr_name}"
+}
+
+data "aws_ecr_repository" "sample" {
+  name = "${var.ecr_name}"
 }
 
 resource "aws_s3_bucket" "main" {
@@ -71,6 +80,107 @@ resource "aws_cloudwatch_log_group" "main" {
   }
 }
 
+// If you change the task definition, the sample image will be redeployed.
+// Take care to re-run the pipeline to redeploy the application with an
+// actual image.
+resource "aws_ecs_task_definition" "main" {
+  family = "${var.name}"
+  task_role_arn = "${module.iam_roles.ecs_service_deployment_role_arn}"
+
+  container_definitions = <<DEFINITION
+[
+  {
+    "name": "${var.name}",
+    "image": "${data.aws_ecr_repository.sample.repository_url}/sample:latest",
+    "essential": true,
+    "cpu": ${var.cpu},
+    "memory": ${var.memory},
+    "portMappings": [{
+      "containerPort": ${var.container_port},
+      "hostPort": 0
+    }],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${aws_cloudwatch_log_group.main.name}",
+        "awslogs-region": "${data.aws_region.current.name}",
+        "awslogs-stream-prefix": "${var.environment}"
+      }
+    },
+    "environment": [
+      {
+        "name": "RDS_DB_NAME",
+        "value": "${var.rds_db_name}"
+      },
+      {
+        "name": "RDS_HOSTNAME",
+        "value": "${var.rds_hostname}"
+      },
+      {
+        "name": "RDS_USERNAME",
+        "value": "${var.rds_username}"
+      },
+      {
+        "name": "RDS_PASSWORD",
+        "value": "${var.rds_password}"
+      },
+      {
+        "name": "DYNAMODB_ENDPOINT",
+        "value": "dynamodb.us-east-1.amazonaws.com"
+      },
+      {
+        "name": "SNS_ENDPOINT",
+        "value": "sns.us-east-1.amazonaws.com"
+      },
+      {
+        "name": "AWS_ACCOUNT_ID",
+        "value": "${data.aws_caller_identity.current.account_id}"
+      },
+      {
+        "name": "AWS_REGION",
+        "value": "${data.aws_region.current.name}"
+      },
+      {
+        "name": "AWS_ACCESS_KEY",
+        "value": "${var.aws_access_key}"
+      },
+      {
+        "name": "AWS_SECRET_KEY",
+        "value": "${var.aws_secret_key}"
+      },
+      {
+        "name": "ENVIRONMENT",
+        "value": "${var.environment}"
+      },
+      {
+        "name": "PORT",
+        "value": "${var.port}"
+      },
+      {
+        "name": "GITHUB_OAUTH_TOKEN",
+        "value": "${var.oauth_token}"
+      }
+    ]
+  }
+]
+DEFINITION
+}
+
+resource "aws_ecs_service" "main" {
+  name = "${var.name}"
+  cluster = "${var.cluster}"
+  desired_count = 2
+  task_definition = "${aws_ecs_task_definition.main.family}:${max("${aws_ecs_task_definition.main.revision}", "${data.aws_ecs_task_definition.task.revision}")}"
+  iam_role = "${module.iam_roles.ecs_service_deployment_role_arn}"
+
+  load_balancer {
+    target_group_arn = "${module.alb.target_group_arn}"
+    container_name = "${var.name}"
+    container_port = "${var.container_port}"
+  }
+
+  depends_on = ["module.iam_roles"]
+}
 
 
 resource "aws_codebuild_project" "build" {
@@ -95,7 +205,7 @@ resource "aws_codebuild_project" "build" {
 
     environment_variable {
       name = "REPOSITORY_URI"
-      value = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.ecr_name}"
+      value = "${data.aws_ecr_repository.main.repository_url}"
     }
   }
 
@@ -144,7 +254,7 @@ resource "aws_codebuild_project" "test" {
 
     environment_variable {
       name = "REPOSITORY_URI"
-      value = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.ecr_name}"
+      value = "${data.aws_ecr_repository.main.repository_url}"
     }
   }
 
@@ -175,7 +285,7 @@ EOF
 resource "aws_codepipeline" "main" {
   name = "${var.name}-codepipeline"
   role_arn = "${module.iam_roles.codepipeline_role_arn}"
-  depends_on = [ "aws_cloudformation_stack.deployment" ]
+  depends_on = ["aws_ecs_task_definition.main"]
 
   artifact_store {
     location = "${aws_s3_bucket.artifacts.bucket}"
@@ -201,20 +311,6 @@ resource "aws_codepipeline" "main" {
       }
     }
 
-    action {
-      name = "Template"
-      category = "Source"
-      owner = "AWS"
-      provider = "S3"
-      version = "1"
-      run_order = "1"
-      output_artifacts = ["Template"]
-
-      configuration {
-        S3Bucket = "${aws_s3_bucket.main.bucket}"
-        S3ObjectKey = "templates.zip"
-      }
-    }
   }
 
   stage {
@@ -256,64 +352,31 @@ resource "aws_codepipeline" "main" {
   stage {
     name = "Deploy"
 
-    action {
-      category = "Deploy"
-      name = "CreateChangeSet"
-      owner = "AWS"
-      provider = "CloudFormation"
-      version = "1"
-      run_order = "1"
-      input_artifacts = ["Template", "BuildOutput"]
 
+    action {
+      category = "Invoke"
+      name = "ECS_Deploy"
+      owner = "AWS"
+      provider = "Lambda"
+      version = "1"
+
+      input_artifacts = ["BuildOutput"]
+      output_artifacts = []
+      run_order = "1"
       configuration {
-        ChangeSetName = "${var.name}-change-set"
-        ActionMode = "CHANGE_SET_REPLACE"
-        StackName = "${aws_cloudformation_stack.deployment.name}"
-        Capabilities = "CAPABILITY_NAMED_IAM"
-        TemplatePath = "Template::ecs-service.yaml"
-        RoleArn = "${module.iam_roles.cloudformation_deployment_role_arn}"
-        ParameterOverrides = <<EOF
+        FunctionName = "${module.deploy_lambda.name}"
+        UserParameters = <<EOF
 {
-  "AwsAccessKey": "${var.aws_access_key}",
-  "AwslogsGroup": "${aws_cloudwatch_log_group.main.name}",
-  "AwslogsStreamPrefix": "${var.environment}",
-  "AwsRegion": "${data.aws_region.current.name}",
-  "AwsSecretKey": "${var.aws_secret_key}",
-  "Cluster": "${var.cluster}",
-  "ContainerName": "${var.name}",
-  "ContainerPort": "${var.port}",
-  "Environment": "${var.environment}",
-  "DesiredCount": "${var.desired_count}",
-  "LoadBalancerName": "${module.alb.target_group_arn}",
-  "Name": "${var.name}",
-  "RdsDbName": "${var.rds_db_name}",
-  "RdsHostname": "${var.rds_hostname}",
-  "RdsUsername": "${var.rds_username}",
-  "RdsPassword": "${var.rds_password}",
-  "Repository": "${var.ecr_name}",
-  "Tag" : { "Fn::GetParam" : [ "BuildOutput", "build.json", "tag" ] },
-  "GitHubToken": "${var.oauth_token}",
-  "EcsRoleArn": "${module.iam_roles.ecs_service_deployment_role_arn}",
-  "Memory": "${var.memory}",
-  "Cpu": "${var.cpu}"
+  "cluster": "${var.cluster}",
+  "task": "${aws_ecs_task_definition.main.family}",
+  "service": "${aws_ecs_service.main.name}",
+  "role": "${module.iam_roles.ecs_service_deployment_role_arn}",
+  "region": "${data.aws_region.current.name}",
+  "aws_access_key_id": "${var.aws_access_key}",
+  "aws_secret_key": "${var.aws_secret_key}",
+  "image": "${data.aws_ecr_repository.main.repository_url}"
 }
 EOF
-      }
-    }
-
-    action {
-      category = "Deploy"
-      name = "ExecuteChangeSet"
-      owner = "AWS"
-      provider = "CloudFormation"
-      version = "1"
-      run_order = "2"
-
-      configuration {
-        ActionMode = "CHANGE_SET_EXECUTE"
-        ChangeSetName = "${var.name}-change-set"
-        RoleArn= "${module.iam_roles.cloudformation_deployment_role_arn}"
-        StackName = "${aws_cloudformation_stack.deployment.name}"
       }
     }
   }
@@ -326,56 +389,17 @@ module "slack_notifier" {
   slack_webhook = "${var.slack_webhook}"
 }
 
+module "deploy_lambda" {
+  source = "./deploy"
+  name = "${var.name}"
+}
+
 module "iam_roles" {
   source = "./ci-iam"
   name = "${var.name}"
   ecr_name = "${var.ecr_name}"
   artifact_bucket_arn = "${aws_s3_bucket.artifacts.arn}"
   deployment_bucket_arn = "${aws_s3_bucket.main.arn}"
-}
-
-resource "aws_cloudformation_stack" "deployment" {
-  name = "${var.name}-deployment-stack"
-  template_body = "${file("${path.module}/templates/ecs-service.yaml")}"
-  capabilities = ["CAPABILITY_NAMED_IAM"]
-  iam_role_arn = "${module.iam_roles.cloudformation_deployment_role_arn}"
-
-  depends_on = [
-    "module.alb"
-  ]
-
-  lifecycle {
-    ignore_changes = [
-      "parameters"
-    ]
-  }
-
-  on_failure = "DELETE"
-
-  parameters {
-    AwsAccessKey = "${var.aws_access_key}"
-    AwslogsGroup = "${aws_cloudwatch_log_group.main.name}"
-    AwslogsStreamPrefix = "${var.environment}"
-    AwsRegion = "${data.aws_region.current.name}"
-    AwsSecretKey = "${var.aws_secret_key}"
-    Cluster = "${var.cluster}"
-    ContainerName = "${var.name}"
-    ContainerPort = "${var.port}"
-    Environment = "${var.environment}"
-    DesiredCount = "${var.desired_count}"
-    LoadBalancerName = "${module.alb.target_group_arn}"
-    Name = "${var.name}"
-    RdsDbName = "${var.rds_db_name}"
-    RdsHostname = "${var.rds_hostname}"
-    RdsUsername = "${var.rds_username}"
-    RdsPassword = "${var.rds_password}"
-    Repository = "sample"
-    Tag = "latest"
-    GitHubToken = "${var.oauth_token}"
-    EcsRoleArn = "${module.iam_roles.ecs_service_deployment_role_arn}"
-    Memory = "${var.memory}"
-    Cpu = "${var.cpu}"
-  }
 }
 
 module "alb" {

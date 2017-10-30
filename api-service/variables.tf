@@ -99,7 +99,7 @@ variable "memory" {
 
 variable "cpu" {
   description = "The number of cpu units to reserve for the container"
-  default = 512
+  default = 128
 }
 
 variable "deployment_minimum_healthy_percent" {
@@ -148,10 +148,6 @@ variable "rds_password" {
 
 variable "ecr_name" {
   description = "ECR name"
-}
-
-variable "ecr_repository_url" {
-  description = "ECR repository url"
 }
 
 variable "aws_access_key" {

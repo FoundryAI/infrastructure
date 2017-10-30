@@ -48,7 +48,7 @@ resource "aws_iam_role" "main" {
 }
 
 resource "aws_iam_policy" "main" {
-  name        = "${var.name}-lambda-policy"
+  name        = "${var.name}-slack-lambda-policy"
   path        = "/service-role/"
   policy = "${data.aws_iam_policy_document.lambda_policy_doc.json}"
 }

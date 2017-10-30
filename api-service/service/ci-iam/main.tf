@@ -10,17 +10,6 @@ data "aws_region" "current" {
   current = true
 }
 
-data "aws_iam_policy_document" "cf_assume_role_policy" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["cloudformation.amazonaws.com"]
-    }
-  }
-}
-
 data "aws_iam_policy_document" "codebuild_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -51,7 +40,6 @@ data "aws_iam_policy_document" "ecs_service_assume_role_policy" {
       type        = "Service"
       identifiers = [
         "elasticloadbalancing.amazonaws.com",
-        "cloudformation.amazonaws.com",
         "codebuild.amazonaws.com",
         "ec2.amazonaws.com",
         "ecs.amazonaws.com",
@@ -114,7 +102,6 @@ data "aws_iam_policy_document" "codepipeline_policy_doc" {
     actions = [
       "codebuild:BatchGetBuilds",
       "codebuild:StartBuild",
-      "cloudformation:*",
       "codepipeline:*",
       "lambda:*",
       "ecr:*",
@@ -124,21 +111,6 @@ data "aws_iam_policy_document" "codepipeline_policy_doc" {
   }
 }
 
-data "aws_iam_policy_document" "cloudformation_policy_doc" {
-
-  statement {
-    resources = ["*"]
-    actions = [
-      "elasticloadbalancing:*",
-      "codebuild:*",
-      "codepipeline:*",
-      "ecs:*",
-      "ecr:*",
-      "iam:*",
-      "lambda:*"
-    ]
-  }
-}
 
 data "aws_iam_policy_document" "ecs_service_policy_doc" {
   statement {
@@ -150,11 +122,6 @@ data "aws_iam_policy_document" "ecs_service_policy_doc" {
       "ecs:*"
     ]
   }
-}
-
-resource "aws_iam_role" "cf_deployment" {
-  name = "${var.name}-deployment-role"
-  assume_role_policy = "${data.aws_iam_policy_document.cf_assume_role_policy.json}"
 }
 
 resource "aws_iam_role" "codebuild" {
@@ -182,11 +149,6 @@ resource "aws_iam_policy" "codepipeline_policy" {
   policy = "${data.aws_iam_policy_document.codepipeline_policy_doc.json}"
 }
 
-resource "aws_iam_policy" "cloudformation_policy" {
-  name = "${var.name}-cloudformation-policy"
-  policy = "${data.aws_iam_policy_document.cloudformation_policy_doc.json}"
-}
-
 resource "aws_iam_policy" "ecs_service_policy" {
   name = "${var.name}-ecs-service-policy"
   policy = "${data.aws_iam_policy_document.ecs_service_policy_doc.json}"
@@ -200,11 +162,6 @@ resource "aws_iam_role_policy_attachment" "codebuild_policy_attachment" {
 resource "aws_iam_role_policy_attachment" "codepipeline_policy_attachment" {
   policy_arn = "${aws_iam_policy.codepipeline_policy.arn}"
   role       = "${aws_iam_role.codepipeline.id}"
-}
-
-resource "aws_iam_role_policy_attachment" "cloudformation_policy_attachment" {
-  policy_arn = "${aws_iam_policy.cloudformation_policy.arn}"
-  role       = "${aws_iam_role.cf_deployment.id}"
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_service_policy_attachment" {

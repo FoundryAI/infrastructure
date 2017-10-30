@@ -42,7 +42,6 @@ module "service" {
   rds_username = "${var.rds_username}"
   rds_password = "${var.rds_password}"
   ecr_name = "${var.ecr_name}"
-  ecr_repository_url = "${var.ecr_repository_url}"
   aws_access_key = "${var.aws_access_key}"
   aws_secret_key = "${var.aws_secret_key}"
   vpc_id = "${var.vpc_id}"

@@ -36,8 +36,3 @@ output "zone_id" {
 output "repository_name" {
   value = "${var.ecr_name}"
 }
-
-// The URL of the repository (in the form aws_account_id.dkr.ecr.region.amazonaws.com/repositoryName)
-output "repository_url" {
-  value = "${var.ecr_repository_url}"
-}

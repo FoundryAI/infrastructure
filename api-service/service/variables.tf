@@ -140,10 +140,6 @@ variable "ecr_name" {
   description = "ECR name"
 }
 
-variable "ecr_repository_url" {
-  description = "ECR repository url"
-}
-
 variable "aws_access_key" {
   description = "AWS Access Key"
 }
