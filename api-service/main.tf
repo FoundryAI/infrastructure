@@ -47,6 +47,8 @@ module "service" {
   vpc_id = "${var.vpc_id}"
   slack_webhook = "${var.slack_webhook}"
   internal_alb = "${var.internal_alb}"
+  codebuild_image = "${var.codebuild_image}"
+  codebuild_instance_type = "${var.codebuild_instance_type}"
 }
 
 module "api_gateway" {

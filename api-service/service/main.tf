@@ -40,7 +40,7 @@ data "aws_ecr_repository" "main" {
 }
 
 data "aws_ecr_repository" "sample" {
-  name = "${var.ecr_name}"
+  name = "sample"
 }
 
 resource "aws_s3_bucket" "main" {
@@ -90,7 +90,7 @@ resource "aws_ecs_task_definition" "main" {
 [
   {
     "name": "${var.name}",
-    "image": "${data.aws_ecr_repository.sample.repository_url}/sample:latest",
+    "image": "${data.aws_ecr_repository.sample.repository_url}:latest",
     "essential": true,
     "cpu": ${var.cpu},
     "memory": ${var.memory},
@@ -192,8 +192,8 @@ resource "aws_codebuild_project" "build" {
   }
 
   environment {
-    compute_type = "BUILD_GENERAL1_SMALL"
-    image = "aws/codebuild/docker:1.12.1"
+    compute_type = "${var.codebuild_instance_type}"
+    image = "${var.codebuild_image}"
     type = "LINUX_CONTAINER"
     privileged_mode = true
 
@@ -241,8 +241,8 @@ resource "aws_codebuild_project" "test" {
   }
 
   environment {
-    compute_type = "BUILD_GENERAL1_SMALL"
-    image = "aws/codebuild/docker:1.12.1"
+    compute_type = "${var.codebuild_instance_type}"
+    image = "${var.codebuild_image}"
     type = "LINUX_CONTAINER"
     privileged_mode = true
 

@@ -165,3 +165,13 @@ variable "vpc_id" {
 variable "slack_webhook" {
   description = "The Webhook created that deployment notifications will be sent to"
 }
+
+variable "codebuild_instance_type" {
+  description = "AWS CodeBuild Instance Type.  Possible values are BUILD_GENERAL1_SMALL, BUILD_GENERAL1_MEDIUM, and BUILD_GENERAL1_LARGE"
+  default = "BUILD_GENERAL1_SMALL"
+}
+
+variable "codebuild_image" {
+  description = "AWS CodeBuild image."
+  default = "aws/codebuild/docker:1.12.1"
+}
