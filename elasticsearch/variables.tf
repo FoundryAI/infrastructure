@@ -2,15 +2,6 @@ variable "name" {
   description = "Domain name.  All lower-case.  a-z,0-9,- allowed."
 }
 
-variable "account_id" {
-  description = "AWS Account ID.  All resources/users under this account will be granted access."
-}
-
-variable "region" {
-  description = "AWS Region"
-  default = "us-east-1"
-}
-
 variable "version" {
   description = "ElasticSearch version"
   default = "5.5"
