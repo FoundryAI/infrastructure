@@ -16,6 +16,11 @@ resource "aws_elasticsearch_domain" "main" {
     volume_type = "gp2"
     volume_size = "${var.volume_size}"
   }
+
+  vpc_options {
+    security_group_ids = ["${split(",", var.security_group_ids)}"]
+    subnet_ids = ["${split(",", var.subnet_ids)}"]
+  }
 }
 
 resource "aws_elasticsearch_domain_policy" "main" {
@@ -28,12 +33,12 @@ resource "aws_elasticsearch_domain_policy" "main" {
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::${var.account_id}:root"
+        "AWS": ["*"]
       },
       "Action": [
         "es:*"
       ],
-      "Resource": "arn:aws:es:${var.region}:${var.account_id}:domain/articles-api-staging-es/*"
+      "Resource": "${aws_elasticsearch_domain.main.arn}"
     }
   ]
 }
