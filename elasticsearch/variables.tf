@@ -54,3 +54,11 @@ variable "zone_awareness_enabled" {
 variable "zone_id" {
   description = "Route 53 zone to create service discovery CNAME in"
 }
+
+variable "security_group_ids" {
+  description = "VPC Security Groups for the ES Cluster"
+}
+
+variable "subnet_ids" {
+  description = "VPC Security Groups for the ES Cluster.  Use ONE subnet if zone awareness is disabled, TWO if it is enabled."
+}
