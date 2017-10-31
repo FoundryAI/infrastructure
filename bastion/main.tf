@@ -50,6 +50,10 @@ variable "environment" {
   description = "Environment tag, e.g prod"
 }
 
+variable "zone_id" {
+  description = "DNS Zone"
+}
+
 module "ami" {
   source = "github.com/terraform-community-modules/tf_aws_ubuntu_ami/ebs"
   region = "${var.region}"
@@ -78,7 +82,19 @@ resource "aws_eip" "bastion" {
   vpc = true
 }
 
+resource "aws_route53_record" "bastion" {
+  name = "${var.environment}-bastion"
+  type = "A"
+  zone_id = "${var.zone_id}"
+  ttl = 300
+  records = ["${aws_eip.bastion.public_ip}"]
+}
+
 // Bastion external IP address.
 output "external_ip" {
   value = "${aws_eip.bastion.public_ip}"
+}
+
+output "external_domain" {
+  value = "${aws_route53_record.bastion.fqdn}"
 }
