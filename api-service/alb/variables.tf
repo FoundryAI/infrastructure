@@ -10,7 +10,7 @@ variable "name" {
 
 variable "internal" {
   description = "Whether or not the ALB should be internal"
-  default = "true"
+  default = "false"
 }
 
 variable "subnet_ids" {
