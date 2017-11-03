@@ -44,9 +44,16 @@ resource "aws_cloudfront_distribution" "main" {
   default_root_object = "${var.default_root_object}"
   aliases = ["${split(",", var.cloudfront_distribution_aliases)}"]
 
-  "origin" {
-    domain_name = "${aws_s3_bucket.main.bucket_domain_name}"
+  origin {
+    domain_name = "${aws_s3_bucket.main.website_endpoint}"
     origin_id = "S3-${var.name}-${var.environment}"
+
+    custom_origin_config {
+      http_port = 80
+      https_port = 443
+      origin_protocol_policy = "http-only"
+      origin_ssl_protocols = ["TLSv1.2"]
+    }
   }
 
   "logging_config" {
@@ -76,6 +83,7 @@ resource "aws_cloudfront_distribution" "main" {
     }
     target_origin_id = "S3-${var.name}-${var.environment}"
     viewer_protocol_policy = "redirect-to-https"
+    compress = true
   }
 
   "viewer_certificate" {
