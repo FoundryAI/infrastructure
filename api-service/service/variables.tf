@@ -55,7 +55,7 @@ variable "internal_zone_id" {
 
 variable "internal_alb" {
   description = "Whether or not the ALB should be internal"
-  default = "true"
+  default = "false"
 }
 
 /**
