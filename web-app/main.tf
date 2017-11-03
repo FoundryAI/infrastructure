@@ -193,6 +193,11 @@ resource "aws_codebuild_project" "main" {
       "name"  = "ENVIRONMENT"
       "value" = "${var.environment}"
     }
+
+    environment_variable {
+      "name"  = "NODE_ENV"
+      "value" = "${var.environment}"
+    }
   }
 
   "source" {
