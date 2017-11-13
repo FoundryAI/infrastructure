@@ -1,25 +1,6 @@
 /**
  * Required Variables.
  */
-variable "api_id" {
-  description = "The ID of the REST API"
-}
-
-variable "api_root_id" {
-  description = "The resource ID of the REST API's root"
-}
-
-variable "api_resource_name" {
-  description = "The resource name to give this service"
-}
-
-variable "api_endpoint" {
-  description = "the base api endpoint to set for the rest api"
-}
-
-variable "api_stage" {
-  description = "The API stage"
-}
 
 variable "environment" {
   description = "Environment tag, e.g prod"
@@ -54,10 +35,19 @@ variable "ssl_certificate_id" {
   description = "SSL Certificate ID to use"
 }
 
+//variable "external_dns_name" {
+//  description = "The subdomain under which the ELB is exposed externally, defaults to the task name"
+//  default = ""
+//}
+
 variable "internal_dns_name" {
   description = "The subdomain under which the ELB is exposed internally, defaults to the task name"
   default = ""
 }
+
+//variable "external_zone_id" {
+//  description = "The zone ID to create the record in"
+//}
 
 variable "internal_zone_id" {
   description = "The zone ID to create the record in"

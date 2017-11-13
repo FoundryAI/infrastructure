@@ -9,22 +9,27 @@ output "name" {
 
 // The DNS name of the ALB
 output "dns" {
-  value = "${module.service.alb_dns_name}"
+  value = "${module.alb.dns_name}"
 }
 
 // The id of the ALB
 output "alb" {
-  value = "${module.service.alb}"
+  value = "${module.alb.arn}"
+}
+
+// DNS name of the ALB
+output "alb_dns_name" {
+  value = "${module.alb.dns_name}"
 }
 
 // The id of the ALB target group
 output "alb_target_group" {
-  value = "${module.service.alb_target_group}"
+  value = "${module.alb.target_group_arn}"
 }
 
 // The zone id of the ALB
 output "zone_id" {
-  value = "${module.service.zone_id}"
+  value = "${module.alb.zone_id}"
 }
 
 // The name of the repository

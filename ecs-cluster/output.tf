@@ -7,3 +7,7 @@ output "name" {
 output "security_group_id" {
   value = "${aws_security_group.cluster.id}"
 }
+
+output "id" {
+  value = "${aws_ecs_cluster.main.id}"
+}

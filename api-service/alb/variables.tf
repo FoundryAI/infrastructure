@@ -8,6 +8,11 @@ variable "name" {
   description = "ALB name, e.g cdn"
 }
 
+variable "internal" {
+  description = "Whether or not the ALB should be internal"
+  default = "false"
+}
+
 variable "subnet_ids" {
   description = "Comma separated list of subnet IDs"
 }
@@ -32,16 +37,8 @@ variable "log_bucket" {
   description = "S3 bucket name to write ALB logs into"
 }
 
-variable "external_dns_name" {
-  description = "The subdomain under which the ALB is exposed externally, defaults to the task name"
-}
-
 variable "internal_dns_name" {
   description = "The subdomain under which the ALB is exposed internally, defaults to the task name"
-}
-
-variable "external_zone_id" {
-  description = "The zone ID to create the record in"
 }
 
 variable "internal_zone_id" {

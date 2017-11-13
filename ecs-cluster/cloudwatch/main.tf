@@ -37,3 +37,12 @@ resource "aws_cloudwatch_log_group" "messages" {
   name              = "${var.cloudwatch_prefix}/var/log/messages"
   retention_in_days = 30
 }
+
+resource "aws_cloudwatch_log_group" "xray" {
+  name              = "${var.cloudwatch_prefix}/xray"
+  retention_in_days = 30
+}
+
+output "xray_group" {
+  value = "${aws_cloudwatch_log_group.xray.name}"
+}
