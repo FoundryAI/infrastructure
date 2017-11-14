@@ -25,6 +25,7 @@ data "aws_region" "current" {
 # of Terraform (ie. CodePipeline builds).
 data "aws_ecs_task_definition" "task" {
   task_definition = "${aws_ecs_task_definition.main.family}"
+  depends_on = ["aws_ecs_task_definition.main"]
 }
 
 # Gets the CURRENT container definition from AWS.  This allows us to fully reconstruct
