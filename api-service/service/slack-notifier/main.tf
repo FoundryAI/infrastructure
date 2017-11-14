@@ -60,7 +60,7 @@ resource "aws_iam_role_policy_attachment" "main" {
 
 resource "aws_lambda_function" "main" {
   function_name = "${var.name}-slack-notifier"
-  handler = "main.send_event"
+  handler = "main.send_post"
   role = "${aws_iam_role.main.arn}"
   runtime = "python2.7"
   memory_size = 128
