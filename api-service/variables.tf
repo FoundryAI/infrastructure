@@ -175,3 +175,15 @@ variable "codebuild_image" {
   description = "AWS CodeBuild image."
   default = "aws/codebuild/docker:1.12.1"
 }
+
+variable "environment_variables" {
+  description = "Environment variables to pass to container instance"
+  type = "map"
+  default = {}
+}
+
+variable "environment_secrets" {
+  description = "Environment variables to pass to container instance that should be encrypted at rest via KMS"
+  type = "map"
+  default = {}
+}

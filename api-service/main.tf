@@ -49,6 +49,8 @@ module "service" {
   internal_alb = "${var.internal_alb}"
   codebuild_image = "${var.codebuild_image}"
   codebuild_instance_type = "${var.codebuild_instance_type}"
+  environment_variables = "${var.environment_variables}"
+  environment_secrets = "${var.environment_secrets}"
 }
 
 module "api_gateway" {
