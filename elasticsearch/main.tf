@@ -54,3 +54,10 @@ resource "aws_route53_record" "main" {
     "${aws_elasticsearch_domain.main.endpoint}"
   ]
 }
+
+resource "aws_ssm_parameter" "secret" {
+  name = "/${var.environment}/common/ES_DOMAIN"
+  value = "${aws_elasticsearch_domain.main.endpoint}"
+  type  = "String"
+}
+

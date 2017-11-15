@@ -111,6 +111,10 @@ data "aws_iam_policy_document" "codepipeline_policy_doc" {
   }
 }
 
+data "aws_kms_alias" "ssm" {
+  name = "alias/aws/ssm"
+}
+
 
 data "aws_iam_policy_document" "ecs_service_policy_doc" {
   statement {
@@ -122,6 +126,25 @@ data "aws_iam_policy_document" "ecs_service_policy_doc" {
       "ecs:*"
     ]
   }
+
+  statement {
+    resources = [
+      "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/${var.environment}/${var.name}/*",
+      "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/${var.environment}/common/*"
+    ]
+    actions = [
+      "ssm:GetParameter",
+      "ssm:GetParameters",
+      "ssm:GetParametersByPath",
+      "ssm:DescribeParameters"
+    ]
+  }
+
+  statement {
+    resources = ["${data.aws_kms_alias.ssm.arn}"]
+    actions = ["kms:Decrypt"]
+  }
+
 }
 
 resource "aws_iam_role" "codebuild" {
