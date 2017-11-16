@@ -126,9 +126,6 @@ locals {
   default_parameters = {
     PORT = "${var.port}"
     ENVIRONMENT = "${var.environment}"
-    RDS_DB_NAME = "${var.rds_db_name}"
-    RDS_HOSTNAME = "${var.rds_hostname}"
-    RDS_USERNAME = "${var.rds_username}"
     DYNAMODB_ENDPOINT = "dynamodb.us-east-1.amazonaws.com"
     SNS_ENDPOINT = "sns.us-east-1.amazonaws.com"
     AWS_ACCOUNT_ID = "${data.aws_caller_identity.current.account_id}"
@@ -140,7 +137,6 @@ locals {
   default_secrets = {
     GITHUB_OAUTH_TOKEN = "${var.oauth_token}"
     AWS_SECRET_KEY = "${var.aws_secret_key}"
-    RDS_PASSWORD = "${var.rds_password}"
   }
 }
 
