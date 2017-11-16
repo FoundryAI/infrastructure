@@ -130,8 +130,6 @@ locals {
     SNS_ENDPOINT = "sns.us-east-1.amazonaws.com"
     AWS_ACCOUNT_ID = "${data.aws_caller_identity.current.account_id}"
     AWS_ACCESS_KEY = "${var.aws_access_key}"
-    HUD_AI_BASE_API_URL = "https://${var.environment}.api.hud.ai/v1"
-    HUD_AI_BASE_AUTH_URL = "https://${var.environment}.accounts.hud.ai/v1/auth"
   }
 
   default_secrets = {
