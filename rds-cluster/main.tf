@@ -172,3 +172,31 @@ output "fqdn" {
 output "port" {
   value = "${aws_rds_cluster.main.port}"
 }
+
+locals {
+  ssm_prefix = "/${var.environment}/${var.name}/env"
+}
+
+resource "aws_ssm_parameter" "db_name" {
+  name = "${local.ssm_prefix}/RDS_DB_NAME"
+  value = "${var.database_name}"
+  type  = "String"
+}
+
+resource "aws_ssm_parameter" "hostname" {
+  name = "${local.ssm_prefix}/RDS_HOSTNAME"
+  value = "${aws_rds_cluster.main.endpoint}"
+  type  = "String"
+}
+
+resource "aws_ssm_parameter" "username" {
+  name = "${local.ssm_prefix}/RDS_USERNAME"
+  value = "${var.master_username}"
+  type  = "String"
+}
+
+resource "aws_ssm_parameter" "password" {
+  name = "${local.ssm_prefix}/RDS_PASSWORD"
+  value = "${var.master_password}"
+  type  = "SecureString"
+}

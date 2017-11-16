@@ -109,61 +109,42 @@ resource "aws_ecs_task_definition" "main" {
     },
     "environment": [
       {
-        "name": "RDS_DB_NAME",
-        "value": "${var.rds_db_name}"
-      },
-      {
-        "name": "RDS_HOSTNAME",
-        "value": "${var.rds_hostname}"
-      },
-      {
-        "name": "RDS_USERNAME",
-        "value": "${var.rds_username}"
-      },
-      {
-        "name": "RDS_PASSWORD",
-        "value": "${var.rds_password}"
-      },
-      {
-        "name": "DYNAMODB_ENDPOINT",
-        "value": "dynamodb.us-east-1.amazonaws.com"
-      },
-      {
-        "name": "SNS_ENDPOINT",
-        "value": "sns.us-east-1.amazonaws.com"
-      },
-      {
-        "name": "AWS_ACCOUNT_ID",
-        "value": "${data.aws_caller_identity.current.account_id}"
-      },
-      {
-        "name": "AWS_REGION",
-        "value": "${data.aws_region.current.name}"
-      },
-      {
-        "name": "AWS_ACCESS_KEY",
-        "value": "${var.aws_access_key}"
-      },
-      {
-        "name": "AWS_SECRET_KEY",
-        "value": "${var.aws_secret_key}"
-      },
-      {
         "name": "ENVIRONMENT",
         "value": "${var.environment}"
       },
       {
-        "name": "PORT",
-        "value": "${var.port}"
-      },
-      {
-        "name": "GITHUB_OAUTH_TOKEN",
-        "value": "${var.oauth_token}"
+        "name": "AWS_REGION",
+        "value": "${data.aws_region.current.name}"
       }
     ]
   }
 ]
 DEFINITION
+}
+
+locals {
+  default_parameters = {
+    PORT = "${var.port}"
+    ENVIRONMENT = "${var.environment}"
+    DYNAMODB_ENDPOINT = "dynamodb.us-east-1.amazonaws.com"
+    SNS_ENDPOINT = "sns.us-east-1.amazonaws.com"
+    AWS_ACCOUNT_ID = "${data.aws_caller_identity.current.account_id}"
+    AWS_ACCESS_KEY = "${var.aws_access_key}"
+  }
+
+  default_secrets = {
+    GITHUB_OAUTH_TOKEN = "${var.oauth_token}"
+    AWS_SECRET_KEY = "${var.aws_secret_key}"
+  }
+}
+
+module "parameters" {
+  source = "./parameters"
+  environment = "${var.environment}"
+  service = "${var.name}"
+
+  parameters = "${merge(local.default_parameters, var.environment_variables)}"
+  secrets = "${merge(local.default_secrets, var.environment_secrets)}"
 }
 
 resource "aws_ecs_service" "main" {
@@ -397,6 +378,7 @@ module "deploy_lambda" {
 module "iam_roles" {
   source = "./ci-iam"
   name = "${var.name}"
+  environment = "${var.environment}"
   ecr_name = "${var.ecr_name}"
   artifact_bucket_arn = "${aws_s3_bucket.artifacts.arn}"
   deployment_bucket_arn = "${aws_s3_bucket.main.arn}"

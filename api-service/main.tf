@@ -37,10 +37,6 @@ module "service" {
   source_repo = "${var.source_repo}"
   source_branch = "${var.source_branch}"
   oauth_token = "${var.oauth_token}"
-  rds_db_name = "${var.rds_db_name}"
-  rds_hostname = "${var.rds_hostname}"
-  rds_username = "${var.rds_username}"
-  rds_password = "${var.rds_password}"
   ecr_name = "${var.ecr_name}"
   aws_access_key = "${var.aws_access_key}"
   aws_secret_key = "${var.aws_secret_key}"
@@ -49,6 +45,8 @@ module "service" {
   internal_alb = "${var.internal_alb}"
   codebuild_image = "${var.codebuild_image}"
   codebuild_instance_type = "${var.codebuild_instance_type}"
+  environment_variables = "${var.environment_variables}"
+  environment_secrets = "${var.environment_secrets}"
 }
 
 module "api_gateway" {

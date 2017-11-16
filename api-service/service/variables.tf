@@ -120,22 +120,6 @@ variable "oauth_token" {
   description = "GitHub oauth token"
 }
 
-variable "rds_db_name" {
-  description = "RDS DB name for running migrations (optional)"
-}
-
-variable "rds_hostname" {
-  description = "RDS DB hostname for running migrations (optional)"
-}
-
-variable "rds_username" {
-  description = "RDS DB username for running migrations (optional)"
-}
-
-variable "rds_password" {
-  description = "RDS DB password for running migrations (optional)"
-}
-
 variable "ecr_name" {
   description = "ECR name"
 }
@@ -164,4 +148,16 @@ variable "codebuild_instance_type" {
 variable "codebuild_image" {
   description = "AWS CodeBuild image."
   default = "aws/codebuild/docker:1.12.1"
+}
+
+variable "environment_variables" {
+  description = "Environment variables to pass to container instance"
+  type = "map"
+  default = {}
+}
+
+variable "environment_secrets" {
+  description = "Environment variables to pass to container instance that should be encrypted at rest via KMS"
+  type = "map"
+  default = {}
 }

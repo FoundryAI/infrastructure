@@ -2,6 +2,9 @@ variable "name" {
   description = "Domain name.  All lower-case.  a-z,0-9,- allowed."
 }
 
+variable "environment" {
+}
+
 variable "version" {
   description = "ElasticSearch version"
   default = "5.5"
