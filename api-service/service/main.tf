@@ -289,6 +289,7 @@ resource "aws_codepipeline" "main" {
         Owner = "${var.source_owner}"
         Repo = "${var.source_repo}"
         Branch = "${var.source_branch}"
+        OAuthToken = "${var.oauth_token}"
       }
     }
 
