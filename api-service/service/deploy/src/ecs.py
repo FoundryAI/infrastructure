@@ -398,6 +398,7 @@ class EcsAction(object):
         return task_definition
 
     def update_task_definition(self, task_definition):
+        if 'compatibilities' in task_definition.additional_properties: del task_definition.additional_properties['compatibilities']
         response = self._client.register_task_definition(
             family=task_definition.family,
             containers=task_definition.containers,
