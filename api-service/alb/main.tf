@@ -51,6 +51,7 @@ resource "aws_alb_target_group" "main" {
   deregistration_delay = 90
 
   health_check {
+    matcher  = "200"
     interval = 30
     healthy_threshold = 2
     unhealthy_threshold = 2
