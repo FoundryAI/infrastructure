@@ -14,14 +14,6 @@ variable "master_instance_type" {
   default = "m3.xlarge"
 }
 
-variable "service_role" {
-  description = "IAM role that will be assumed by the Amazon EMR service to access AWS resources"
-}
-
-variable "security_configuration" {
-  description = "The security configuration name to attach to the EMR cluster. Only valid for EMR clusters with release_label 4.8.0 or greater"
-}
-
 variable "core_instance_types" {
   description = "The EC2 instance type of the slave nodes. Cannot be specified if instance_groups is set"
   default = "m3.xlarge"
