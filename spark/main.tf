@@ -77,9 +77,11 @@ resource "aws_iam_role" "iam_emr_spark_profile_role" {
   "Statement": [
     {
       "Effect": "Allow",
-      "Principal": [
-        "Service": "ec2.amazonaws.com"
-      ],
+      "Principal": {
+        "Service": [
+          "ec2.amazonaws.com"
+        ]
+      },
       "Action": "sts:AssumeRole"
     }
   ]
@@ -97,9 +99,9 @@ resource "aws_iam_role" "iam_emr_spark_role" {
   "Statement": [
     {
       "Effect": "Allow",
-      "Principal": [
-        "Service": "elasticmapreduce.amazonaws.com"
-      ],
+      "Principal": {
+        "Service": ["elasticmapreduce.amazonaws.com"]
+      },
       "Action": "sts:AssumeRole"
     }
   ]
