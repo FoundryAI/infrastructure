@@ -138,6 +138,35 @@ resource "aws_security_group" "main" {
   }
 }
 
+resource "aws_security_group" "service_access" {
+  name = "${var.name}-${var.environment}-service-access"
+  description = "Allow all inbound traffic to EMR spark"
+  vpc_id      = "${var.vpc_id}"
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  lifecycle {
+    ignore_changes = ["ingress", "egress"]
+  }
+
+  tags {
+    Name        = "${var.name}"
+    Environment = "${var.environment}"
+  }
+}
+
 resource "aws_s3_bucket" "main" {
   bucket = "${var.name}-${var.environment}-logs"
   acl    = "private"
@@ -163,7 +192,9 @@ resource "aws_emr_cluster" "main" {
 
   ec2_attributes {
     subnet_id                         = "${var.subnet_id}"
-    service_access_security_group     = "${aws_security_group.main.id}"
+    emr_managed_master_security_group = "${aws_security_group.main.id}"
+    emr_managed_slave_security_group  = "${aws_security_group.main.id}"
+    service_access_security_group     = "${aws_security_group.service_access.id}"
     instance_profile                  = "${aws_iam_role.iam_emr_spark_profile_role.id}"
   }
 
