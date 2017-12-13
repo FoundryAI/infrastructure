@@ -59,3 +59,7 @@ variable "bootstrap_action_args" {
   type = "list"
   default = ["instance.isMaster=true", "echo running on master node"]
 }
+
+variable "domain_zone_id" {
+  description = "Route 53 zone ID"
+}

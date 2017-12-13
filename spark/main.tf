@@ -1,5 +1,5 @@
 resource "aws_iam_role_policy" "iam_emr_service_policy" {
-  name = "iam_emr_service_policy"
+  name = "iam_emr_service_policy_${var.environment}"
   role = "${aws_iam_role.iam_emr_spark_role.id}"
 
   policy = <<EOF
@@ -69,7 +69,7 @@ EOF
 }
 
 resource "aws_iam_role" "iam_emr_spark_profile_role" {
-  name = "iam_emr_spark_profile_role"
+  name = "iam_emr_spark_profile_role_${var.environment}"
 
   assume_role_policy = <<EOF
 {
@@ -90,7 +90,7 @@ EOF
 
 
 resource "aws_iam_role" "iam_emr_spark_role" {
-  name = "iam_emr_spark_role"
+  name = "iam_emr_spark_role_${var.environment}"
 
   assume_role_policy = <<EOF
 {
@@ -110,7 +110,7 @@ EOF
 }
 
 resource "aws_security_group" "main" {
-  name = "${format("%s-%s-emr-spark", var.name, var.environment)}"
+  name = "${var.name}-${var.environment}"
   description = "Allow all inbound traffic to EMR spark"
   vpc_id      = "${var.vpc_id}"
 
@@ -139,7 +139,7 @@ resource "aws_security_group" "main" {
 }
 
 resource "aws_s3_bucket" "main" {
-  bucket = "${var.name}-${var.environment}-emr-logs"
+  bucket = "${var.name}-${var.environment}-logs"
   acl    = "private"
 
   versioning {
@@ -153,7 +153,7 @@ resource "aws_s3_bucket" "main" {
 }
 
 resource "aws_emr_cluster" "main" {
-  name          = "emr-${var.environment}-${var.name}"
+  name          = "${var.name}-${var.environment}"
   release_label = "${var.release}"
   applications  = ["Spark"]
 
@@ -188,4 +188,20 @@ resource "aws_emr_cluster" "main" {
 //  configurations = "test-fixtures/emr_configurations.json"
 
   service_role = "${aws_iam_role.iam_emr_spark_role.arn}"
+}
+
+resource "aws_route53_record" "main" {
+  zone_id = "${var.domain_zone_id}"
+  name = "${var.name}"
+  type = "TXT"
+  ttl = 300
+  records = [
+    "${aws_emr_cluster.main.master_public_dns}"
+  ]
+}
+
+resource "aws_ssm_parameter" "secret" {
+  name = "/${var.environment}/common/EMR_SPARK_DOMAIN"
+  value = "${aws_emr_cluster.main.master_public_dns}"
+  type  = "String"
 }
