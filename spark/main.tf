@@ -114,6 +114,45 @@ resource "aws_iam_role" "iam_emr_spark_role" {
 EOF
 }
 
+resource "aws_iam_role_policy" "iam_emr_profile_policy" {
+  name = "iam_emr_profile_policy_${var.environment}"
+  role = "${aws_iam_role.iam_emr_spark_profile_role.id}"
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [{
+        "Effect": "Allow",
+        "Resource": "*",
+        "Action": [
+            "cloudwatch:*",
+            "dynamodb:*",
+            "ec2:Describe*",
+            "elasticmapreduce:Describe*",
+            "elasticmapreduce:ListBootstrapActions",
+            "elasticmapreduce:ListClusters",
+            "elasticmapreduce:ListInstanceGroups",
+            "elasticmapreduce:ListInstances",
+            "elasticmapreduce:ListSteps",
+            "kinesis:CreateStream",
+            "kinesis:DeleteStream",
+            "kinesis:DescribeStream",
+            "kinesis:GetRecords",
+            "kinesis:GetShardIterator",
+            "kinesis:MergeShards",
+            "kinesis:PutRecord",
+            "kinesis:SplitShard",
+            "rds:Describe*",
+            "s3:*",
+            "sdb:*",
+            "sns:*",
+            "sqs:*"
+        ]
+    }]
+}
+EOF
+}
+
 resource "aws_security_group" "main" {
   name = "${var.name}-${var.environment}"
   description = "Allow all inbound traffic to EMR spark"
@@ -200,7 +239,7 @@ resource "aws_emr_cluster" "main" {
     emr_managed_master_security_group = "${aws_security_group.main.id}"
     emr_managed_slave_security_group  = "${aws_security_group.main.id}"
     service_access_security_group     = "${aws_security_group.service_access.id}"
-    instance_profile                  = "${aws_iam_role.iam_emr_spark_profile_role.id}"
+    instance_profile                  = "${aws_iam_instance_profile.emr_profile.arn}"
   }
 
   ebs_root_volume_size     = 100
