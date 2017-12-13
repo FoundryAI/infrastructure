@@ -68,6 +68,11 @@ resource "aws_iam_role_policy" "iam_emr_service_policy" {
 EOF
 }
 
+resource "aws_iam_instance_profile" "emr_profile" {
+  name  = "emr_profile_${var.environment}"
+  role = "${aws_iam_role.iam_emr_spark_profile_role.name}"
+}
+
 resource "aws_iam_role" "iam_emr_spark_profile_role" {
   name = "iam_emr_spark_profile_role_${var.environment}"
 
