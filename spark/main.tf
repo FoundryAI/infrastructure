@@ -165,6 +165,7 @@ resource "aws_emr_cluster" "main" {
     subnet_id                         = "${var.subnet_id}"
     emr_managed_master_security_group = "${aws_security_group.main.id}"
     emr_managed_slave_security_group  = "${aws_security_group.main.id}"
+    service_access_security_group     = "${aws_security_group.main.id}"
     instance_profile                  = "${aws_iam_role.iam_emr_spark_profile_role.id}"
   }
 
