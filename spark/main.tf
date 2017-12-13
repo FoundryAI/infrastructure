@@ -157,7 +157,7 @@ resource "aws_emr_cluster" "main" {
   release_label = "${var.release}"
   applications  = ["Spark"]
 
-  log_uri = "${aws_s3_bucket.main.bucket_domain_name}/elasticmapreduce/"
+  log_uri = "s3://${aws_s3_bucket.main.bucket_domain_name}/elasticmapreduce/"
   termination_protection = false
   keep_job_flow_alive_when_no_steps = true
 
