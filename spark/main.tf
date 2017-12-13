@@ -73,14 +73,13 @@ resource "aws_iam_role" "iam_emr_spark_profile_role" {
 
   assume_role_policy = <<EOF
 {
-  "Version": "2008-10-17",
+  "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "",
       "Effect": "Allow",
-      "Principal": {
+      "Principal": [
         "Service": "ec2.amazonaws.com"
-      },
+      ],
       "Action": "sts:AssumeRole"
     }
   ]
@@ -94,14 +93,13 @@ resource "aws_iam_role" "iam_emr_spark_role" {
 
   assume_role_policy = <<EOF
 {
-  "Version": "2008-10-17",
+  "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "",
       "Effect": "Allow",
-      "Principal": {
+      "Principal": [
         "Service": "elasticmapreduce.amazonaws.com"
-      },
+      ],
       "Action": "sts:AssumeRole"
     }
   ]
