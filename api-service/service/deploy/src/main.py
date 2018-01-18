@@ -47,7 +47,7 @@ def deploy_handler(event, context):
             access_key_id=payload['aws_access_key_id'],
             secret_access_key=payload['aws_secret_key'],
             rollback=True,
-            timeout=180
+            timeout=300
         )
         code_pipeline.put_job_success_result(jobId=jobId)
     except Exception as e:
