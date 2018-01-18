@@ -61,3 +61,8 @@ resource "aws_ssm_parameter" "secret" {
   type  = "String"
 }
 
+resource "aws_ssm_parameter" "secret_host" {
+  name = "/${var.environment}/common/ES_HOST"
+  value = "${aws_elasticsearch_domain.main.endpoint}"
+  type  = "String"
+}
