@@ -62,12 +62,6 @@ resource "aws_cloudfront_distribution" "main" {
     prefix = "cloudfront/${var.name}/${var.environment}"
   }
 
-  "restrictions" {
-    "geo_restriction" {
-      restriction_type = "blacklist"
-      locations        = []
-    }
-  }
   "default_cache_behavior" {
     allowed_methods = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
