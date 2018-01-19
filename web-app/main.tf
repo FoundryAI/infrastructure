@@ -61,6 +61,12 @@ resource "aws_cloudfront_distribution" "main" {
     bucket = "${var.s3_logs_bucket}.s3.amazonaws.com"
     prefix = "cloudfront/${var.name}/${var.environment}"
   }
+  
+  "restrictions" {		
+     "geo_restriction" {		
+       restriction_type = "none"
+     }		
+   }
 
   "default_cache_behavior" {
     allowed_methods = ["GET", "HEAD", "OPTIONS"]
