@@ -128,6 +128,7 @@ resource "aws_launch_configuration" "main" {
     "${aws_security_group.cluster.id}"]
   user_data = "${data.template_cloudinit_config.cloud_config.rendered}"
   associate_public_ip_address = "${var.associate_public_ip_address}"
+  spot_price = "${var.instance_spot_price}"
 
   # root
   root_block_device {

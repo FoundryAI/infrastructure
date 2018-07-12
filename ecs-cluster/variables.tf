@@ -49,6 +49,12 @@ variable "instance_ebs_optimized" {
   default = true
 }
 
+variable "instance_spot_price" {
+  type = "string"
+  description = "How much, per hour, you are willing to pay for the instances, e.g. 0.015"
+  default = "0"
+}
+
 variable "min_size" {
   description = "Minimum instance count"
   default = 3
