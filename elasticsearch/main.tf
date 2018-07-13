@@ -38,7 +38,7 @@ resource "aws_elasticsearch_domain_policy" "main" {
       "Action": [
         "es:*"
       ],
-      "Resource": "${aws_elasticsearch_domain.main.arn}"
+      "Resource": "${aws_elasticsearch_domain.main.arn}/*"
     }
   ]
 }
@@ -51,7 +51,7 @@ resource "aws_route53_record" "main" {
   type = "TXT"
   ttl = 300
   records = [
-    "${aws_elasticsearch_domain.main.endpoint}/*"
+    "${aws_elasticsearch_domain.main.endpoint}"
   ]
 }
 
