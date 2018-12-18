@@ -49,8 +49,13 @@ variable "zone_id" {
   description = "Route 53 domain zone ID to create the DNS record in"
 }
 
+variable "codebuild_prebuild_command" {
+  description = "Command to have codebuild install the build project"
+  default = "npm install"
+}
+
 variable "codebuild_build_command" {
-  description = "Command to have codebuild run to build project"
+  description = "Command to have codebuild run the build project"
   default = "npm run build"
 }
 

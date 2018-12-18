@@ -215,7 +215,7 @@ version: 0.1
 phases:
   pre_build:
     commands:
-      - npm install
+      - ${var.codebuild_prebuild_command}
   build:
     commands:
       - ${var.codebuild_build_command}
