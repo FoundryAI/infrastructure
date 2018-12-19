@@ -19,7 +19,7 @@ resource "aws_s3_bucket" "s3" {
 
   logging {
     target_bucket = "${var.log_bucket}"
-    target_prefix = "log/${var.name}/"
+    target_prefix = "log/${var.name}-${var.environment}/"
   }
 
   server_side_encryption_configuration {
