@@ -114,6 +114,11 @@ data "template_cloudinit_config" "cloud_config" {
     content_type = "${var.extra_cloud_config_type}"
     content = "${var.extra_cloud_config_content}"
   }
+
+  part {
+    content_type = "text/x-shellscript"
+    content = "${file(format("%s/files/threatstack.sh", path.module))}"
+  }
 }
 
 resource "aws_launch_configuration" "main" {
