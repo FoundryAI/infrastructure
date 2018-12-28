@@ -9,13 +9,7 @@ resource "aws_instance" "xray" {
   ]
   monitoring = true
   iam_instance_profile = "${aws_iam_instance_profile.xray.id}"
-  user_data = <<USERDATA
-#!/bin/bash
-curl https://s3.dualstack.us-east-2.amazonaws.com/aws-xray-assets.us-east-2/xray-daemon/aws-xray-daemon-2.x.rpm -o /home/ec2-user/xray.rpm
-yum install -y /home/ec2-user/xray.rpm
-sed -i -e 's/UDPAddress.*$/UDPAddress: "0.0.0.0:2000"/' /etc/amazon/xray/cfg.yaml
-pkill xray
-USERDATA
+  user_data = "${file(format("%s/user_data.sh", path.module))}"
 
   root_block_device {
     volume_type = "gp2"
