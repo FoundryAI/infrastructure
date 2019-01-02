@@ -116,6 +116,11 @@ variable "monitoring_role_arn" {
   description = "ARN of role to allow RDS to send enhanced monitoring metrics"
 }
 
+variable "monitoring_interval" {
+  description = "ARN of role to allow RDS to send enhanced monitoring metrics"
+  default = 0
+}
+
 resource "aws_security_group" "main" {
   name        = "${var.name}-rds"
   description = "Allows traffic to RDS from other security groups"
