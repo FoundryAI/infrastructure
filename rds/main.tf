@@ -99,6 +99,7 @@ variable "subnet_ids" {
 
 variable "kms_key_id" {
   description = "ARN of the kms key to encrypt"
+  default     = ""
 }
 
 variable "storage_encrypted" {
