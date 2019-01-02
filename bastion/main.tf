@@ -54,15 +54,8 @@ variable "zone_id" {
   description = "DNS Zone"
 }
 
-module "ami" {
-  source = "github.com/terraform-community-modules/tf_aws_ubuntu_ami/ebs"
-  region = "${var.region}"
-  distribution = "trusty"
-  instance_type = "${var.instance_type}"
-}
-
 resource "aws_instance" "bastion" {
-  ami = "${module.ami.ami_id}"
+  ami = "ami-0c9da1d34cb689bf6"
   source_dest_check = false
   instance_type = "${var.instance_type}"
   key_name = "${var.key_name}"
