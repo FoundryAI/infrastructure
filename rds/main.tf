@@ -97,6 +97,25 @@ variable "subnet_ids" {
   type        = "list"
 }
 
+variable "kms_key_id" {
+  description = "ARN of the kms key to encrypt"
+  default     = ""
+}
+
+variable "storage_encrypted" {
+  description = "Is storage encrypted at rest"
+  default     = true
+}
+
+variable "deletion_protection" {
+  description = "Is deletion_protection enabled"
+  default     = true
+}
+
+variable "monitoring_role_arn" {
+  description = "ARN of role to allow RDS to send enhanced monitoring metrics"
+}
+
 resource "aws_security_group" "main" {
   name        = "${var.name}-rds"
   description = "Allows traffic to RDS from other security groups"
@@ -151,6 +170,7 @@ resource "aws_db_instance" "main" {
   maintenance_window        = "${var.maintenance_window}"
   apply_immediately         = "${var.apply_immediately}"
   final_snapshot_identifier = "${var.name}-finalsnapshot"
+  monitoring_role_arn = "${var.monitoring_role_arn}"
 
   # Hardware
   instance_class    = "${var.instance_class}"
@@ -161,6 +181,9 @@ resource "aws_db_instance" "main" {
   db_subnet_group_name   = "${aws_db_subnet_group.main.id}"
   vpc_security_group_ids = ["${aws_security_group.main.id}"]
   publicly_accessible    = "${var.publicly_accessible}"
+  storage_encrypted      = "${var.storage_encrypted}"
+  kms_key_id             = "${var.kms_key_id}"
+  deletion_protection    = "${var.deletion_protection}"
 }
 
 output "addr" {
