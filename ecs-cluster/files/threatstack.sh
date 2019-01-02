@@ -14,7 +14,7 @@ gpgcheck=1
 EOF
  
 # 2. Import PGP Key
-sudo wget https://app.threatstack.com/RPM-GPG-KEY-THREATSTACK -O /etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK
+sudo curl https://app.threatstack.com/RPM-GPG-KEY-THREATSTACK -o /etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK
 sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK
  
 # 3. Install and configure the agent
