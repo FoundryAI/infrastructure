@@ -106,6 +106,11 @@ variable "storage_encrypted" {
   default     = true
 }
 
+variable "deletion_protection" {
+  description = "Is deletion_protection enabled"
+  default     = true
+}
+
 resource "aws_security_group" "main" {
   name        = "${var.name}-rds"
   description = "Allows traffic to RDS from other security groups"
@@ -172,6 +177,7 @@ resource "aws_db_instance" "main" {
   publicly_accessible    = "${var.publicly_accessible}"
   storage_encrypted      = "${var.storage_encrypted}"
   kms_key_id             = "${var.kms_key_id}"
+  deletion_protection             = "${var.deletion_protection}"
 }
 
 output "addr" {
