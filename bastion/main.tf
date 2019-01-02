@@ -54,7 +54,7 @@ variable "zone_id" {
   description = "DNS Zone"
 }
 
-data "ami" "ubuntu" {
+data "aws_ami" "ubuntu" {
     most_recent = true
 
     filter {
@@ -71,7 +71,7 @@ data "ami" "ubuntu" {
 }
 
 resource "aws_instance" "bastion" {
-  ami = "${data.ami.ubuntu.id}"
+  ami = "${data.aws_ami.ubuntu.id}"
   source_dest_check = false
   instance_type = "${var.instance_type}"
   key_name = "${var.key_name}"
