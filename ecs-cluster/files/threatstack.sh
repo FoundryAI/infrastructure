@@ -18,5 +18,5 @@ sudo wget https://app.threatstack.com/RPM-GPG-KEY-THREATSTACK -O /etc/pki/rpm-gp
 sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK
  
 # 3. Install and configure the agent
-sudo yum install threatstack-agent &&\
+sudo yum -y install threatstack-agent &&\
 sudo cloudsight setup --deploy-key=29c5e5a38c36fbc45cd3325ca737b678hsR6utKVzwUeBFTeTO284T9vrPITbMX9LpldMBwt --ruleset="Base Rule Set" --agent_type=i
