@@ -71,7 +71,7 @@ data "ami" "ubuntu" {
 }
 
 resource "aws_instance" "bastion" {
-  ami = "${module.ami.ubuntu.id}"
+  ami = "${data.ami.ubuntu.id}"
   source_dest_check = false
   instance_type = "${var.instance_type}"
   key_name = "${var.key_name}"
