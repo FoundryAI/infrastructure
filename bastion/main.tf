@@ -54,15 +54,24 @@ variable "zone_id" {
   description = "DNS Zone"
 }
 
-module "ami" {
-  source = "github.com/terraform-community-modules/tf_aws_ubuntu_ami/ebs"
-  region = "${var.region}"
-  distribution = "trusty"
-  instance_type = "${var.instance_type}"
+data "ami" "ubuntu" {
+    most_recent = true
+
+    filter {
+        name   = "name"
+        values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
+    }
+
+    filter {
+        name   = "virtualization-type"
+        values = ["hvm"]
+    }
+
+    owners = ["099720109477"] # Canonical
 }
 
 resource "aws_instance" "bastion" {
-  ami = "${module.ami.ami_id}"
+  ami = "${module.ami.ubuntu.id}"
   source_dest_check = false
   instance_type = "${var.instance_type}"
   key_name = "${var.key_name}"
