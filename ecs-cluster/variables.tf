@@ -77,12 +77,12 @@ variable "associate_public_ip_address" {
 
 variable "root_volume_size" {
   description = "Root volume size in GB"
-  default = 25
+  default = 30
 }
 
 variable "docker_volume_size" {
   description = "Attached EBS volume size in GB"
-  default = 25
+  default = 30
 }
 
 variable "docker_auth_type" {
