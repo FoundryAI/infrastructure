@@ -118,7 +118,7 @@ variable "monitoring_role_arn" {
 
 variable "monitoring_interval" {
   description = "ARN of role to allow RDS to send enhanced monitoring metrics"
-  default = 0
+  default     = 0
 }
 
 resource "aws_security_group" "main" {
@@ -175,7 +175,8 @@ resource "aws_db_instance" "main" {
   maintenance_window        = "${var.maintenance_window}"
   apply_immediately         = "${var.apply_immediately}"
   final_snapshot_identifier = "${var.name}-finalsnapshot"
-  monitoring_role_arn = "${var.monitoring_role_arn}"
+  monitoring_role_arn       = "${var.monitoring_role_arn}"
+  monitoring_interval       = "${var.monitoring_interval}"
 
   # Hardware
   instance_class    = "${var.instance_class}"
