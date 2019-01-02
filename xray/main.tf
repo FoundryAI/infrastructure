@@ -1,5 +1,5 @@
 resource "aws_instance" "xray" {
-  ami = "ami-6057e21a"
+  ami = "ami-0080e4c5bc078760e"
   instance_type = "t2.small"
 
   key_name = "${var.environment}"
