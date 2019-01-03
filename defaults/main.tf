@@ -63,7 +63,7 @@ output "domain_name_servers" {
 }
 
 output "ecs_ami" {
-  value = "${data.aws_ami.node_ami}"
+  value = "${data.aws_ami.node_ami.id}"
 }
 
 output "s3_logs_account_id" {
