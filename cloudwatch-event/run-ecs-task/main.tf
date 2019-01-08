@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "ecs_policy" {
 }
 
 resource "aws_iam_role" "ecs_role" {
-  policy = "${aws_iam_policy.ecs_policy}"
+  policy = "${aws_iam_policy.ecs_policy.id}"
   assume_role_policy = <<DOC
 {
   "Version": "2012-10-17",
