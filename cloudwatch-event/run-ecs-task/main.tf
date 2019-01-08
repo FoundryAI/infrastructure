@@ -28,11 +28,10 @@ resource "aws_iam_role" "ecs_role" {
 DOC
 }
 
-
 resource "aws_cloudwatch_event_target" "event-target" {
   rule  = "${aws_cloudwatch_event_rule.event-rule.name}"
   arn   = "${var.event_target_arn}"
-  role = "${aws_iam_role.ecs_role}"
+  role_arn = "${aws_iam_role.ecs_role.arn}"
   ecs_target {
     task_count = "${var.task_count}"
     task_definition_arn = "${var.task_definition_arn}"
