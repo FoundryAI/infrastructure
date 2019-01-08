@@ -1,8 +1,6 @@
-variable "name" {
-}
+variable "name" {}
 
-variable "environment" {
-}
+variable "environment" {}
 
 variable "log_bucket" {
   description = "S3 bucket ID to write S3 access logs into"
@@ -30,12 +28,17 @@ resource "aws_s3_bucket" "s3" {
       }
     }
   }
+
   tags {
-    Name = "${var.name}"
+    Name        = "${var.name}"
     Environment = "${var.environment}"
   }
 
   versioning {
     enabled = true
   }
+}
+
+output "arn" {
+  value = "${aws_s3_bucket.s3.arn}"
 }
