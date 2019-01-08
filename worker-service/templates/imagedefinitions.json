@@ -1,0 +1,39 @@
+[
+  {
+     "Name": "${var.name}",
+     "Image": "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.ecr_name}:${var.tag}",
+     "Essential": true,
+     "Memory": "${var.memory}",
+     "MemoryReservation": "${var.memory_reservation}",
+     "LogConfiguration": {
+        "LogDriver": "awslogs",
+        "Options": null
+     },
+     "Environment": [
+        {
+           "Name": "Tag",
+           "Value": "${var.tag}"
+        },
+        {
+           "Name": "AWS_ACCOUNT_ID",
+           "Value": "${data.aws_caller_identity.current.account_id}"
+        },
+        {
+           "Name": "AWS_REGION",
+           "Value": "${data.aws_region.current.name}"
+        },
+        {
+           "Name": "AWS_ACCESS_KEY",
+           "Value": "${var.aws_access_key}"
+        },
+        {
+           "Name": "AWS_SECRET_KEY",
+           "Value": "${var.aws_secret_key}"
+        },
+        {
+           "Name": "ENVIRONMENT",
+           "Value": "${var.environment}"
+        }
+     ]
+  }
+]
