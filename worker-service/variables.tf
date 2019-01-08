@@ -21,6 +21,11 @@ variable "desired_count" {
   default = 2
 }
 
+variable "launch_type" {
+  description = "The desired launch type"
+  default = "EC2"
+}
+
 variable "memory" {
   description = "The number of MiB of memory to reserve for the container"
   default = 10240

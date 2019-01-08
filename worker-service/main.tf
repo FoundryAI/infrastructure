@@ -350,6 +350,7 @@ resource "aws_codepipeline" "main" {
 "Repository": "${var.ecr_name}",
 "Memory": "${var.memory}",
 "MemoryReservation": "${var.memory_reservation}",
+"LaunchType": "${var.launch_type}"
 "Tag" : { "Fn::GetParam" : [ "build", "build.json", "tag" ] }
 }
 EOF

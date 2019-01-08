@@ -45,6 +45,10 @@ Parameters:
     Type: Number
     Default: 4096
 
+  LaunchType:
+    Type: String
+    Default: 'EC2'
+
 Resources:
   Service:
     Type: AWS::ECS::Service
@@ -55,6 +59,7 @@ Resources:
       Cluster: !Ref Cluster
       DesiredCount: !Ref DesiredCount
       TaskDefinition: !Ref TaskDefinition
+      LaunchType: !Ref EcsLaunchType
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
