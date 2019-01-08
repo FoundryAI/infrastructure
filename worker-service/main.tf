@@ -6,7 +6,7 @@ data "aws_region" "current" {
 
 resource "aws_s3_bucket_object" "main" {
   bucket = "${aws_s3_bucket.main.bucket}"
-  key = "templates.zip"
+  key    = "templates.zip"
 
   // NOTE - YOU NEED TO REZIP TEMPLATES.ZIP ANYTIME YOU MAKE CHANGES TO ANY TEMPLATE SORRY IN ADVANCE!!! :( - NJG
   source = "${"${path.module}/templates/templates.zip"}"
@@ -16,13 +16,13 @@ resource "aws_s3_bucket" "codepipeline" {
   bucket = "${var.name}-${var.environment}-codepipeline-artifacts"
 
   tags {
-    Name = "${var.name}"
+    Name        = "${var.name}"
     Environment = "${var.environment}"
   }
 }
 
 resource "aws_s3_bucket" "main" {
-  bucket = "${var.name}-deployments"
+  bucket        = "${var.name}-deployments"
   force_destroy = true
 
   versioning {
@@ -30,7 +30,7 @@ resource "aws_s3_bucket" "main" {
   }
 
   tags {
-    Name = "${var.name}"
+    Name        = "${var.name}"
     Environment = "${var.environment}"
   }
 }
@@ -67,8 +67,9 @@ EOF
 }
 
 resource "aws_iam_role" "cloudformation_execution" {
-  name = "${var.name}-${var.environment}-cloudformation-role"
+  name       = "${var.name}-${var.environment}-cloudformation-role"
   depends_on = ["aws_iam_role.main"]
+
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -131,7 +132,6 @@ resource "aws_iam_policy" "cloudformation_policy" {
 POLICY
 }
 
-
 resource "aws_iam_policy_attachment" "codebuild_policy_attachment" {
   name       = "${var.name}-${var.environment}-codebuild-policy-attachment"
   policy_arn = "${aws_iam_policy.codebuild_policy.arn}"
@@ -166,6 +166,7 @@ POLICY
 resource "aws_iam_role_policy" "codepipeline_policy" {
   name = "${var.name}-${var.environment}-codepipeline-policy"
   role = "${aws_iam_role.main.id}"
+
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -196,18 +197,18 @@ EOF
 }
 
 resource "aws_codebuild_project" "main" {
-  name = "${var.name}-${var.environment}-build"
+  name         = "${var.name}-${var.environment}-build"
   service_role = "${aws_iam_role.main.arn}"
-  depends_on = ["aws_iam_role.main"]
+  depends_on   = ["aws_iam_role.main"]
 
   "artifacts" {
     type = "CODEPIPELINE"
   }
 
   environment {
-    compute_type = "BUILD_GENERAL1_SMALL"
-    image        = "aws/codebuild/docker:1.12.1"
-    type         = "LINUX_CONTAINER"
+    compute_type    = "BUILD_GENERAL1_SMALL"
+    image           = "aws/codebuild/docker:1.12.1"
+    type            = "LINUX_CONTAINER"
     privileged_mode = true
 
     environment_variable {
@@ -221,13 +222,14 @@ resource "aws_codebuild_project" "main" {
     }
 
     environment_variable {
-      name = "REPOSITORY_URI"
+      name  = "REPOSITORY_URI"
       value = "${var.ecr_repository_url}"
     }
   }
 
   "source" {
     type = "CODEPIPELINE"
+
     buildspec = <<EOF
 version: 0.1
 phases:
@@ -237,24 +239,39 @@ phases:
       - TAG="$([ $(echo $CODEBUILD_INITIATOR | cut -c 1-12) = codepipeline ] && echo $(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) || echo $(echo $CODEBUILD_SOURCE_VERSION | sed "s/\//\-/g"))"
   build:
     commands:
-      - docker build --tag "$REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION" .
+      - docker build --tag "$REPOSITORY_URI:latest" .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$TAG
   post_build:
     commands:
-      - docker push "$REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION"
-      - printf '{"tag":"%s"}' $CODEBUILD_RESOLVED_SOURCE_VERSION > build.json
+      - docker push "$REPOSITORY_URI:latest"
+      - docker push "$REPOSITORY_URI:$TAG"
+      - printf '[{"name":"web","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > imagedefinitions.json
 artifacts:
-  files: build.json
+  files: imagedefinitions.json
 EOF
   }
 }
 
+resource "aws_ecs_service" "worker_service" {
+  name = "${var.name}-${var.environment}"
+  cluster = "${var.cluster}"
+  desired_count = "${var.desired_count}"
+  task_definition = "${aws_ecs_task_definition.worker.arn}"
+  launch_type = "${var.launch_type}"
+}
+
+resource "aws_ecs_task_definition" "worker" {
+  family = "${aws_ecs_service.worker_service.name}"
+  container_definitions = ""
+}
+
 resource "aws_codepipeline" "main" {
-  name = "${var.name}-${var.environment}-codepipeline"
+  name     = "${var.name}-${var.environment}-codepipeline"
   role_arn = "${aws_iam_role.main.arn}"
 
   "artifact_store" {
     location = "${aws_s3_bucket.codepipeline.bucket}"
-    type = "S3"
+    type     = "S3"
   }
 
   stage {
@@ -267,7 +284,7 @@ resource "aws_codepipeline" "main" {
       provider         = "GitHub"
       version          = "1"
       output_artifacts = ["app"]
-      run_order = 1
+      run_order        = 1
 
       configuration {
         Owner      = "${var.source_owner}"
@@ -275,7 +292,6 @@ resource "aws_codepipeline" "main" {
         Branch     = "${var.source_branch}"
         OAuthToken = "${var.oauth_token}"
       }
-
     }
 
     action {
@@ -285,29 +301,27 @@ resource "aws_codepipeline" "main" {
       provider         = "S3"
       version          = "1"
       output_artifacts = ["template"]
-      run_order = 1
+      run_order        = 1
 
       configuration {
-        S3Bucket   = "${aws_s3_bucket.main.bucket}"
+        S3Bucket    = "${aws_s3_bucket.main.bucket}"
         S3ObjectKey = "templates.zip"
       }
-
     }
-
   }
 
   stage {
     name = "Build"
 
     "action" {
-      category = "Build"
-      name = "Build"
-      owner = "AWS"
-      provider = "CodeBuild"
-      version = "1"
-      input_artifacts = ["app"]
-      output_artifacts = ["build"]
-      run_order = 1
+      category         = "Build"
+      name             = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      version          = "1"
+      input_artifacts  = ["app"]
+      output_artifacts = ["imagedefinitions"]
+      run_order        = 1
 
       configuration {
         ProjectName = "${var.name}-${var.environment}-build"
@@ -318,58 +332,18 @@ resource "aws_codepipeline" "main" {
   stage {
     name = "Deploy"
 
-    "action" {
-      category = "Deploy"
-      name = "CreateChangeSet"
-      owner = "AWS"
-      provider = "CloudFormation"
-      version = "1"
-      input_artifacts = ["build", "template"]
-      run_order = 1
-      role_arn = "${aws_iam_role.cloudformation_execution.arn}"
+    action {
+      name            = "Deploy"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "ECS"
+      input_artifacts = ["imagedefinitions"]
+      version         = "1"
 
       configuration {
-        RoleArn = "${aws_iam_role.cloudformation_execution.arn}"
-        ChangeSetName = "${var.name}-${var.environment}-change-set"
-        ActionMode = "CHANGE_SET_REPLACE"
-        StackName = "${var.name}-${var.environment}-deployment-stack"
-        Capabilities = "CAPABILITY_NAMED_IAM"
-        TemplatePath = "template::ecs-service.yaml"
-        ParameterOverrides = <<EOF
-{
-"AwsAccessKey": "${var.aws_access_key}",
-"AwslogsGroup": "${aws_cloudwatch_log_group.main.name}",
-"AwslogsStreamPrefix": "${var.environment}",
-"AwsRegion": "${data.aws_region.current.name}",
-"AwsSecretKey": "${var.aws_secret_key}",
-"Cluster": "${var.cluster}",
-"ContainerName": "${var.name}",
-"Environment": "${var.environment}",
-"DesiredCount": "${var.desired_count}",
-"Name": "${var.name}-${var.environment}",
-"Repository": "${var.ecr_name}",
-"Memory": "${var.memory}",
-"MemoryReservation": "${var.memory_reservation}",
-"LaunchType": "${var.launch_type}"
-"Tag" : { "Fn::GetParam" : [ "build", "build.json", "tag" ] }
-}
-EOF
-      }
-    }
-
-    "action" {
-      category = "Deploy"
-      name = "ExecuteChangeSet"
-      owner = "AWS"
-      provider = "CloudFormation"
-      version = "1"
-      run_order = 2
-
-      configuration {
-        RoleArn = "${aws_iam_role.cloudformation_execution.arn}"
-        ActionMode = "CHANGE_SET_EXECUTE"
-        ChangeSetName = "${var.name}-${var.environment}-change-set"
-        StackName = "${var.name}-${var.environment}-deployment-stack"
+        ClusterName = "${var.cluster}"
+        ServiceName = "${aws_ecs_service.worker_service.name}"
+        FileName    = "imagedefinitions.json"
       }
     }
   }
