@@ -17,7 +17,6 @@ resource "aws_iam_role" "ecs_role" {
 resource "aws_cloudwatch_event_target" "event-target" {
   rule  = "${aws_cloudwatch_event_rule.event-rule.name}"
   arn   = "${var.event_target_arn}"
-  input = "${var.target_input}"
   role = "${aws_iam_role.ecs_role}"
   ecs_target {
     task_count = "${var.task_count}"

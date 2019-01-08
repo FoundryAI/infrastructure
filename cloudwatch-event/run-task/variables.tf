@@ -1,9 +1,5 @@
 variable event_target_arn {
-  description = ""
-}
-
-variable target_input {
-  description = ""
+  description = "ARN of the target"
 }
 
 variable task_count {
@@ -12,11 +8,11 @@ variable task_count {
 }
 
 variable task_definition_arn {
-  description = ""
+  description = "ARN of the task to invoke"
 }
 
 variable event_rule_name {
-  description = ""
+  description = "Name of the event rule"
   default = ""
 }
 
@@ -27,4 +23,7 @@ variable event_rule_description {
 
 variable event_rule_pattern {
   description = "Pattern for event rule"
+}
+
+variable "environment" {
 }
