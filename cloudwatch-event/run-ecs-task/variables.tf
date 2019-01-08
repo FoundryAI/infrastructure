@@ -13,7 +13,6 @@ variable task_definition_arn {
 
 variable event_rule_name {
   description = "Name of the event rule"
-  default = ""
 }
 
 variable event_rule_description {
