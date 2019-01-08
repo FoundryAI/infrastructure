@@ -1,89 +1,30 @@
-variable "environment" {
-  description = "Environment tag, e.g prod"
+variable event_target_arn {
+  description = ""
 }
 
-variable "name" {
-  description = "The service name, if empty the service name is defaulted to the image name"
+variable target_input {
+  description = ""
+}
+
+variable task_count {
+  description = "Number of tasks"
+  default = 1
+}
+
+variable task_definition_arn {
+  description = ""
+}
+
+variable event_rule_name {
+  description = ""
   default = ""
 }
 
-variable "cluster" {
-  description = "The cluster name or ARN"
+variable event_rule_description {
+  description = "Description of event rule"
+  default = ""
 }
 
-variable "command" {
-  description = "The raw json of the task command"
-  default = "[]"
-}
-
-variable "desired_count" {
-  description = "The desired count"
-  default = 2
-}
-
-variable "memory" {
-  description = "The number of MiB of memory to reserve for the container"
-  default = 10240
-}
-
-variable "memory_reservation" {
-  description = "The number of MiB of memory to reserve for the container"
-  default = 4096
-}
-
-variable "cpu" {
-  description = "The number of cpu units to reserve for the container"
-  default = 512
-}
-
-variable "deployment_minimum_healthy_percent" {
-  description = "lower limit (% of desired_count) of # of running tasks during a deployment"
-  default = 100
-}
-
-variable "deployment_maximum_percent" {
-  description = "upper limit (% of desired_count) of # of running tasks during a deployment"
-  default = 200
-}
-
-variable "source_owner" {
-  description = "GitHub repo organization"
-  default = "FoundryAI"
-}
-
-variable "source_repo" {
-  description = "GitHub source repository"
-}
-
-variable "source_branch" {
-  description = "GitHub source branch"
-  default = "master"
-}
-
-variable "oauth_token" {
-  description = "GitHub oauth token"
-}
-
-variable "ecr_arn" {
-  description = "ECR arn"
-}
-
-variable "ecr_name" {
-  description = "ECR name"
-}
-
-variable "ecr_repository_url" {
-  description = "ECR repository url"
-}
-
-variable "aws_access_key" {
-  description = "AWS Access Key"
-}
-
-variable "aws_secret_key" {
-  description = "AWS Secret Key"
-}
-
-variable "vpc_id" {
-  description = "VPC ID to locate worker service in"
+variable event_rule_pattern {
+  description = "Pattern for event rule"
 }

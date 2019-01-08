@@ -1,29 +1,33 @@
-resource "aws_cloudwatch_event_target" "yada" {
-  target_id = "Yada"
-  rule      = "${aws_cloudwatch_event_rule.console.name}"
-  arn       = "${aws_kinesis_stream.test_stream.arn}"
+resource "aws_iam_policy" "ecs_policy" {
+  policy = "${data.aws_iam_policy_document.ecs_policy.json}"
+}
 
-  run_command_targets {
-    key    = "tag:Name"
-    values = ["FooBar"]
+data "aws_iam_policy_document" "ecs_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["ECS:*"]
   }
 }
 
-resource "aws_cloudwatch_event_rule" "console" {
-  name        = "capture-ec2-scaling-events"
-  description = "Capture all EC2 scaling events"
-
-  event_pattern = <<PATTERN
-{
-  "source": [
-    "aws.autoscaling"
-  ],
-  "detail-type": [
-    "EC2 Instance Launch Successful",
-    "EC2 Instance Terminate Successful",
-    "EC2 Instance Launch Unsuccessful",
-    "EC2 Instance Terminate Unsuccessful"
-  ]
+resource "aws_iam_role" "ecs_role" {
+  policy = "${aws_iam_policy.ecs_policy}"
 }
-PATTERN
+
+
+resource "aws_cloudwatch_event_target" "event-target" {
+  rule  = "${aws_cloudwatch_event_rule.event-rule.name}"
+  arn   = "${var.event_target_arn}"
+  input = "${var.target_input}"
+  role = "${aws_iam_role.ecs_role}"
+  ecs_target {
+    task_count = "${var.task_count}"
+    task_definition_arn = "${var.task_definition_arn}"
+  }
+}
+
+resource "aws_cloudwatch_event_rule" "event-rule" {
+  name        = "${var.event_rule_name}"
+  description = "${var.event_rule_description}"
+
+  event_pattern = "${var.event_rule_pattern}"
 }
