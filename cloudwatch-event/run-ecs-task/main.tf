@@ -26,7 +26,7 @@ resource "aws_cloudwatch_event_target" "event-target" {
     task_count = "${var.task_count}"
     task_definition_arn = "${var.task_definition_arn}"
   }
-  depends_on = ["${aws_cloudwatch_event_rule.event_rule}"]
+  depends_on = ["aws_cloudwatch_event_rule.event_rule"]
 }
 
 resource "aws_cloudwatch_event_rule" "event_rule" {
