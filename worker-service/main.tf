@@ -248,7 +248,7 @@ resource "aws_ecs_service" "worker_service" {
   name            = "${var.name}-${var.environment}"
   cluster         = "${var.cluster}"
   desired_count   = "${var.desired_count}"
-  task_definition = "${aws_ecs_task_definition.worker.family}:${max("${aws_ecs_task_definition.worker.revision}", "${data.aws_ecs_task_definition.worker.revision}")}"
+  task_definition = "${aws_ecs_task_definition.worker.arn}"
   launch_type     = "${var.launch_type}"
   depends_on      = ["aws_ecs_task_definition.worker"]
 }
