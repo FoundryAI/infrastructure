@@ -280,7 +280,7 @@ resource "aws_ecs_service" "worker_service" {
   task_definition = "${aws_ecs_task_definition.worker.arn}"
   launch_type     = "${var.launch_type}"
   network_configuration {
-    subnets = "${var.subnet_ids}"
+    subnets = ["${var.subnet_ids}"]
   }
   depends_on      = ["aws_ecs_task_definition.worker"]
 }
