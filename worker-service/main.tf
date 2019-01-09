@@ -268,22 +268,56 @@ data "aws_ecs_task_definition" "worker" {
 
 data "template_file" "worker" {
   template =<<EOF
-    [{
-      "Memory": ${var.memory},
-      "MemoryReservation": ${var.memory_reservation},
-      ${file("${path.module}/templates/worker_definition.json")}"
-    }]
+    [
+      {
+        "Memory": ${var.memory},
+        "MemoryReservation": ${var.memory_reservation},
+        "Name": "${var.name}",
+        "Image": "$${image}",
+        "Essential": true,
+        "LogConfiguration": {
+          "LogDriver": "awslogs",
+          "Options": {
+            "awslogs-group": "$${awslogs_group}",
+            "awslogs-region": "$${aws_region}",
+            "awslogs-stream-prefix": "${environment}"
+          },
+          "Environment": [
+            {
+              "Name": "Tag",
+              "Value": "latest"
+            },
+            {
+              "Name": "AWS_ACCOUNT_ID",
+              "Value": "$${aws_account_id}"
+            },
+            {
+              "Name": "AWS_REGION",
+              "Value": "$${aws_region}"
+            },
+            {
+              "Name": "AWS_ACCESS_KEY",
+              "Value": "${var.aws_access_key}"
+            },
+            {
+              "Name": "AWS_SECRET_KEY",
+              "Value": "${var.aws_secret_key}"
+            },
+            {
+              "Name": "ENVIRONMENT",
+              "Value": "${var.environment}"
+            }
+          ]
+        }
+      }
+    ]
   EOF
 
   vars {
-    name = "${var.name}"
     image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.ecr_name}:latest"
     awslogs_group = "${aws_cloudwatch_log_group.main.name}"
     aws_region = "${data.aws_region.current.name}"
-    environment = "${var.environment}"
     aws_account_id = "${data.aws_caller_identity.current.account_id}"
-    aws_access_key = "${var.aws_access_key}"
-    aws_secret_key = "${var.aws_secret_key}"
   }
 }
 
