@@ -3,6 +3,8 @@
     "Name": "${name}",
     "Image": "${image}",
     "Essential": true,
+    "${memory_line}",
+    "${memory_reservation_line}",
     "LogConfiguration": {
       "LogDriver": "awslogs",
       "Options": {
