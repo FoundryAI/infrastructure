@@ -3,6 +3,7 @@
     "Name": "${name}",
     "Image": "${image}",
     "Essential": true,
+    "Memory": "$${var.memory}",
     "LogConfiguration": {
       "LogDriver": "awslogs",
       "Options": {

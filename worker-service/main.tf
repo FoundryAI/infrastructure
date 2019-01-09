@@ -272,8 +272,8 @@ data "template_file" "worker" {
   vars {
     name = "${var.name}"
     image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.ecr_name}:latest"
-    memory_line = "${jsonencode("Memory")}: ${var.memory}}"
-    memory_reservation_line = "${jsonencode("MemoryReservation")}: ${var.memory_reservation}}"
+    memory_line = "${var.memory}"
+    memory_reservation_line = "${var.memory_reservation}"
     awslogs_group = "${aws_cloudwatch_log_group.main.name}"
     aws_region = "${data.aws_region.current.name}"
     environment = "${var.environment}"
