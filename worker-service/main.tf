@@ -4,14 +4,6 @@ data "aws_region" "current" {
   current = true
 }
 
-resource "aws_s3_bucket_object" "main" {
-  bucket = "${aws_s3_bucket.main.bucket}"
-  key    = "templates.zip"
-
-  // NOTE - YOU NEED TO REZIP TEMPLATES.ZIP ANYTIME YOU MAKE CHANGES TO ANY TEMPLATE SORRY IN ADVANCE!!! :( - NJG
-  source = "${"${path.module}/templates/templates.zip"}"
-}
-
 resource "aws_s3_bucket" "codepipeline" {
   bucket = "${var.name}-${var.environment}-codepipeline-artifacts"
 
@@ -268,50 +260,50 @@ data "aws_ecs_task_definition" "worker" {
 
 data "template_file" "worker" {
   template =<<EOF
-    [
-      {
-        "Memory": ${var.memory},
-        "MemoryReservation": ${var.memory_reservation},
-        "Name": "${var.name}",
-        "Image": "$${image}",
-        "Essential": true,
-        "LogConfiguration": {
-          "LogDriver": "awslogs",
-          "Options": {
-            "awslogs-group": "$${awslogs_group}",
-            "awslogs-region": "$${aws_region}",
-            "awslogs-stream-prefix": "${var.environment}"
-          },
-          "Environment": [
-            {
-              "Name": "Tag",
-              "Value": "latest"
-            },
-            {
-              "Name": "AWS_ACCOUNT_ID",
-              "Value": "$${aws_account_id}"
-            },
-            {
-              "Name": "AWS_REGION",
-              "Value": "$${aws_region}"
-            },
-            {
-              "Name": "AWS_ACCESS_KEY",
-              "Value": "${var.aws_access_key}"
-            },
-            {
-              "Name": "AWS_SECRET_KEY",
-              "Value": "${var.aws_secret_key}"
-            },
-            {
-              "Name": "ENVIRONMENT",
-              "Value": "${var.environment}"
-            }
-          ]
+[
+  {
+    "Memory": ${var.memory},
+    "MemoryReservation": ${var.memory_reservation},
+    "Name": "${var.name}",
+    "Image": "$${image}",
+    "Essential": true,
+    "LogConfiguration": {
+      "LogDriver": "awslogs",
+      "Options": {
+        "awslogs-group": "$${awslogs_group}",
+        "awslogs-region": "$${aws_region}",
+        "awslogs-stream-prefix": "${var.environment}"
+      },
+      "Environment": [
+        {
+          "Name": "Tag",
+          "Value": "latest"
+        },
+        {
+          "Name": "AWS_ACCOUNT_ID",
+          "Value": "$${aws_account_id}"
+        },
+        {
+          "Name": "AWS_REGION",
+          "Value": "$${aws_region}"
+        },
+        {
+          "Name": "AWS_ACCESS_KEY",
+          "Value": "${var.aws_access_key}"
+        },
+        {
+          "Name": "AWS_SECRET_KEY",
+          "Value": "${var.aws_secret_key}"
+        },
+        {
+          "Name": "ENVIRONMENT",
+          "Value": "${var.environment}"
         }
-      }
-    ]
-  EOF
+      ]
+    }
+  }
+]
+EOF
 
   vars {
     image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.ecr_name}:latest"
@@ -356,21 +348,6 @@ resource "aws_codepipeline" "main" {
         Repo       = "${var.source_repo}"
         Branch     = "${var.source_branch}"
         OAuthToken = "${var.oauth_token}"
-      }
-    }
-
-    action {
-      name             = "Template"
-      category         = "Source"
-      owner            = "AWS"
-      provider         = "S3"
-      version          = "1"
-      output_artifacts = ["template"]
-      run_order        = 1
-
-      configuration {
-        S3Bucket    = "${aws_s3_bucket.main.bucket}"
-        S3ObjectKey = "templates.zip"
       }
     }
   }
