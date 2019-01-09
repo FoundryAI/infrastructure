@@ -260,9 +260,27 @@ resource "aws_ecs_service" "worker_service" {
   launch_type = "${var.launch_type}"
 }
 
+data "template_file" "worker" {
+  template = "${file("${path.module}/templates/worker_definition.json")}"
+
+  vars {
+    name = "${var.name}"
+    image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.ecr_name}:latest"
+    memory = "${var.memory}"
+    memory_reservation = "${var.memory_reservation}"
+    awslogs_group = "${aws_cloudwatch_log_group.main.name}"
+    aws_region = "${data.aws_region.current.name}"
+    environment = "${var.environment}"
+    aws_account_id = "${data.aws_caller_identity.current.account_id}"
+    aws_access_key = "${var.aws_access_key}"
+    aws_secret_key = "${var.aws_secret_key}"
+    environment = "${var.environment}"
+  }
+}
+
 resource "aws_ecs_task_definition" "worker" {
   family = "${var.name}-${var.environment}-webfunnel"
-  container_definitions = "${file("${path.module}/templates/worker_definition.json")}"
+  container_definitions = "${data.template_file.worker.rendered}"
   requires_compatibilities = ["${var.launch_type}"]
   memory = "${var.memory}"
   cpu = "${var.cpu}"
