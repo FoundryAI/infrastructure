@@ -97,3 +97,8 @@ variable "network_mode" {
   description = "The Docker networking mode to use for the containers in the task"
   default     = "awsvpc"
 }
+
+variable "subnet_ids" {
+  description = "List of subnet IDs"
+  type = "list"
+}
