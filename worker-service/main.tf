@@ -245,21 +245,16 @@ EOF
 }
 
 resource "aws_ecs_service" "worker_service" {
-  name = "${var.name}-${var.environment}"
-  cluster = "${var.cluster}"
-  desired_count = "${var.desired_count}"
+  name            = "${var.name}-${var.environment}"
+  cluster         = "${var.cluster}"
+  desired_count   = "${var.desired_count}"
   task_definition = "${aws_ecs_task_definition.worker.family}:${max("${aws_ecs_task_definition.worker.revision}", "${data.aws_ecs_task_definition.worker.revision}")}"
-  launch_type = "${var.launch_type}"
-  depends_on = ["aws_ecs_task_definition.worker"]
-}
-
-data "aws_ecs_task_definition" "worker" {
-  task_definition = "${aws_ecs_task_definition.worker.family}"
-  depends_on = [ "aws_ecs_task_definition.worker" ]
+  launch_type     = "${var.launch_type}"
+  depends_on      = ["aws_ecs_task_definition.worker"]
 }
 
 data "template_file" "worker" {
-  template =<<EOF
+  template = <<EOF
 [
   {
     "Memory": ${var.memory},
@@ -306,20 +301,21 @@ data "template_file" "worker" {
 EOF
 
   vars {
-    image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.ecr_name}:latest"
-    awslogs_group = "${aws_cloudwatch_log_group.main.name}"
-    aws_region = "${data.aws_region.current.name}"
+    image          = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.ecr_name}:latest"
+    awslogs_group  = "${aws_cloudwatch_log_group.main.name}"
+    aws_region     = "${data.aws_region.current.name}"
     aws_account_id = "${data.aws_caller_identity.current.account_id}"
   }
 }
 
 resource "aws_ecs_task_definition" "worker" {
-  family = "${var.name}-${var.environment}-webfunnel"
-  container_definitions = "${data.template_file.worker.rendered}"
+  family                   = "${var.name}-${var.environment}-webfunnel"
+  container_definitions    = "${data.template_file.worker.rendered}"
   requires_compatibilities = ["${var.launch_type}"]
-  memory = "${var.memory}"
-  cpu = "${var.cpu}"
-  depends_on = ["data.template_file.worker"]
+  memory                   = "${var.memory}"
+  cpu                      = "${var.cpu}"
+  depends_on               = ["data.template_file.worker"]
+  network_mode             = "${var.network_mode}"
 }
 
 resource "aws_codepipeline" "main" {

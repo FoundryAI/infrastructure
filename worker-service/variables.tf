@@ -4,7 +4,7 @@ variable "environment" {
 
 variable "name" {
   description = "The service name, if empty the service name is defaulted to the image name"
-  default = ""
+  default     = ""
 }
 
 variable "cluster" {
@@ -13,47 +13,47 @@ variable "cluster" {
 
 variable "command" {
   description = "The raw json of the task command"
-  default = "[]"
+  default     = "[]"
 }
 
 variable "desired_count" {
   description = "The desired count"
-  default = 2
+  default     = 2
 }
 
 variable "launch_type" {
   description = "The desired launch type"
-  default = "EC2"
+  default     = "EC2"
 }
 
 variable "memory" {
   description = "The number of MiB of memory to reserve for the container"
-  default = 10240
+  default     = 10240
 }
 
 variable "memory_reservation" {
   description = "The number of MiB of memory to reserve for the container"
-  default = 4096
+  default     = 4096
 }
 
 variable "cpu" {
   description = "The number of cpu units to reserve for the container"
-  default = 512
+  default     = 512
 }
 
 variable "deployment_minimum_healthy_percent" {
   description = "lower limit (% of desired_count) of # of running tasks during a deployment"
-  default = 100
+  default     = 100
 }
 
 variable "deployment_maximum_percent" {
   description = "upper limit (% of desired_count) of # of running tasks during a deployment"
-  default = 200
+  default     = 200
 }
 
 variable "source_owner" {
   description = "GitHub repo organization"
-  default = "FoundryAI"
+  default     = "FoundryAI"
 }
 
 variable "source_repo" {
@@ -62,7 +62,7 @@ variable "source_repo" {
 
 variable "source_branch" {
   description = "GitHub source branch"
-  default = "master"
+  default     = "master"
 }
 
 variable "oauth_token" {
@@ -91,4 +91,9 @@ variable "aws_secret_key" {
 
 variable "vpc_id" {
   description = "VPC ID to locate worker service in"
+}
+
+variable "network_mode" {
+  description = "The Docker networking mode to use for the containers in the task"
+  default     = "awsvpc"
 }
