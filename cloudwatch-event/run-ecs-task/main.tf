@@ -19,7 +19,7 @@ resource "aws_iam_role" "ecs_role" {
 }
 
 resource "aws_cloudwatch_event_target" "event-target" {
-  rule  = "${aws_cloudwatch_event_rule.event-rule.name}"
+  rule  = "${aws_cloudwatch_event_rule.event_rule.name}"
   arn   = "${var.event_target_arn}"
   role_arn = "${aws_iam_role.ecs_role.arn}"
   ecs_target {
