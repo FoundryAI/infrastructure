@@ -275,7 +275,6 @@ data "template_file" "worker" {
     aws_account_id = "${data.aws_caller_identity.current.account_id}"
     aws_access_key = "${var.aws_access_key}"
     aws_secret_key = "${var.aws_secret_key}"
-    environment = "${var.environment}"
   }
 }
 
