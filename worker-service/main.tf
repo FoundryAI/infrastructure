@@ -280,7 +280,7 @@ data "template_file" "worker" {
           "Options": {
             "awslogs-group": "$${awslogs_group}",
             "awslogs-region": "$${aws_region}",
-            "awslogs-stream-prefix": "${environment}"
+            "awslogs-stream-prefix": "${var.environment}"
           },
           "Environment": [
             {
