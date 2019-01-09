@@ -258,6 +258,7 @@ phases:
     commands:
       - $(aws ecr get-login)
       - TAG="$([ $(echo $CODEBUILD_INITIATOR | cut -c 1-12) = codepipeline ] && echo $(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) || echo $(echo $CODEBUILD_SOURCE_VERSION | sed "s/\//\-/g"))"
+      - echo $TAG
   build:
     commands:
       - docker build --tag "$REPOSITORY_URI:latest" .
