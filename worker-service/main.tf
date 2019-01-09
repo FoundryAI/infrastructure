@@ -267,13 +267,17 @@ data "aws_ecs_task_definition" "worker" {
 }
 
 data "template_file" "worker" {
-  template = "${file("${path.module}/templates/worker_definition.json")}"
+  template =<<EOF
+    [{
+      "Memory": ${var.memory},
+      "MemoryReservation": ${var.memory_reservation},
+      ${file("${path.module}/templates/worker_definition.json")}"
+    }]
+  EOF
 
   vars {
     name = "${var.name}"
     image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.ecr_name}:latest"
-    memory_line = "${var.memory}"
-    memory_reservation_line = "${var.memory_reservation}"
     awslogs_group = "${aws_cloudwatch_log_group.main.name}"
     aws_region = "${data.aws_region.current.name}"
     environment = "${var.environment}"
