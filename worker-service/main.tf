@@ -87,7 +87,7 @@ resource "aws_iam_role" "cloudformation_execution" {
 EOF
 }
 
-resource "aws_iam_role" "worker_execution" {
+resource "aws_iam_role" "worker" {
   name       = "${var.name}-${var.environment}-worker-role"
   depends_on = ["aws_iam_role.main"]
 
