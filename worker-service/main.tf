@@ -341,7 +341,7 @@ EOF
 }
 
 resource "aws_ecs_task_definition" "worker" {
-  family                   = "${var.name}-${var.environment}-webfunnel"
+  family                   = "${var.name}-${var.environment}"
   container_definitions    = "${data.template_file.worker.rendered}"
   requires_compatibilities = ["${var.launch_type}"]
   memory                   = "${var.memory}"
