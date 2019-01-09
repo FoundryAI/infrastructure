@@ -3,7 +3,6 @@
     "Name": "${name}",
     "Image": "${image}",
     "Essential": true,
-    "Memory": "${memory}",
-    "MemoryReservation": "${memory_reservation}"
+    "Memory": "${memory}"
   }
 ]
