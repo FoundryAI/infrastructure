@@ -262,7 +262,7 @@ resource "aws_ecs_service" "worker_service" {
 
 resource "aws_ecs_task_definition" "worker" {
   family = "${var.name}-${var.environment}-webfunnel"
-  container_definitions = "${file("/templates/worker_definition.json")}"
+  container_definitions = "${file("templates/worker_definition.json")}"
   requires_compatibilities = ["${var.launch_type}"]
   memory = "${var.memory}"
   cpu = "${var.cpu}"
