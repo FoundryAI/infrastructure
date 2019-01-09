@@ -258,6 +258,7 @@ resource "aws_ecs_service" "worker_service" {
   desired_count = "${var.desired_count}"
   task_definition = "${aws_ecs_task_definition.worker.arn}"
   launch_type = "${var.launch_type}"
+  depends_on = ["aws_ecs_task_definition.worker"]
 }
 
 data "template_file" "worker" {
