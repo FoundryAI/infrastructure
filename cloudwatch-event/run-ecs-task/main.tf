@@ -1,31 +1,21 @@
-resource "aws_iam_policy" "ecs_policy" {
-  policy = "${data.aws_iam_policy_document.ecs_policy.json}"
-}
-
 data "aws_iam_policy_document" "ecs_policy" {
   statement {
     effect  = "Allow"
     actions = ["ECS:*"]
   }
+
+  statement {
+    effect = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+  }
 }
 
 resource "aws_iam_role" "ecs_role" {
-  policy = "${aws_iam_policy.ecs_policy.id}"
-  assume_role_policy = <<DOC
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "events.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-DOC
+  assume_role_policy = "${data.aws_iam_policy_document.ecs_policy.json}"
 }
 
 resource "aws_cloudwatch_event_target" "event-target" {
