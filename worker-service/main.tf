@@ -279,6 +279,7 @@ data "template_file" "worker" {
 }
 
 resource "aws_ecs_task_definition" "worker" {
+  depends_on = ["data.template_file.worker"]
   family = "${var.name}-${var.environment}-webfunnel"
   container_definitions = "${data.template_file.worker.rendered}"
   requires_compatibilities = ["${var.launch_type}"]
