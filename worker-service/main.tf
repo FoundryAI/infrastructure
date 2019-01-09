@@ -256,12 +256,17 @@ resource "aws_ecs_service" "worker_service" {
   name = "${var.name}-${var.environment}"
   cluster = "${var.cluster}"
   desired_count = "${var.desired_count}"
-  task_definition = "${aws_ecs_task_definition.worker.arn}"
+  task_definition = "${aws_ecs_task_definition.worker.family}:${max("${aws_ecs_task_definition.worker.revision}", "${data.aws_ecs_task_definition.worker.revision}")}"
   launch_type = "${var.launch_type}"
+  depends_on = ["aws_ecs_task_definition.worker"]
+}
+
+data "aws_ecs_task_definition" "worker" {
+  task_definition = "${aws_ecs_task_definition.worker.family}"
+  depends_on = [ "aws_ecs_task_definition.worker" ]
 }
 
 data "template_file" "worker" {
-  depends_on = ["aws_ecs_task_definition.worker"]
   template = "${file("${path.module}/templates/worker_definition.json")}"
 
   vars {
@@ -284,6 +289,7 @@ resource "aws_ecs_task_definition" "worker" {
   requires_compatibilities = ["${var.launch_type}"]
   memory = "${var.memory}"
   cpu = "${var.cpu}"
+  depends_on = ["data.template_file.worker"]
 }
 
 resource "aws_codepipeline" "main" {
