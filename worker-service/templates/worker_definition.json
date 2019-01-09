@@ -1,6 +1,7 @@
 [
   {
     "Name": "${name}",
-    "Image": "${image}"
+    "Image": "${image}",
+    "Essential": true
   }
 ]
