@@ -21,3 +21,7 @@ output "repository_name" {
 output "repository_url" {
   value = "${var.ecr_repository_url}"
 }
+
+output "task_definition_arn" {
+  value = "${aws_ecs_task_definition.worker.arn}"
+}
