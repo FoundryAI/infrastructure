@@ -2,6 +2,8 @@
   {
     "Name": "${name}",
     "Image": "${image}",
-    "Essential": true
+    "Essential": true,
+    "Memory": "${memory}",
+    "MemoryReservation": "${memory_reservation}"
   }
 ]
