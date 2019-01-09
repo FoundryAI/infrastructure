@@ -87,6 +87,35 @@ resource "aws_iam_role" "cloudformation_execution" {
 EOF
 }
 
+resource "aws_iam_role" "worker_execution" {
+  name       = "${var.name}-${var.environment}-worker-role"
+  depends_on = ["aws_iam_role.main"]
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": [
+          "ecs-tasks.amazonaws.com"
+        ]
+      },
+      "Action": "sts:AssumeRole"
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "${aws_iam_role.main.arn}"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_iam_policy_attachment" "cloudformation_policy_attachment" {
   name       = "${var.name}-${var.environment}-cloudformation-policy-attachment"
   policy_arn = "${aws_iam_policy.cloudformation_policy.arn}"
@@ -316,6 +345,8 @@ resource "aws_ecs_task_definition" "worker" {
   cpu                      = "${var.cpu}"
   depends_on               = ["data.template_file.worker"]
   network_mode             = "${var.network_mode}"
+  task_role_arn            = "${aws_iam_role.worker.arn}"
+  execution_role_arn       = "${aws_iam_role.worker.arn}"
 }
 
 resource "aws_codepipeline" "main" {
