@@ -103,7 +103,8 @@ data "aws_iam_policy_document" "worker_assume_role_policy" {
         "codebuild.amazonaws.com",
         "ec2.amazonaws.com",
         "ecs.amazonaws.com",
-        "ecs-tasks.amazonaws.com"
+        "ecs-tasks.amazonaws.com",
+        "cloudwatch.amazonaws.com"
       ]
     }
   }
@@ -116,7 +117,8 @@ data "aws_iam_policy_document" "worker_policy_doc" {
       "elasticloadbalancing:*",
       "ec2:*",
       "ecr:*",
-      "ecs:*"
+      "ecs:*",
+      "cloudwatch:*"
     ]
   }
 
