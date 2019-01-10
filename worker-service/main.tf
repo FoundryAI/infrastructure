@@ -252,7 +252,7 @@ resource "aws_codebuild_project" "main" {
     type = "CODEPIPELINE"
 
     buildspec = <<EOF
-version: 0.1
+version: 0.2
 phases:
   pre_build:
     commands:
@@ -265,13 +265,13 @@ phases:
       - echo $IMAGE_TAG
   build:
     commands:
-      - docker build --tag "$REPOSITORY_URI:latest" .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - docker build --tag "$${REPOSITORY_URI}:$${IMAGE_TAG}"  .
+      - docker tag "$${REPOSITORY_URI}:latest" "$${REPOSITORY_URI}:$${IMAGE_TAG}"
   post_build:
     commands:
       - docker push "$REPOSITORY_URI:latest"
-      - docker push "$REPOSITORY_URI:$IMAGE_TAG"
-      - printf '[{"name":"web","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - docker push "$${REPOSITORY_URI}:$${IMAGE_TAG}"
+      - printf '[{"name":"web","imageUri":"%s"}]' "$${REPOSITORY_URI}:$${IMAGE_TAG}" > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
 EOF
