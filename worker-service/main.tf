@@ -257,6 +257,9 @@ phases:
   pre_build:
     commands:
       - $(aws ecr get-login)
+      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
+      - echo $CODEBUILD_INITIATOR
+      - echo $CODEBUILD_SOURCE_VERSION
       - TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - echo $TAG
   build:
