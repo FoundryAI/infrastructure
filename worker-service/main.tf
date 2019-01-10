@@ -265,7 +265,7 @@ phases:
       - echo $IMAGE_TAG
   build:
     commands:
-      - docker build --tag "$${REPOSITORY_URI}:$${IMAGE_TAG}"  .
+      - docker build --tag "$${REPOSITORY_URI}:latest"  .
       - docker tag "$${REPOSITORY_URI}:latest" "$${REPOSITORY_URI}:$${IMAGE_TAG}"
   post_build:
     commands:
