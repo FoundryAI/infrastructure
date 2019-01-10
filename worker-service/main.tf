@@ -260,17 +260,18 @@ phases:
       - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
       - echo $CODEBUILD_INITIATOR
       - echo $CODEBUILD_SOURCE_VERSION
-      - TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - echo $TAG
+      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - echo $IMAGE_TAG
   build:
     commands:
       - docker build --tag "$REPOSITORY_URI:latest" .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$TAG
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
       - docker push "$REPOSITORY_URI:latest"
-      - docker push "$REPOSITORY_URI:$TAG"
-      - printf '[{"name":"web","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > imagedefinitions.json
+      - docker push "$REPOSITORY_URI:$IMAGE_TAG"
+      - printf '[{"name":"web","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
 EOF
