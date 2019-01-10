@@ -87,6 +87,11 @@ resource "aws_iam_role" "cloudformation_execution" {
 EOF
 }
 
+
+data "aws_kms_alias" "ssm" {
+  name = "alias/aws/ssm"
+}
+
 data "aws_iam_policy_document" "ecs_service_policy_doc" {
   statement {
     resources = ["*"]
