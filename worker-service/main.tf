@@ -92,7 +92,24 @@ data "aws_kms_alias" "ssm" {
   name = "alias/aws/ssm"
 }
 
-data "aws_iam_policy_document" "ecs_service_policy_doc" {
+data "aws_iam_policy_document" "worker_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = [
+        "elasticloadbalancing.amazonaws.com",
+        "codebuild.amazonaws.com",
+        "ec2.amazonaws.com",
+        "ecs.amazonaws.com",
+        "ecs-tasks.amazonaws.com"
+      ]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "worker_policy_doc" {
   statement {
     resources = ["*"]
     actions = [
@@ -124,8 +141,18 @@ data "aws_iam_policy_document" "ecs_service_policy_doc" {
 }
 
 resource "aws_iam_role" "worker" {
-  name = "${var.name}-ecs-service-role-deploy"
-  assume_role_policy = "${data.aws_iam_policy_document.ecs_service_assume_role_policy.json}"
+  name = "${var.name}-worker-role-deploy"
+  assume_role_policy = "${data.aws_iam_policy_document.worker_assume_role_policy.json}"
+}
+
+resource "aws_iam_policy" "worker_policy" {
+  name = "${var.name}-ecs-service-policy"
+  policy = "${data.aws_iam_policy_document.worker_policy_doc.json}"
+}
+
+resource "aws_iam_role_policy_attachment" "worker_policy_attachment" {
+  policy_arn = "${aws_iam_policy.worker_policy.arn}"
+  role       = "${aws_iam_role.worker.id}"
 }
 
 
