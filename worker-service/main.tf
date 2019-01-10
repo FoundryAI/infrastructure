@@ -87,34 +87,42 @@ resource "aws_iam_role" "cloudformation_execution" {
 EOF
 }
 
-resource "aws_iam_role" "worker" {
-  name       = "${var.name}-${var.environment}-worker-role"
-  depends_on = ["aws_iam_role.main"]
+data "aws_iam_policy_document" "ecs_service_policy_doc" {
+  statement {
+    resources = ["*"]
+    actions = [
+      "elasticloadbalancing:*",
+      "ec2:*",
+      "ecr:*",
+      "ecs:*"
+    ]
+  }
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": [
-          "ecs-tasks.amazonaws.com"
-        ]
-      },
-      "Action": "sts:AssumeRole"
-    },
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "${aws_iam_role.main.arn}"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
+  statement {
+    resources = [
+      "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/${var.environment}/${var.name}/*",
+      "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/${var.environment}/common/*"
+    ]
+    actions = [
+      "ssm:GetParameter",
+      "ssm:GetParameters",
+      "ssm:GetParametersByPath",
+      "ssm:DescribeParameters"
+    ]
+  }
+
+  statement {
+    resources = ["${data.aws_kms_alias.ssm.arn}"]
+    actions = ["kms:Decrypt"]
+  }
+
 }
-EOF
+
+resource "aws_iam_role" "worker" {
+  name = "${var.name}-ecs-service-role-deploy"
+  assume_role_policy = "${data.aws_iam_policy_document.ecs_service_assume_role_policy.json}"
 }
+
 
 resource "aws_iam_policy_attachment" "cloudformation_policy_attachment" {
   name       = "${var.name}-${var.environment}-cloudformation-policy-attachment"
