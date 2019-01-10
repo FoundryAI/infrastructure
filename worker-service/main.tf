@@ -246,6 +246,10 @@ resource "aws_codebuild_project" "main" {
       name  = "REPOSITORY_URI"
       value = "${var.ecr_repository_url}"
     }
+    environment_variable {
+      name = "ECS_SERVICE_NAME"
+      value = "${aws_ecs_service.worker_service.name}"
+    }
   }
 
   "source" {
@@ -271,7 +275,7 @@ phases:
     commands:
       - docker push "$REPOSITORY_URI:latest"
       - docker push "$${REPOSITORY_URI}:$${IMAGE_TAG}"
-      - printf '[{"name":"web","imageUri":"%s"}]' "$${REPOSITORY_URI}:$${IMAGE_TAG}" > imagedefinitions.json
+      - printf '[{"name":"$${ECS_SERVICE_NAME}","imageUri":"%s"}]' "$${REPOSITORY_URI}:$${IMAGE_TAG}" > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
 EOF
