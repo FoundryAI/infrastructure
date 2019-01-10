@@ -104,7 +104,6 @@ data "aws_iam_policy_document" "worker_assume_role_policy" {
         "ec2.amazonaws.com",
         "ecs.amazonaws.com",
         "ecs-tasks.amazonaws.com",
-        "cloudwatch.amazonaws.com"
       ]
     }
   }
