@@ -248,7 +248,7 @@ resource "aws_codebuild_project" "main" {
     }
     environment_variable {
       name = "ECS_SERVICE_NAME"
-      value = "${aws_ecs_service.worker_service.name}"
+      value = "${var.name}"
     }
   }
 
