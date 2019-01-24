@@ -384,7 +384,7 @@ data "template_file" "worker" {
         "Name": "ENVIRONMENT",
         "Value": "${var.environment}"
       }
-    ],
+    ]
   }
 ]
 EOF
