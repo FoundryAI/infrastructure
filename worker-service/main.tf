@@ -358,33 +358,33 @@ data "template_file" "worker" {
         "awslogs-region": "$${aws_region}",
         "awslogs-stream-prefix": "${var.environment}"
       },
-      "Environment": [
-        {
-          "Name": "Tag",
-          "Value": "latest"
-        },
-        {
-          "Name": "AWS_ACCOUNT_ID",
-          "Value": "$${aws_account_id}"
-        },
-        {
-          "Name": "AWS_REGION",
-          "Value": "$${aws_region}"
-        },
-        {
-          "Name": "AWS_ACCESS_KEY",
-          "Value": "${var.aws_access_key}"
-        },
-        {
-          "Name": "AWS_SECRET_KEY",
-          "Value": "${var.aws_secret_key}"
-        },
-        {
-          "Name": "ENVIRONMENT",
-          "Value": "${var.environment}"
-        }
-      ]
-    }
+    },
+    "Environment": [
+      {
+        "Name": "Tag",
+        "Value": "latest"
+      },
+      {
+        "Name": "AWS_ACCOUNT_ID",
+        "Value": "$${aws_account_id}"
+      },
+      {
+        "Name": "AWS_REGION",
+        "Value": "$${aws_region}"
+      },
+      {
+        "Name": "AWS_ACCESS_KEY",
+        "Value": "${var.aws_access_key}"
+      },
+      {
+        "Name": "AWS_SECRET_KEY",
+        "Value": "${var.aws_secret_key}"
+      },
+      {
+        "Name": "ENVIRONMENT",
+        "Value": "${var.environment}"
+      }
+    ],
   }
 ]
 EOF
