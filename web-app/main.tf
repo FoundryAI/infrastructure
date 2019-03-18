@@ -61,11 +61,11 @@ resource "aws_cloudfront_distribution" "main" {
     bucket = "${var.s3_logs_bucket}.s3.amazonaws.com"
     prefix = "cloudfront/${var.name}/${var.environment}"
   }
-  
-  "restrictions" {		
-     "geo_restriction" {		
+
+  "restrictions" {
+     "geo_restriction" {
        restriction_type = "none"
-     }		
+     }
    }
 
   "default_cache_behavior" {
@@ -194,7 +194,7 @@ resource "aws_codebuild_project" "main" {
 
   environment {
     compute_type = "BUILD_GENERAL1_SMALL"
-    image        = "kriasoft/node-ci:8.5"
+    image        = "kriasoft/node-ci:8.9.3"
     type         = "LINUX_CONTAINER"
 
     environment_variable {
