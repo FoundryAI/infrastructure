@@ -71,7 +71,7 @@ resource "aws_lambda_function" "main" {
     mode = "Active"
   }
   environment {
-    variables {
+    variables = {
       WEBHOOK = "https://hooks.slack.com/services/${var.slack_webhook}"
     }
   }

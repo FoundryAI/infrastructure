@@ -38,7 +38,7 @@ resource "aws_s3_bucket" "logs" {
     }
   }
 
-  tags {
+  tags = {
     Name        = "${var.name}-${var.environment}-logs"
     Environment = "${var.environment}"
   }

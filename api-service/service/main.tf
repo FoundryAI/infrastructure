@@ -52,7 +52,7 @@ resource "aws_s3_bucket" "main" {
     enabled = true
   }
 
-  tags {
+  tags = {
     Name = "${var.name}"
     Environment = "${var.environment}"
   }
@@ -75,7 +75,7 @@ resource "aws_s3_bucket" "artifacts" {
 resource "aws_cloudwatch_log_group" "main" {
   name = "${var.name}"
 
-  tags {
+  tags = {
     Environment = "${var.environment}"
   }
 }
