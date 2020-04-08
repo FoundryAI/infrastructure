@@ -1,7 +1,7 @@
 data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {
-  current = true
+//  current = true
 }
 
 resource "aws_s3_bucket_object" "main" {

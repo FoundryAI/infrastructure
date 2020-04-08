@@ -5,7 +5,7 @@ resource "aws_sns_topic" "ecs_events" {
 data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {
-  current = true
+//  current = true
 }
 
 data "template_file" "ecs_task_stopped" {

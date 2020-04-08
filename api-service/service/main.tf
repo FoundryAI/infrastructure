@@ -18,7 +18,7 @@
 data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {
-  current = true
+//  current = true
 }
 
 # Gets the CURRENT task definition from AWS, reflecting anything that's been deployed outside

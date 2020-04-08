@@ -7,7 +7,7 @@
 data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {
-  current = true
+//  current = true
 }
 
 data "aws_iam_policy_document" "codebuild_assume_role_policy" {
