@@ -71,7 +71,7 @@ resource "aws_api_gateway_method_settings" "main" {
   method_path = "*/*"
   rest_api_id = "${var.api_id}"
   stage_name = "${var.api_stage}"
-  "settings" {
+  settings =  {
     metrics_enabled = true
     logging_level = "INFO"
   }
