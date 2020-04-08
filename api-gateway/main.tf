@@ -111,7 +111,7 @@ resource "aws_api_gateway_method" "main" {
   resource_id = "${aws_api_gateway_resource.child.id}"
   rest_api_id = "${var.api_id}"
 
-  request_parameters {
+  request_parameters = {
     "method.request.path.proxy" = true
   }
 }
@@ -124,7 +124,7 @@ resource "aws_api_gateway_integration" "main" {
   type = "${var.integration_type}"
   uri = "http://${var.elb_dns}/{proxy}" // TODO - figure out A record alias to support https
 
-  request_parameters {
+  request_parameters = {
     "integration.request.path.proxy" = "method.request.path.proxy"
   }
 }

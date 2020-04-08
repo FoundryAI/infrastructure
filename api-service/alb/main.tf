@@ -33,11 +33,11 @@ resource "aws_alb_listener" "main" {
 resource "aws_alb_listener_rule" "main" {
   listener_arn = "${aws_alb_listener.main.arn}"
   priority = 1
-  "action" {
+  action = {
     target_group_arn = "${aws_alb_target_group.main.arn}"
     type = "forward"
   }
-  "condition" {
+  condition = {
     field = "path-pattern"
     values = ["/"]
   }
